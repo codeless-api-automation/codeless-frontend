@@ -11,41 +11,34 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 
 const useStyles = makeStyles(theme => ({
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 250, 
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-    }
-  }));
+}));
 
 export default function Combobox(props) {
-    const classes = useStyles();
-    const [httpMethod, setHttpMethod] = React.useState('');
-    
-    const { options } = props;
+  const classes = useStyles();
+  const [httpMethod, setHttpMethod] = React.useState('');
 
-    const handleChange = event => {
-      setHttpMethod(event.target.value);
-    };
-    console.log(props);
-    return ( 
-        <Select
-          id="demo-simple-select-helper"
-          value={httpMethod}
-          onChange={handleChange}
-          displayEmpty
-          classes={classes}
-        >
-            {options.map(element => {
-                      return <MenuItem value={element === "GET" ? "" : element}>{element}</MenuItem>;
-            })}
-        </Select>
-    );
+  const { options } = props;
+
+  const handleChange = event => {
+    setHttpMethod(event.target.value);
+  };
+  console.log(props);
+  return (
+    <Select
+      id="demo-simple-select-helper"
+      value={httpMethod}
+      onChange={handleChange}
+      displayEmpty
+      classes={classes}
+    >
+      {options.map(element => {
+        return <MenuItem value={element === "GET" ? "" : element}>{element}</MenuItem>;
+      })}
+    </Select>
+  );
 }
 
-Combobox.propTypes = { 
+Combobox.propTypes = {
   id: PropTypes.string,
   options: PropTypes.array
 };
