@@ -1,17 +1,38 @@
 import React from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import BugReport from "@material-ui/icons/BugReport";
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Checkbox from '@material-ui/core/Checkbox';
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Button from "components/CustomButtons/Button.js";
 import ComboBox from "components/Combobox/Combobox.js";
 import Input from "components/CustomInput/CustomInput.js";
+import CustomTabs from "components/CustomTabs/CustomTabs.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Grid from '@material-ui/core/Grid';
 
 import { InputLabel, FormControl, TextField, MenuItem, Select } from '@material-ui/core';
 
+
+const rows = [
+  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+  createData('Eclair', 262, 16.0, 24, 6.0),
+  createData('Cupcake', 305, 3.7, 67, 4.3),
+  createData('Gingerbread', 356, 16.0, 49, 3.9),
+];
+
+function createData(name, calories, fat, carbs, protein) {
+  return { name, calories, fat, carbs, protein };
+}
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -67,6 +88,72 @@ export default function TableList() {
             <Button color="primary">Save</Button>
           </Grid>
 
+        </Grid>
+        <Grid container direction="row">
+          <Grid item xl>
+            <CustomTabs
+              title=""
+              headerColor="primary"
+              tabs={[
+                {
+                  tabName: "Headers",
+                  tabContent: (
+                    <Table padding="none" aria-label="simple table" style={{ width: 1100 }}>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell></TableCell>
+                          <TableCell>Key</TableCell>
+                          <TableCell>Value</TableCell>
+                          <TableCell>Description</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        <TableRow key="row">
+                          <TableCell>
+                            <Checkbox value="unchecked" inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                          </TableCell>
+                          <TableCell>
+                            <Input labelText="Header Name" id="header-name"
+                              formControlProps={{
+                                fullWidth: true
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Input labelText="Header Value" id="header-value"
+                              formControlProps={{
+                                fullWidth: true
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Input labelText="Description" id="header-description"
+                              formControlProps={{
+                                fullWidth: true
+                              }}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+
+                  )
+                },
+                {
+                  tabName: "Body",
+                  tabContent: (
+                    <Table
+                      tableHeaderColor="warning"
+                      tableHead={["ID", "Name", "Salary", "Country"]}
+                      tableData={[
+                        ["1", "Dakota Rice", "$36,738", "Niger"],
+                      ]}
+                    />
+                  )
+                },
+              ]}
+            />
+          </Grid>
         </Grid>
       </Grid>
     </div>
