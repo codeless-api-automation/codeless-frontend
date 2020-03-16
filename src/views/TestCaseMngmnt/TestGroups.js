@@ -10,6 +10,9 @@ import Input from "components/CustomInput/CustomInput.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Grid from '@material-ui/core/Grid';
 
+import { InputLabel, FormControl, TextField, MenuItem, Select } from '@material-ui/core';
+
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
@@ -42,11 +45,11 @@ export default function TableList() {
 
         <Grid container direction="row">
 
-          <Grid item>
+          <Grid item item>
             <ComboBox options={["GET", "POST", "PUT", "DELETE"]} />
           </Grid>
 
-          <Grid item>
+          <Grid item item xs>
             <CustomInput
               labelText="Entry request URL"
               id="request"
@@ -60,9 +63,11 @@ export default function TableList() {
             <Button color="primary">Send</Button>
           </Grid>
 
+          <Grid item>
+            <Button color="primary">Save</Button>
+          </Grid>
+
         </Grid>
-      
-      
       </Grid>
     </div>
   );
