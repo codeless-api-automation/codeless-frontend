@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import { Input, InputLabel, FormControl, MenuItem, Select } from '@material-ui/core';
+import { InputLabel, FormControl, MenuItem, Select } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -14,22 +14,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Combobox(props) {
   const classes = useStyles();
-  const [httpMethod, setHttpMethod] = React.useState('');
+  const [comboBoxValue, setComboBoxValue] = React.useState('');
 
   const { options } = props;
 
   const handleChange = event => {
-    setHttpMethod(event.target.value);
+    setComboBoxValue(event.target.value);
   };
 
-  console.log(props);
   return (
     <FormControl className={classes.formControl}>
       <InputLabel htmlFor="select label"></InputLabel>
       <Select
         id="select id"
         labelId="select label"
-        value={httpMethod}
+        value={comboBoxValue}
         onChange={handleChange}
         displayEmpty>
 

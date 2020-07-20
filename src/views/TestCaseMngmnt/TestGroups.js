@@ -7,8 +7,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
-// core components
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
+
+// core components
 import Button from "components/CustomButtons/Button.js";
 import ComboBox from "components/Combobox/Combobox.js";
 import Input from "components/CustomInput/CustomInput.js";
@@ -28,8 +30,7 @@ export default function TableList() {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Grid container spacing={0} direction="column">
-
+      <Grid container spacing={0}>
         <Grid container direction="row">
 
           <Grid item xs>
@@ -47,14 +48,13 @@ export default function TableList() {
             />
           </Grid>
         </Grid>
-
         <Grid container direction="row">
 
-          <Grid item item>
+          <Grid item>
             <ComboBox options={["GET", "POST", "PUT", "DELETE"]} />
           </Grid>
 
-          <Grid item item xs>
+          <Grid item xs>
             <CustomInput
               labelText="Entry request URL"
               id="request"
@@ -74,70 +74,75 @@ export default function TableList() {
 
         </Grid>
         <Grid container direction="row">
-          <Grid item xl>
-            <CustomTabs
-              title=""
-              headerColor="primary"
-              tabs={[
-                {
-                  tabName: "Headers",
-                  tabContent: (
-                    <Table padding="none" aria-label="simple table" style={{ width: 1100 }}>
-                      <TableHead>
-                        <TableRow>
-                          <TableCell></TableCell>
-                          <TableCell>Key</TableCell>
-                          <TableCell>Value</TableCell>
-                          <TableCell>Description</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        <TableRow key="row">
-                          <TableCell>
-                            <Checkbox value="unchecked" inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
-                          </TableCell>
-                          <TableCell>
-                            <Input labelText="Header Name" id="header-name"
-                              formControlProps={{
-                                fullWidth: true
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Input labelText="Header Value" id="header-value"
-                              formControlProps={{
-                                fullWidth: true
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Input labelText="Description" id="header-description"
-                              formControlProps={{
-                                fullWidth: true
-                              }}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-
-                  )
-                },
-                {
-                  tabName: "Body",
-                  tabContent: (
-                    <Table
-                      tableHeaderColor="warning"
-                      tableHead={["ID", "Name", "Salary", "Country"]}
-                      tableData={[
-                        ["1", "Dakota Rice", "$36,738", "Niger"],
-                      ]}
-                    />
-                  )
-                },
-              ]}
-            />
-          </Grid>
+          <CustomTabs
+            title=""
+            headerColor="primary"
+            tabs={[
+              {
+                tabName: "Headers",
+                tabContent: (
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell></TableCell>
+                        <TableCell>Key</TableCell>
+                        <TableCell>Value</TableCell>
+                        <TableCell>Description</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow key="row">
+                        <TableCell>
+                          <Checkbox color="primary" value="unchecked" inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                        </TableCell>
+                        <TableCell>
+                          <Input labelText="Header Name" id="header-name"
+                            formControlProps={{
+                              fullWidth: true
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Input labelText="Header Value" id="header-value"
+                            formControlProps={{
+                              fullWidth: true
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Input labelText="Description" id="header-description"
+                            formControlProps={{
+                              fullWidth: true
+                            }}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                )
+              },
+              {
+                tabName: "Body",
+                tabContent: <div />
+              },
+              {
+                tabName: "Validators",
+                tabContent: (
+                  <Grid container>
+                    <Grid container spacing={2}>
+                      <Grid item>
+                        <Button color="primary">Add</Button>
+                        {/* https://material-ui.com/components/autocomplete/#combo-box */}
+                        {/* https://demos.creative-tim.com/material-dashboard-react/?&_ga=2.94993116.1119026449.1595210727-1455770674.1595210727#/documentation/checkbox-radio */}
+                      </Grid>
+                      <Grid item>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                )
+              }
+            ]}
+          />
         </Grid>
       </Grid>
     </div>
