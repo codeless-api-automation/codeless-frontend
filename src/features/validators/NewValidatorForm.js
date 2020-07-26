@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { createValidator } from "./../../store/actions"
+import { createValidator } from "../../store/actions"
 import {
   Grid,
   TextField
@@ -10,7 +10,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import Button from "components/CustomButtons/Button.js";
 import Input from "components/CustomInput/CustomInput.js";
 
-function NewValidator({ validators, onAddValidatorPressed }) {
+function NewValidatorForm({ validators, onAddValidatorPressed }) {
 
   const [validator, setValidator] = React.useState(null);
   const [predicate, setPredicate] = React.useState(null);
@@ -71,7 +71,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispath => ({
   onAddValidatorPressed: (validator, predicate) => dispath(createValidator(validator, predicate))
 });
-export default connect(mapStateToProps, mapDispatchToProps)(NewValidator);
+export default connect(mapStateToProps, mapDispatchToProps)(NewValidatorForm);
 
 const test = {
   validators: [

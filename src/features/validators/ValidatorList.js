@@ -1,13 +1,13 @@
 import React from "react";
 
 import { Grid } from '@material-ui/core';
-import NewValidator from "./NewValidator";
+import NewValidatorForm from "./NewValidatorForm";
 
 export default function ValidatorList({validators}) {
 
     return (
         <Grid container>
-            <NewValidator/>
+            <NewValidatorForm/>
         </Grid>
     )
 }
