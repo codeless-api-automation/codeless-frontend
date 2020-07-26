@@ -20,6 +20,9 @@ import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 
+import { Provider } from "react-redux";
+import { configureStore } from "./store/store";
+
 // core components
 import General from "layouts/General.js";
 
@@ -28,11 +31,13 @@ import "assets/css/material-dashboard-react.css?v=1.8.0";
 const hist = createBrowserHistory();
 
 ReactDOM.render(
-  <Router history={hist}>
-    <Switch>
-      <Route path="/general" component={General} />
-      <Redirect from="/" to="/general/dashboard" />
-    </Switch>
-  </Router>,
+  <Provider store={configureStore()}>
+    <Router history={hist}>
+      <Switch>
+        <Route path="/general" component={General} />
+        <Redirect from="/" to="/general/dashboard" />
+      </Switch>
+    </Router>
+  </Provider>,
   document.getElementById("root")
 );

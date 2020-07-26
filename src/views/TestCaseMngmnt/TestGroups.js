@@ -1,24 +1,22 @@
 import React from "react";
 
-// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Checkbox from '@material-ui/core/Checkbox';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import {
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Checkbox
+} from '@material-ui/core';
 
-// core components
 import Button from "components/CustomButtons/Button.js";
 import ComboBox from "components/Combobox/Combobox.js";
 import Input from "components/CustomInput/CustomInput.js";
 import CustomTabs from "components/CustomTabs/CustomTabs.js";
-import CustomInput from "components/CustomInput/CustomInput.js";
-import Grid from '@material-ui/core/Grid';
 
-import { InputLabel, FormControl, TextField, MenuItem, Select } from '@material-ui/core';
+import ValidatorList from "features/validators/ValidatorList.js";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,9 +25,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function TableList() {
-
-  const [validator, setValidator] = React.useState(null);
-  const [predicate, setPredicate] = React.useState(null);
 
   const classes = useStyles();
 
@@ -60,7 +55,7 @@ export default function TableList() {
           </Grid>
 
           <Grid item xs>
-            <CustomInput
+            <Input
               labelText="Entry request URL"
               id="request"
               formControlProps={{
@@ -132,52 +127,7 @@ export default function TableList() {
               },
               {
                 tabName: "Verifications",
-                tabContent: (
-                  <Grid container>
-                    <Grid container spacing={2}>
-                      <Grid item>
-                        <Autocomplete
-                          id="validator-box"
-                          options={test.validators}
-                          getOptionLabel={(option) => option.displayName}
-                          style={{ width: 200 }}
-                          value={validator}
-                          onChange={(event, newValue) => { setValidator(newValue) }}
-                          renderInput={(params) => <TextField {...params} label="Validator" variant="outlined" />}
-                        />
-                      </Grid>
-
-                      {validator !== null && validator.hasOwnProperty('predicates') &&
-                        <Grid item>
-                          <Autocomplete
-                            id="predicate-box"
-                            options={validator.predicates}
-                            getOptionLabel={(option) => option}
-                            style={{ width: 200 }}
-                            value={predicate}
-                            onChange={(event, newValue) => { setPredicate(newValue) }}
-                            renderInput={(params) => <TextField {...params} label="Predicate" variant="outlined" />}
-                          />
-                        </Grid>
-                      }
-
-                      {validator !== null && validator.hasOwnProperty('inputFields') &&
-                        validator.inputFields.map((inputField) => (
-                          <Grid
-                            key={inputField.displayName}
-                            item>
-                            <Input
-                              labelText={inputField.displayName}
-                              formControlProps={{
-                                fullWidth: true
-                              }}
-                            />
-                          </Grid>
-                        ))}
-
-                    </Grid>
-                  </Grid>
-                )
+                tabContent: <ValidatorList/>
               }
             ]}
           />
@@ -185,52 +135,4 @@ export default function TableList() {
       </Grid>
     </div>
   );
-}
-
-const test = {
-  validators: [
-    {
-      dslName: "statuslinevalidator",
-      displayName: "status line",
-      inputFields: [
-        {
-          dslName: "statuscode",
-          displayName: "Status code"
-        },
-        {
-          dslName: "statusmessage",
-          displayName: "Status message"
-        },
-        {
-          dslName: "protocol",
-          displayName: "Protocol"
-        }
-      ]
-    },
-    {
-      dslName: "headervalidator",
-      displayName: "header",
-      predicates: ["exist", "not exist", "contains", "not contains"],
-      inputFields: [
-        {
-          dslName: "headerName",
-          displayName: "Header name"
-        },
-        {
-          dslName: "headerValue",
-          displayName: "Header value"
-        }]
-    },
-    {
-      dslName: "textvalidator",
-      displayName: "text",
-      predicates: ["contains", "not contains", "match"],
-      inputFields: [
-        {
-          dslName: "value",
-          displayName: "Value"
-        }
-      ]
-    }
-  ]
 }
