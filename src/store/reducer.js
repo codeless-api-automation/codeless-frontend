@@ -4,8 +4,12 @@ export const validators = (state = [], action) => {
     const { type, payload } = action;
     switch (type) {
         case CREATE_VALIDATOR: {
-            const { validator } = payload;
-            return state.concat(validator);
+            const { validator, predicate } = payload;
+            let newValidator = {
+                validator,
+                predicate
+            };
+            return state.concat(newValidator);
         }
         case REMOVE_VALIDATOR: {
             const { validator } = payload;
