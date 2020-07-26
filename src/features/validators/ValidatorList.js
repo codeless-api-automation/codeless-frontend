@@ -1,13 +1,27 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import { Grid } from '@material-ui/core';
+
 import NewValidatorForm from "./NewValidatorForm";
+import ValidatorItemList from "./ValidatorListitem";
 
-export default function ValidatorList({validators}) {
-
+function ValidatorList({ validators }) {
     return (
         <Grid container>
-            <NewValidatorForm/>
+            {validators.map((validator, index) =>
+                <ValidatorItemList
+                    key={index}
+                    item={validator} />
+            )}
+            <NewValidatorForm />
         </Grid>
     )
 }
+
+const mapStateToProps = state => ({
+    validators: state.validators
+});
+const mapDispatchToProps = dispath => ({
+});
+export default connect(mapStateToProps, mapDispatchToProps)(ValidatorList);

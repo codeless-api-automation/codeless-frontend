@@ -6,8 +6,8 @@ export const validators = (state = [], action) => {
         case CREATE_VALIDATOR: {
             const { validator, predicate } = payload;
             let newValidator = {
-                validator,
-                predicate
+                ...validator,
+                predicate: predicate
             };
             return state.concat(newValidator);
         }
