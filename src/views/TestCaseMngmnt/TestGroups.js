@@ -1,4 +1,5 @@
 import React from "react";
+
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import Table from '@material-ui/core/Table';
@@ -8,7 +9,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
 
 // core components
 import Button from "components/CustomButtons/Button.js";
@@ -27,7 +27,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function TableList() {
+
+  const [validator, setValidator] = React.useState(null);
+  const [predicate, setPredicate] = React.useState(null);
+
   const classes = useStyles();
+
   return (
     <div className={classes.root}>
       <Grid container spacing={0}>
@@ -126,17 +131,50 @@ export default function TableList() {
                 tabContent: <div />
               },
               {
-                tabName: "Validators",
+                tabName: "Verifications",
                 tabContent: (
                   <Grid container>
                     <Grid container spacing={2}>
                       <Grid item>
-                        <Button color="primary">Add</Button>
-                        {/* https://material-ui.com/components/autocomplete/#combo-box */}
-                        {/* https://demos.creative-tim.com/material-dashboard-react/?&_ga=2.94993116.1119026449.1595210727-1455770674.1595210727#/documentation/checkbox-radio */}
+                        <Autocomplete
+                          id="validator-box"
+                          options={test.validators}
+                          getOptionLabel={(option) => option.displayName}
+                          style={{ width: 200 }}
+                          value={validator}
+                          onChange={(event, newValue) => { setValidator(newValue) }}
+                          renderInput={(params) => <TextField {...params} label="Validator" variant="outlined" />}
+                        />
                       </Grid>
-                      <Grid item>
-                      </Grid>
+
+                      {validator !== null && validator.hasOwnProperty('predicates') &&
+                        <Grid item>
+                          <Autocomplete
+                            id="predicate-box"
+                            options={validator.predicates}
+                            getOptionLabel={(option) => option}
+                            style={{ width: 200 }}
+                            value={predicate}
+                            onChange={(event, newValue) => { setPredicate(newValue) }}
+                            renderInput={(params) => <TextField {...params} label="Predicate" variant="outlined" />}
+                          />
+                        </Grid>
+                      }
+
+                      {validator !== null && validator.hasOwnProperty('inputFields') &&
+                        validator.inputFields.map((inputField) => (
+                          <Grid
+                            key={inputField.displayName}
+                            item>
+                            <Input
+                              labelText={inputField.displayName}
+                              formControlProps={{
+                                fullWidth: true
+                              }}
+                            />
+                          </Grid>
+                        ))}
+
                     </Grid>
                   </Grid>
                 )
@@ -147,4 +185,52 @@ export default function TableList() {
       </Grid>
     </div>
   );
+}
+
+const test = {
+  validators: [
+    {
+      dslName: "statuslinevalidator",
+      displayName: "status line",
+      inputFields: [
+        {
+          dslName: "statuscode",
+          displayName: "Status code"
+        },
+        {
+          dslName: "statusmessage",
+          displayName: "Status message"
+        },
+        {
+          dslName: "protocol",
+          displayName: "Protocol"
+        }
+      ]
+    },
+    {
+      dslName: "headervalidator",
+      displayName: "header",
+      predicates: ["exist", "not exist", "contains", "not contains"],
+      inputFields: [
+        {
+          dslName: "headerName",
+          displayName: "Header name"
+        },
+        {
+          dslName: "headerValue",
+          displayName: "Header value"
+        }]
+    },
+    {
+      dslName: "textvalidator",
+      displayName: "text",
+      predicates: ["contains", "not contains", "match"],
+      inputFields: [
+        {
+          dslName: "value",
+          displayName: "Value"
+        }
+      ]
+    }
+  ]
 }

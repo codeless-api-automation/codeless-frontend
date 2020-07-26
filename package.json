@@ -5,9 +5,9 @@
   "private": false,
   "main": "dist/index.js",
   "dependencies": {
-    "@material-ui/core": "4.3.2",
-    "@material-ui/icons": "4.2.1",
-    "@material-ui/lab": "^4.0.0-alpha.39",
+    "@material-ui/core": "^4.9.10",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.49",
     "chartist": "0.10.1",
     "classnames": "2.2.6",
     "history": "4.9.0",
