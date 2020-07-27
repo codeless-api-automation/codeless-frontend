@@ -23,7 +23,7 @@ import Explore from '@material-ui/icons/Explore';
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import TestExplorer from "views/TestExplorer/TestExplorer.js";
 import Integrations from "views/Integrations/Integrations.js";
-import TestGroups from "views/TestCaseMngmnt/TestGroups.js"
+import TestCase from "views/TestCaseMngmnt/TestCase.js"
 
 const dashboardRoutes = [
   {
@@ -35,10 +35,10 @@ const dashboardRoutes = [
   },
   
   {
-    path: "/test-group",
+    path: "/test-case",
     name: "Test Case Management",
     icon: "content_paste",
-    component: TestGroups,
+    component: TestCase,
     layout: "/general"
   },
   {
