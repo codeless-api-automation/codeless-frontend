@@ -4,13 +4,13 @@ import { connect } from "react-redux";
 import { Grid } from '@material-ui/core';
 
 import NewValidatorForm from "./NewValidatorForm";
-import ValidatorItemList from "./ValidatorListitem";
+import ValidatorListItem from "./ValidatorListItem";
 
 function ValidatorList({ validators }) {
     return (
         <Grid container>
             {validators.map((validator, index) =>
-                <ValidatorItemList
+                <ValidatorListItem
                     key={index}
                     item={validator} />
             )}

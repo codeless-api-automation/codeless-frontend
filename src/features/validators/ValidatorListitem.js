@@ -23,7 +23,7 @@ function ValidatorListItem({ item, validators, onRemoveValidatorPressed }) {
                 <Autocomplete
                     id="validator-box"
                     disabled
-                    options={validator}
+                    options={[validator]}
                     getOptionLabel={(option) => option.displayName}
                     style={{ width: 200 }}
                     value={validator}

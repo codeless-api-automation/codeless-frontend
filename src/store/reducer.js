@@ -7,7 +7,7 @@ export const validators = (state = [], action) => {
             const { validator, predicate } = payload;
             let newValidator = {
                 ...validator,
-                predicate: predicate
+                predicate
             };
             return state.concat(newValidator);
         }
