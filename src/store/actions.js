@@ -9,3 +9,9 @@ export const removeValidator = validator => ({
     type: REMOVE_VALIDATOR,
     payload: { validator }
 })
+
+export const UPDATE_PREDICATE = 'UPDATE_PREDICATE';
+export const updatePredicate = (validator, newPredicateValue) => ({
+    type: UPDATE_PREDICATE,
+    payload: { validator, newPredicateValue }
+})
