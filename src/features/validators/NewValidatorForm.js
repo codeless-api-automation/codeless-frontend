@@ -12,7 +12,7 @@ import AddIcon from "@material-ui/icons/Add";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Input from "components/CustomInput/CustomInput.js";
 
-function NewValidatorForm({ validators, onAddValidatorPressed }) {
+function NewValidatorForm({ validators, createValidator }) {
 
   const [validator, setValidator] = React.useState(null);
   const [predicate, setPredicate] = React.useState(null);
@@ -63,7 +63,7 @@ function NewValidatorForm({ validators, onAddValidatorPressed }) {
       <Grid item>
         <IconButton
           onClick={() => {
-            onAddValidatorPressed(validator, predicate)
+            createValidator(validator, predicate)
             setValidator(null);
             setPredicate(null);
           }}>
@@ -76,10 +76,7 @@ function NewValidatorForm({ validators, onAddValidatorPressed }) {
 const mapStateToProps = state => ({
   validators: state.validators
 });
-const mapDispatchToProps = dispath => ({
-  onAddValidatorPressed: (validator, predicate) => dispath(createValidator(validator, predicate))
-});
-export default connect(mapStateToProps, mapDispatchToProps)(NewValidatorForm);
+export default connect(mapStateToProps, {createValidator})(NewValidatorForm);
 
 const test = {
   validators: [

@@ -15,7 +15,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Input from "components/CustomInput/CustomInput.js";
 
-function ValidatorListItem({ validator, validators, onRemoveValidatorPressed, onValidatorPredicateChanged }) {
+function ValidatorListItem({ validator, removeValidator, updatePredicate }) {
 
     return (
         <Grid container spacing={2} style={{ margin: "-4px -8px" }}>
@@ -38,7 +38,7 @@ function ValidatorListItem({ validator, validators, onRemoveValidatorPressed, on
                         getOptionLabel={(option) => option}
                         style={{ width: 200 }}
                         value={validator.predicate}
-                        onChange={(event, newValue) => onValidatorPredicateChanged(validator, newValue)}
+                        onChange={(event, newValue) => updatePredicate(validator, newValue)}
                         renderInput={(params) => <TextField {...params} label="Predicate" variant="outlined" />}
                     />
                 </Grid>
@@ -62,18 +62,12 @@ function ValidatorListItem({ validator, validators, onRemoveValidatorPressed, on
                 ))}
 
             <Grid item>
-                <IconButton onClick={() => onRemoveValidatorPressed(validator)}>
+                <IconButton onClick={() => removeValidator(validator)}>
                     <DeleteIcon />
                 </IconButton>
             </Grid>
         </Grid>
     );
 }
-const mapStateToProps = state => ({
-    validators: state.validators
-});
-const mapDispatchToProps = dispath => ({
-    onRemoveValidatorPressed: (validator) => dispath(removeValidator(validator)),
-    onValidatorPredicateChanged: (validator, newPredicateValue) => dispath(updatePredicate(validator, newPredicateValue))
-});
-export default connect(mapStateToProps, mapDispatchToProps)(ValidatorListItem);  
+
+export default connect(() => {}, {removeValidator, updatePredicate})(ValidatorListItem);  
