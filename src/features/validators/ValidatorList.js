@@ -9,11 +9,7 @@ import ValidatorListItem from "./ValidatorListItem";
 function ValidatorList({ validators }) {
     return (
         <Grid container>
-            {validators.map((validator, index) =>
-                <ValidatorListItem
-                    key={index}
-                    item={validator} />
-            )}
+            {validators.map((validator, index) => <ValidatorListItem key={index} validator={validator} />)}
             <NewValidatorForm />
         </Grid>
     )
@@ -22,6 +18,4 @@ function ValidatorList({ validators }) {
 const mapStateToProps = state => ({
     validators: state.validators
 });
-const mapDispatchToProps = dispath => ({
-});
-export default connect(mapStateToProps, mapDispatchToProps)(ValidatorList);
+export default connect(mapStateToProps)(ValidatorList);

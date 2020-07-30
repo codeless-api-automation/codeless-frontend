@@ -12,16 +12,13 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Input from "components/CustomInput/CustomInput.js";
 
-function ValidatorListItem({ item, validators, onRemoveValidatorPressed }) {
-
-    const [validator] = React.useState(item);
-    const [predicate, setPredicate] = React.useState(item.predicate);
+function ValidatorListItem({ validator, validators, onRemoveValidatorPressed }) {
 
     return (
         <Grid container spacing={2} style={{ margin: "-4px -8px" }}>
             <Grid item>
                 <Autocomplete
-                    id="validator-box"
+                    id="validator-box-list-item"
                     disabled
                     options={[validator]}
                     getOptionLabel={(option) => option.displayName}
@@ -30,37 +27,39 @@ function ValidatorListItem({ item, validators, onRemoveValidatorPressed }) {
                     renderInput={(params) => <TextField {...params} label="Validator" variant="outlined" />}
                 />
             </Grid>
-            {validator !== null && predicate !== null &&
+            {validator !== null && validator.predicate !== null &&
                 <Grid item>
                     <Autocomplete
-                        id="predicate-box"
+                        id="predicate-box-list-item"
                         options={validator.predicates}
                         getOptionLabel={(option) => option}
                         style={{ width: 200 }}
-                        value={predicate}
-                        onChange={(event, newValue) => { setPredicate(newValue) }}
+                        value={validator.predicate}
+                        //onChange={(event, newValue) => onValidatorPredicateChanged(validator, newValue) }
                         renderInput={(params) => <TextField {...params} label="Predicate" variant="outlined" />}
                     />
                 </Grid>
             }
 
-            {/* {validator !== null && validator.hasOwnProperty('inputFields') &&
+            {validator !== null && validator.hasOwnProperty('inputFields') &&
                 validator.inputFields.map((inputField) => (
                     <Grid item
                         key={inputField.displayName}>
                         <Input
                             labelText={inputField.displayName}
+                            inputProps={{
+                                value: inputField.value
+                                //onChange: (event) => onValidatorFieldValueChanged(validator, inputField, event.target.value)
+                            }}
                             formControlProps={{
                                 fullWidth: false
                             }}
                         />
                     </Grid>
-                ))} */}
+                ))}
 
             <Grid item>
-                <IconButton
-                    aria-label="delete"
-                    onClick={() => onRemoveValidatorPressed(validator)}>
+                <IconButton onClick={() => onRemoveValidatorPressed(validator)}>
                     <DeleteIcon />
                 </IconButton>
             </Grid>

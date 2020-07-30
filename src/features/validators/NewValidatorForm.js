@@ -18,58 +18,59 @@ function NewValidatorForm({ validators, onAddValidatorPressed }) {
   const [predicate, setPredicate] = React.useState(null);
 
   return (
-      <Grid container spacing={2} style={{ margin: "-4px -8px" }}>
+    <Grid container spacing={2} style={{ margin: "-4px -8px" }}>
+      <Grid item>
+        <Autocomplete
+          id="validator-box"
+          options={test.validators}
+          getOptionLabel={(option) => option.displayName}
+          style={{ width: 200 }}
+          value={validator}
+          onChange={(event, newValue) => { setValidator(newValue) }}
+          renderInput={(params) => <TextField {...params} label="Validator" variant="outlined" />}
+        />
+      </Grid>
+      {validator !== null && validator.hasOwnProperty('predicates') &&
         <Grid item>
           <Autocomplete
-            id="validator-box"
-            options={test.validators}
-            getOptionLabel={(option) => option.displayName}
+            id="predicate-box"
+            options={validator.predicates}
+            getOptionLabel={(option) => option}
             style={{ width: 200 }}
-            value={validator}
-            onChange={(event, newValue) => { setValidator(newValue) }}
-            renderInput={(params) => <TextField {...params} label="Validator" variant="outlined" />}
+            value={predicate}
+            onChange={(event, newValue) => { setPredicate(newValue) }}
+            renderInput={(params) => <TextField {...params} label="Predicate" variant="outlined" />}
           />
         </Grid>
-        {validator !== null && validator.hasOwnProperty('predicates') &&
-          <Grid item>
-            <Autocomplete
-              id="predicate-box"
-              options={validator.predicates}
-              getOptionLabel={(option) => option}
-              style={{ width: 200 }}
-              value={predicate}
-              onChange={(event, newValue) => { setPredicate(newValue) }}
-              renderInput={(params) => <TextField {...params} label="Predicate" variant="outlined" />}
+      }
+
+      {validator !== null && validator.hasOwnProperty('inputFields') &&
+        validator.inputFields.map((inputField) => (
+          <Grid item
+            key={inputField.displayName}>
+            <Input
+              labelText={inputField.displayName}
+              inputProps={{
+                onChange: event => inputField.value = event.target.value
+              }}
+              formControlProps={{
+                fullWidth: false
+              }}
             />
           </Grid>
-        }
+        ))}
 
-        {validator !== null && validator.hasOwnProperty('inputFields') &&
-          validator.inputFields.map((inputField) => (
-            <Grid item
-              key={inputField.displayName}>
-              <Input
-                height="100%"
-                labelText={inputField.displayName}
-                formControlProps={{
-                  fullWidth: false
-                }}
-              />
-            </Grid>
-          ))}
-
-        <Grid item>
-          <IconButton
-            aria-label="Add"
-            onClick={() => {
-              onAddValidatorPressed(validator, predicate)
-              setValidator(null);
-              setPredicate(null);
-            }}>
-            <AddIcon />
-          </IconButton>
-        </Grid>
+      <Grid item>
+        <IconButton
+          onClick={() => {
+            onAddValidatorPressed(validator, predicate)
+            setValidator(null);
+            setPredicate(null);
+          }}>
+          <AddIcon />
+        </IconButton>
       </Grid>
+    </Grid>
   );
 }
 const mapStateToProps = state => ({
