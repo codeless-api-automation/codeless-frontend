@@ -1,7 +1,9 @@
 import { createStore, combineReducers } from 'redux';
-import { validators } from './reducer'
+import { validatorReducer } from './validator-reducer'
 
-const reducers = { validators };
+const reducers = {
+    verificationsTab: validatorReducer
+};
 
 const rootReducer = combineReducers(reducers);
 

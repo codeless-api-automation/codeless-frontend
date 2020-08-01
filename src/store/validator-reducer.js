@@ -2,10 +2,11 @@ import _ from 'lodash'
 import {
     CREATE_VALIDATOR,
     REMOVE_VALIDATOR,
-    UPDATE_PREDICATE
-} from './actions'
+    UPDATE_PREDICATE,
+    UPDATE_INPUT_FIELD
+} from './validator-actions'
 
-export const validators = (state = [], action) => {
+export const validatorReducer = (state = [], action) => {
     const { type, payload } = action;
     switch (type) {
         case CREATE_VALIDATOR: {
@@ -33,8 +34,32 @@ export const validators = (state = [], action) => {
 
             return newValidators;
         }
+        case UPDATE_INPUT_FIELD: {
+            const { validator, inputField, newInputFieldValue } = payload;
+
+            let inputFields = _.cloneDeep(validator.inputFields);
+            inputFields.forEach(updateInputField(inputField, newInputFieldValue));
+
+            let copiedValidatorWithUpdatedInputFields = _.cloneDeep(validator);
+            copiedValidatorWithUpdatedInputFields.inputFields = inputFields;
+
+            let validatorIndexNeededUpdate = state.findIndex(validatorFromStore => _.isEqual(validatorFromStore, validator));
+
+            let newValidators = state.slice();
+            newValidators[validatorIndexNeededUpdate] = copiedValidatorWithUpdatedInputFields
+
+            return newValidators;
+        }
 
         default:
             return state;
     }
+}
+
+function updateInputField(inputFieldToUpdate, newInputFieldValue) {
+    return (inputField) => {
+        if (_.isEqual(inputField, inputFieldToUpdate)) {
+            inputField.value = newInputFieldValue;
+        }
+    };
 }

@@ -32,7 +32,6 @@ export default function TestCase() {
     <div className={classes.root}>
       <Grid container spacing={0}>
         <Grid container direction="row">
-
           <Grid item xs>
             <Input labelText="User Story ID" id="us-id"
               formControlProps={{

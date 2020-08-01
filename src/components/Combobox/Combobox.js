@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Combobox(props) {
   const classes = useStyles();
-  const [comboBoxValue, setComboBoxValue] = React.useState('');
+  const [comboBoxValue, setComboBoxValue] = React.useState('GET');
 
   const { options } = props;
 
@@ -32,8 +32,8 @@ export default function Combobox(props) {
         onChange={handleChange}
         displayEmpty>
 
-        {options.map(element => {
-          return <MenuItem value={element === "GET" ? "" : element}>{element}</MenuItem>;
+        {options.map((element, index) => {
+          return <MenuItem key={index} value={element}>{element}</MenuItem>;
         })}
       </Select>
     </FormControl>

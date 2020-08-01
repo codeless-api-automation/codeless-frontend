@@ -16,6 +16,6 @@ function ValidatorList({ validators }) {
 }
 
 const mapStateToProps = state => ({
-    validators: state.validators
+    validators: state.verificationsTab
 });
 export default connect(mapStateToProps)(ValidatorList);

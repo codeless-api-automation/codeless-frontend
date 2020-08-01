@@ -2,8 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import {
     removeValidator,
-    updatePredicate
-} from "../../store/actions"
+    updatePredicate,
+    updateInputField
+} from "../../store/validator-actions"
 import {
     Grid,
     TextField,
@@ -15,13 +16,12 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Input from "components/CustomInput/CustomInput.js";
 
-function ValidatorListItem({ validator, removeValidator, updatePredicate }) {
+function ValidatorListItem({ validator, removeValidator, updatePredicate, updateInputField }) {
 
     return (
         <Grid container spacing={2} style={{ margin: "-4px -8px" }}>
             <Grid item>
                 <Autocomplete
-                    id="validator-box-list-item"
                     disabled
                     options={[validator]}
                     getOptionLabel={(option) => option.displayName}
@@ -33,7 +33,7 @@ function ValidatorListItem({ validator, removeValidator, updatePredicate }) {
             {validator !== null && validator.predicate !== null &&
                 <Grid item>
                     <Autocomplete
-                        id="predicate-box-list-item"
+                        disableClearable
                         options={validator.predicates}
                         getOptionLabel={(option) => option}
                         style={{ width: 200 }}
@@ -44,22 +44,21 @@ function ValidatorListItem({ validator, removeValidator, updatePredicate }) {
                 </Grid>
             }
 
-            {validator !== null && validator.hasOwnProperty('inputFields') &&
-                validator.inputFields.map((inputField) => (
-                    <Grid item
-                        key={inputField.displayName}>
-                        <Input
-                            labelText={inputField.displayName}
-                            inputProps={{
-                                value: inputField.value
-                                //onChange: (event) => onValidatorFieldValueChanged(validator, inputField, event.target.value)
-                            }}
-                            formControlProps={{
-                                fullWidth: false
-                            }}
-                        />
-                    </Grid>
-                ))}
+            {validator !== null && validator['inputFields'] && validator.inputFields.map((inputField) => (
+                <Grid item
+                    key={inputField.displayName}>
+                    <Input
+                        labelText={inputField.displayName}
+                        inputProps={{
+                            defaultValue: inputField.value,
+                            onBlur: event => updateInputField(validator, inputField, event.target.value)
+                        }}
+                        formControlProps={{
+                            fullWidth: false
+                        }}
+                    />
+                </Grid>
+            ))}
 
             <Grid item>
                 <IconButton onClick={() => removeValidator(validator)}>
@@ -69,5 +68,7 @@ function ValidatorListItem({ validator, removeValidator, updatePredicate }) {
         </Grid>
     );
 }
+const mapStateToProps = () => ({
 
-export default connect(() => {}, {removeValidator, updatePredicate})(ValidatorListItem);  
+});
+export default connect(mapStateToProps, { removeValidator, updatePredicate, updateInputField })(ValidatorListItem);  

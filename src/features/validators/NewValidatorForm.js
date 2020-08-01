@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { createValidator } from "../../store/actions"
+import { createValidator } from "../../store/validator-actions"
 import {
   Grid,
   TextField,
@@ -30,7 +30,7 @@ function NewValidatorForm({ validators, createValidator }) {
           renderInput={(params) => <TextField {...params} label="Validator" variant="outlined" />}
         />
       </Grid>
-      {validator !== null && validator.hasOwnProperty('predicates') &&
+      {validator !== null && validator['predicates'] &&
         <Grid item>
           <Autocomplete
             id="predicate-box"
@@ -44,8 +44,7 @@ function NewValidatorForm({ validators, createValidator }) {
         </Grid>
       }
 
-      {validator !== null && validator.hasOwnProperty('inputFields') &&
-        validator.inputFields.map((inputField) => (
+      {validator !== null && validator['inputFields'] && validator.inputFields.map((inputField) => (
           <Grid item
             key={inputField.displayName}>
             <Input
@@ -74,9 +73,9 @@ function NewValidatorForm({ validators, createValidator }) {
   );
 }
 const mapStateToProps = state => ({
-  validators: state.validators
+  validators: state.verificationsTab
 });
-export default connect(mapStateToProps, {createValidator})(NewValidatorForm);
+export default connect(mapStateToProps, { createValidator })(NewValidatorForm);
 
 const test = {
   validators: [
