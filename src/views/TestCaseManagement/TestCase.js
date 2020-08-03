@@ -9,8 +9,10 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Checkbox
+  TextField
 } from '@material-ui/core';
+
+import SaveIcon from '@material-ui/icons/Save';
 
 import {
   updateUserStory,
@@ -22,7 +24,6 @@ import {
 
 import Button from "components/CustomButtons/Button.js";
 import ComboBox from "components/Combobox/Combobox.js";
-import Input from "components/CustomInput/CustomInput.js";
 import CustomTabs from "components/CustomTabs/CustomTabs.js";
 
 import ValidatorList from "features/validators/ValidatorList.js";
@@ -43,66 +44,63 @@ function TestCase({ testCase, validators,
   return (
     <div className={classes.root}>
       <Grid container spacing={0}>
-        <Grid container direction="row">
-          <Grid item xs>
-            <Input
-              labelText="User Story"
+        <Grid container style={{ margin: "5px 0px" }} direction="row">
+          <Grid item style={{ margin: "1px" }} xs>
+            <TextField
               id="user-story"
+              label="User story"
+              variant="outlined"
+              fullWidth={true}
               inputProps={{
                 defaultValue: testCase.userStory,
                 onBlur: event => updateUserStory(event.target.value)
               }}
-              formControlProps={{
-                fullWidth: true
-              }}
             />
           </Grid>
-          <Grid item xs>
-            <Input
-              labelText="Test Name"
+          <Grid item style={{ margin: "1px" }} xs>
+            <TextField
               id="test-name"
+              label="Test name"
+              variant="outlined"
+              fullWidth={true}
               inputProps={{
-                defaultValue: testCase.testName,
+                defaultValue: testCase.userStory,
                 onBlur: event => updateTestName(event.target.value)
-              }}
-              formControlProps={{
-                fullWidth: true
               }}
             />
           </Grid>
         </Grid>
-        <Grid container direction="row">
-
-          <Grid item>
+        <Grid container style={{ margin: "5px 0px" }} direction="row">
+          <Grid item style={{ margin: "1px" }}>
             <ComboBox
               value={testCase.httpMethod === undefined ? "GET" : testCase.httpMethod}
               options={["GET", "POST", "PUT", "DELETE"]}
               onChange={updateHttpMethod}
             />
           </Grid>
-
-          <Grid item xs>
-            <Input
-              labelText="Enter request URL"
+          <Grid item style={{ margin: "1px" }} xs>
+            <TextField
               id="request-url"
+              variant="outlined"
+              placeholder="Enter request URL"
+              fullWidth={true}
               inputProps={{
                 defaultValue: testCase.requestURL,
                 onBlur: event => updateRequestUrl(event.target.value)
               }}
-              formControlProps={{
-                fullWidth: true
-              }}
             />
           </Grid>
 
-          <Grid item>
-            <Button
+          <Grid item style={{ margin: "1px" }}>
+            <Button style={{ margin: "0px" }}
+              size="lg"
+              color="primary"
               onClick={() => {
-                createTest({ ...testCase, validators: validators})
+                createTest({ ...testCase, validators: validators })
               }}
-              color="primary">Save</Button>
+              startIcon={<SaveIcon />}
+              >Save</Button>
           </Grid>
-
         </Grid>
         <Grid container direction="row">
           <CustomTabs
@@ -115,37 +113,50 @@ function TestCase({ testCase, validators,
                   <Table>
                     <TableHead>
                       <TableRow>
-                        <TableCell></TableCell>
-                        <TableCell>Key</TableCell>
-                        <TableCell>Value</TableCell>
-                        <TableCell>Description</TableCell>
+                        <TableCell style={{ padding: "1px" }}>Key</TableCell>
+                        <TableCell style={{ padding: "1px" }}>Value</TableCell>
+                        <TableCell style={{ padding: "1px" }}>Description</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      <TableRow key="row">
-                        <TableCell>
-                          <Checkbox color="primary" value="unchecked" inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                      <TableRow key="1">
+                        <TableCell style={{ padding: "1px" }}>
+                          <TextField
+                            placeholder="Key"
+                            variant="outlined"
+                            fullWidth={true} />
                         </TableCell>
-                        <TableCell>
-                          <Input labelText="Header Name" id="header-name"
-                            formControlProps={{
-                              fullWidth: true
-                            }}
-                          />
+                        <TableCell style={{ padding: "1px" }}>
+                          <TextField
+                            placeholder="Value"
+                            variant="outlined"
+                            fullWidth={true} />
                         </TableCell>
-                        <TableCell>
-                          <Input labelText="Header Value" id="header-value"
-                            formControlProps={{
-                              fullWidth: true
-                            }}
-                          />
+                        <TableCell style={{ padding: "1px" }}>
+                          <TextField
+                            placeholder="Description"
+                            variant="outlined"
+                            fullWidth={true} />
                         </TableCell>
-                        <TableCell>
-                          <Input labelText="Description" id="header-description"
-                            formControlProps={{
-                              fullWidth: true
-                            }}
-                          />
+                      </TableRow>
+                      <TableRow key="2">
+                        <TableCell style={{ padding: "1px" }}>
+                          <TextField
+                            placeholder="Key"
+                            variant="outlined"
+                            fullWidth={true} />
+                        </TableCell>
+                        <TableCell style={{ padding: "1px" }}>
+                          <TextField
+                            placeholder="Value"
+                            variant="outlined"
+                            fullWidth={true} />
+                        </TableCell>
+                        <TableCell style={{ padding: "1px" }}>
+                          <TextField
+                            placeholder="Description"
+                            variant="outlined"
+                            fullWidth={true} />
                         </TableCell>
                       </TableRow>
                     </TableBody>

@@ -10,7 +10,6 @@ import {
 import AddIcon from "@material-ui/icons/Add";
 
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import Input from "components/CustomInput/CustomInput.js";
 
 function NewValidatorForm({ validators, createValidator }) {
 
@@ -22,7 +21,7 @@ function NewValidatorForm({ validators, createValidator }) {
   }
 
   const isValidatorSelected = (validator) => {
-    return validator === null ? false : true; 
+    return validator === null ? false : true;
   }
 
   const isRequiredPredicateSelected = (validator, predicate) => {
@@ -64,13 +63,13 @@ function NewValidatorForm({ validators, createValidator }) {
       {validator !== null && validator['inputFields'] && validator.inputFields.map((inputField) => (
         <Grid item
           key={inputField.displayName}>
-          <Input
-            labelText={inputField.displayName}
+          <TextField
+            label={inputField.displayName}
+            style={{ width: 200 }}
+            variant="outlined"
+            fullWidth={true}
             inputProps={{
               onChange: event => inputField.value = event.target.value
-            }}
-            formControlProps={{
-              fullWidth: false
             }}
           />
         </Grid>

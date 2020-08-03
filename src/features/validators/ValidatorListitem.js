@@ -14,7 +14,6 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import Input from "components/CustomInput/CustomInput.js";
 
 function ValidatorListItem({ validator, removeValidator, updatePredicate, updateInputField }) {
 
@@ -47,14 +46,14 @@ function ValidatorListItem({ validator, removeValidator, updatePredicate, update
             {validator !== null && validator['inputFields'] && validator.inputFields.map((inputField) => (
                 <Grid item
                     key={inputField.displayName}>
-                    <Input
-                        labelText={inputField.displayName}
+                    <TextField
+                        label={inputField.displayName}
+                        variant="outlined"
+                        style={{ width: 200 }}
+                        fullWidth={true}
                         inputProps={{
                             defaultValue: inputField.value,
                             onBlur: event => updateInputField(validator, inputField, event.target.value)
-                        }}
-                        formControlProps={{
-                            fullWidth: false
                         }}
                     />
                 </Grid>

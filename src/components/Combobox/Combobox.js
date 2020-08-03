@@ -3,17 +3,11 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import {
-  InputLabel,
-  FormControl,
-  MenuItem,
-  Select
+  TextField,
+  MenuItem
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(0),
-    minWidth: 120,
-  }
 }));
 
 export default function Combobox(props) {
@@ -27,17 +21,16 @@ export default function Combobox(props) {
   };
 
   return (
-    <FormControl className={classes.formControl}>
-      <InputLabel></InputLabel>
-      <Select
-        value={value}
-        onChange={onChange}
-        displayEmpty>
-
-        {options.map((element, index) => {
-          return <MenuItem key={index} value={element}>{element}</MenuItem>;
-        })}
-      </Select>
-    </FormControl>
+    <TextField
+      style={{ width: 120 }}
+      select
+      value={value}
+      onChange={onChange}
+      variant="outlined"
+    >
+      {options.map((element, index) => {
+        return <MenuItem key={index} value={element}>{element}</MenuItem>
+      })}
+    </TextField>
   );
 }
