@@ -17,6 +17,23 @@ function NewValidatorForm({ validators, createValidator }) {
   const [validator, setValidator] = React.useState(null);
   const [predicate, setPredicate] = React.useState(null);
 
+  const isAddValidatorButtonEnable = (validator, predicate) => {
+    return isValidatorSelected(validator) && isRequiredPredicateSelected(validator, predicate);
+  }
+
+  const isValidatorSelected = (validator) => {
+    return validator === null ? false : true; 
+  }
+
+  const isRequiredPredicateSelected = (validator, predicate) => {
+    return isPredicateRequired(validator) && predicate === null ? false : true;
+  }
+
+  const isPredicateRequired = (validator) => {
+    return validator['predicates'] ? true : false;
+  }
+
+
   return (
     <Grid container spacing={2} style={{ margin: "-4px -8px" }}>
       <Grid item>
@@ -45,22 +62,23 @@ function NewValidatorForm({ validators, createValidator }) {
       }
 
       {validator !== null && validator['inputFields'] && validator.inputFields.map((inputField) => (
-          <Grid item
-            key={inputField.displayName}>
-            <Input
-              labelText={inputField.displayName}
-              inputProps={{
-                onChange: event => inputField.value = event.target.value
-              }}
-              formControlProps={{
-                fullWidth: false
-              }}
-            />
-          </Grid>
-        ))}
+        <Grid item
+          key={inputField.displayName}>
+          <Input
+            labelText={inputField.displayName}
+            inputProps={{
+              onChange: event => inputField.value = event.target.value
+            }}
+            formControlProps={{
+              fullWidth: false
+            }}
+          />
+        </Grid>
+      ))}
 
       <Grid item>
         <IconButton
+          disabled={!isAddValidatorButtonEnable(validator, predicate)}
           onClick={() => {
             createValidator(validator, predicate)
             setValidator(null);
