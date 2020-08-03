@@ -20,7 +20,7 @@ export default function Combobox(props) {
 
   const classes = useStyles();
 
-  const { options, defaultValue } = props;
+  const { options, value } = props;
 
   const onChange = event => {
     props.onChange(event.target.value);
@@ -30,7 +30,7 @@ export default function Combobox(props) {
     <FormControl className={classes.formControl}>
       <InputLabel></InputLabel>
       <Select
-        defaultValue={defaultValue}
+        value={value}
         onChange={onChange}
         displayEmpty>
 

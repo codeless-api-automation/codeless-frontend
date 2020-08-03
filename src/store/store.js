@@ -1,4 +1,5 @@
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import { validatorReducer } from './validator-reducer';
 import { testCaseReducer } from './test-case-reducer';
 
@@ -9,4 +10,4 @@ const reducers = {
 
 const rootReducer = combineReducers(reducers);
 
-export const configureStore = () => createStore(rootReducer);
+export const configureStore = () => createStore(rootReducer, applyMiddleware(thunk));

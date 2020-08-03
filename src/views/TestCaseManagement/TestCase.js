@@ -16,7 +16,8 @@ import {
   updateUserStory,
   updateTestName,
   updateHttpMethod,
-  updateRequestUrl
+  updateRequestUrl,
+  createTest
 } from "../../store/test-case-action"
 
 import Button from "components/CustomButtons/Button.js";
@@ -34,7 +35,8 @@ const useStyles = makeStyles(theme => ({
 
 function TestCase({ testCase, validators,
   updateUserStory, updateTestName,
-  updateHttpMethod, updateRequestUrl }) {
+  updateHttpMethod, updateRequestUrl,
+  createTest }) {
 
   const classes = useStyles();
 
@@ -73,7 +75,7 @@ function TestCase({ testCase, validators,
 
           <Grid item>
             <ComboBox
-              defaultValue={testCase.httpMethod === undefined ? "GET" : testCase.httpMethod}
+              value={testCase.httpMethod === undefined ? "GET" : testCase.httpMethod}
               options={["GET", "POST", "PUT", "DELETE"]}
               onChange={updateHttpMethod}
             />
@@ -94,11 +96,11 @@ function TestCase({ testCase, validators,
           </Grid>
 
           <Grid item>
-            <Button color="primary">Send</Button>
-          </Grid>
-
-          <Grid item>
-            <Button color="primary">Save</Button>
+            <Button
+              onClick={() => {
+                createTest({ ...testCase, validators: validators})
+              }}
+              color="primary">Save</Button>
           </Grid>
 
         </Grid>
@@ -172,5 +174,6 @@ const mapStateToProps = state => ({
 });
 export default connect(mapStateToProps, {
   updateUserStory, updateTestName,
-  updateHttpMethod, updateRequestUrl
+  updateHttpMethod, updateRequestUrl,
+  createTest
 })(TestCase);

@@ -1,3 +1,5 @@
+import { testResource } from './../service/CodelessApi.js';
+
 export const UPDATE_USER_STORY = 'UPDATE_USER_STORY';
 export const updateUserStory = (userStory) => ({
     type: UPDATE_USER_STORY,
@@ -21,3 +23,38 @@ export const updateRequestUrl = requestURL => ({
     type: UPDATE_REQUEST_URL,
     payload: { requestURL }
 })
+
+export const CALL_REQUESTED = 'CALL_REQUESTED';
+export const isCallRequested = isCallRequested => ({
+    type: CALL_REQUESTED,
+    payload: { isCallRequested }
+})
+
+export const CALL_SUCCESSFUL = 'CALL_SUCCESSFUL';
+export const isCallSuccessful = isCallSuccessful => ({
+    type: CALL_SUCCESSFUL,
+    payload: { isCallSuccessful }
+})
+
+export const CALL_FAILED = 'CALL_FAILED';
+export const isCallFailed = isCallFailed => ({
+    type: CALL_FAILED,
+    payload: { isCallFailed }
+})
+
+export const createTest = (test) => {
+    console.log(test)
+    return (dispath) => {
+        isCallRequested(true);
+        testResource.createTest(test)
+            .then(response => {
+                console.log(response);
+                isCallRequested(false);
+                isCallSuccessful(true);
+            })
+            .catch(error => {
+                console.log(error);
+                isCallFailed(true);
+            });
+    }
+}
