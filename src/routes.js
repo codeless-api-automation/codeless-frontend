@@ -23,7 +23,7 @@ import Explore from '@material-ui/icons/Explore';
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import TestExplorer from "views/TestExplorer/TestExplorer.js";
 import Integrations from "views/Integrations/Integrations.js";
-import TestCase from "views/TestCaseMngmnt/TestCase.js"
+import TestCase from "views/TestCaseManagement/TestCase.js"
 
 const dashboardRoutes = [
   {
