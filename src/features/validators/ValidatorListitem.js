@@ -4,7 +4,7 @@ import {
     removeValidator,
     updatePredicate,
     updateInputField
-} from "../../store/validator-actions"
+} from "../../store/validator-action"
 import {
     Grid,
     TextField,

@@ -1,9 +1,13 @@
 import React from "react";
 
-import PropTypes from "prop-types";
-// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import { InputLabel, FormControl, MenuItem, Select } from '@material-ui/core';
+
+import {
+  InputLabel,
+  FormControl,
+  MenuItem,
+  Select
+} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -13,23 +17,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Combobox(props) {
+
   const classes = useStyles();
-  const [comboBoxValue, setComboBoxValue] = React.useState('GET');
 
-  const { options } = props;
+  const { options, defaultValue } = props;
 
-  const handleChange = event => {
-    setComboBoxValue(event.target.value);
+  const onChange = event => {
+    props.onChange(event.target.value);
   };
 
   return (
     <FormControl className={classes.formControl}>
-      <InputLabel htmlFor="select label"></InputLabel>
+      <InputLabel></InputLabel>
       <Select
-        id="select id"
-        labelId="select label"
-        value={comboBoxValue}
-        onChange={handleChange}
+        defaultValue={defaultValue}
+        onChange={onChange}
         displayEmpty>
 
         {options.map((element, index) => {
@@ -39,8 +41,3 @@ export default function Combobox(props) {
     </FormControl>
   );
 }
-
-Combobox.propTypes = {
-  id: PropTypes.string,
-  options: PropTypes.array
-};

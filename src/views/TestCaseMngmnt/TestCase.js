@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -10,6 +11,13 @@ import {
   TableRow,
   Checkbox
 } from '@material-ui/core';
+
+import {
+  updateUserStory,
+  updateTestName,
+  updateHttpMethod,
+  updateRequestUrl
+} from "../../store/test-case-action"
 
 import Button from "components/CustomButtons/Button.js";
 import ComboBox from "components/Combobox/Combobox.js";
@@ -24,7 +32,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function TestCase() {
+function TestCase({ testCase, validators,
+  updateUserStory, updateTestName,
+  updateHttpMethod, updateRequestUrl }) {
 
   const classes = useStyles();
 
@@ -33,14 +43,26 @@ export default function TestCase() {
       <Grid container spacing={0}>
         <Grid container direction="row">
           <Grid item xs>
-            <Input labelText="User Story ID" id="us-id"
+            <Input
+              labelText="User Story"
+              id="user-story"
+              inputProps={{
+                defaultValue: testCase.userStory,
+                onBlur: event => updateUserStory(event.target.value)
+              }}
               formControlProps={{
                 fullWidth: true
               }}
             />
           </Grid>
           <Grid item xs>
-            <Input labelText="Test ID" id="test-id"
+            <Input
+              labelText="Test Name"
+              id="test-name"
+              inputProps={{
+                defaultValue: testCase.testName,
+                onBlur: event => updateTestName(event.target.value)
+              }}
               formControlProps={{
                 fullWidth: true
               }}
@@ -50,13 +72,21 @@ export default function TestCase() {
         <Grid container direction="row">
 
           <Grid item>
-            <ComboBox options={["GET", "POST", "PUT", "DELETE"]} />
+            <ComboBox
+              defaultValue={testCase.httpMethod === undefined ? "GET" : testCase.httpMethod}
+              options={["GET", "POST", "PUT", "DELETE"]}
+              onChange={updateHttpMethod}
+            />
           </Grid>
 
           <Grid item xs>
             <Input
-              labelText="Entry request URL"
-              id="request"
+              labelText="Enter request URL"
+              id="request-url"
+              inputProps={{
+                defaultValue: testCase.requestURL,
+                onBlur: event => updateRequestUrl(event.target.value)
+              }}
               formControlProps={{
                 fullWidth: true
               }}
@@ -126,7 +156,7 @@ export default function TestCase() {
               },
               {
                 tabName: "Verifications",
-                tabContent: <ValidatorList/>
+                tabContent: <ValidatorList validators={validators} />
               }
             ]}
           />
@@ -135,3 +165,12 @@ export default function TestCase() {
     </div>
   );
 }
+
+const mapStateToProps = state => ({
+  validators: state.verificationsTab,
+  testCase: state.testCasePage
+});
+export default connect(mapStateToProps, {
+  updateUserStory, updateTestName,
+  updateHttpMethod, updateRequestUrl
+})(TestCase);

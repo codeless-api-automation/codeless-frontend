@@ -1,8 +1,10 @@
 import { createStore, combineReducers } from 'redux';
-import { validatorReducer } from './validator-reducer'
+import { validatorReducer } from './validator-reducer';
+import { testCaseReducer } from './test-case-reducer';
 
 const reducers = {
-    verificationsTab: validatorReducer
+    verificationsTab: validatorReducer,
+    testCasePage: testCaseReducer
 };
 
 const rootReducer = combineReducers(reducers);

@@ -4,7 +4,7 @@ import {
     REMOVE_VALIDATOR,
     UPDATE_PREDICATE,
     UPDATE_INPUT_FIELD
-} from './validator-actions'
+} from './validator-action'
 
 export const validatorReducer = (state = [], action) => {
     const { type, payload } = action;

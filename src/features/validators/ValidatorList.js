@@ -1,21 +1,16 @@
 import React from "react";
-import { connect } from "react-redux";
 
 import { Grid } from '@material-ui/core';
 
 import NewValidatorForm from "./NewValidatorForm";
 import ValidatorListItem from "./ValidatorListItem";
 
-function ValidatorList({ validators }) {
+function ValidatorList(props) {
     return (
         <Grid container>
-            {validators.map((validator, index) => <ValidatorListItem key={index} validator={validator} />)}
+            {props.validators.map((validator, index) => <ValidatorListItem key={index} validator={validator} />)}
             <NewValidatorForm />
         </Grid>
     )
 }
-
-const mapStateToProps = state => ({
-    validators: state.verificationsTab
-});
-export default connect(mapStateToProps)(ValidatorList);
+export default ValidatorList;
