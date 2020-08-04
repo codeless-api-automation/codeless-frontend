@@ -6,6 +6,10 @@ import {
     updateInputField
 } from "../../store/validator-action"
 import {
+    createStyles,
+    makeStyles
+} from '@material-ui/core/styles';
+import {
     Grid,
     TextField,
     IconButton
@@ -15,7 +19,16 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            width: 200
+        }
+    }),
+);
+
 function ValidatorListItem({ validator, removeValidator, updatePredicate, updateInputField }) {
+    const classes = useStyles();
 
     return (
         <Grid container spacing={2} style={{ margin: "-4px -8px" }}>
@@ -24,7 +37,7 @@ function ValidatorListItem({ validator, removeValidator, updatePredicate, update
                     disabled
                     options={[validator]}
                     getOptionLabel={(option) => option.displayName}
-                    style={{ width: 200 }}
+                    className={classes.root}
                     value={validator}
                     renderInput={(params) => <TextField {...params} label="Validator" variant="outlined" />}
                 />
@@ -35,7 +48,7 @@ function ValidatorListItem({ validator, removeValidator, updatePredicate, update
                         disableClearable
                         options={validator.predicates}
                         getOptionLabel={(option) => option}
-                        style={{ width: 200 }}
+                        className={classes.root}
                         value={validator.predicate}
                         onChange={(event, newValue) => updatePredicate(validator, newValue)}
                         renderInput={(params) => <TextField {...params} label="Predicate" variant="outlined" />}
@@ -49,7 +62,7 @@ function ValidatorListItem({ validator, removeValidator, updatePredicate, update
                     <TextField
                         label={inputField.displayName}
                         variant="outlined"
-                        style={{ width: 200 }}
+                        className={classes.root}
                         fullWidth={true}
                         inputProps={{
                             defaultValue: inputField.value,

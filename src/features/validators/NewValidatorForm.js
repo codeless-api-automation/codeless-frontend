@@ -7,11 +7,26 @@ import {
   IconButton
 } from '@material-ui/core';
 
+import {
+  createStyles,
+  makeStyles
+} from '@material-ui/core/styles';
+
 import AddIcon from "@material-ui/icons/Add";
 
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    root: {
+      width: 200
+    }
+  })
+);
+
 function NewValidatorForm({ validators, createValidator }) {
+
+  const classes = useStyles();
 
   const [validator, setValidator] = React.useState(null);
   const [predicate, setPredicate] = React.useState(null);
@@ -32,7 +47,6 @@ function NewValidatorForm({ validators, createValidator }) {
     return validator['predicates'] ? true : false;
   }
 
-
   return (
     <Grid container spacing={2} style={{ margin: "-4px -8px" }}>
       <Grid item>
@@ -40,7 +54,7 @@ function NewValidatorForm({ validators, createValidator }) {
           id="validator-box"
           options={test.validators}
           getOptionLabel={(option) => option.displayName}
-          style={{ width: 200 }}
+          className={classes.root}
           value={validator}
           onChange={(event, newValue) => { setValidator(newValue) }}
           renderInput={(params) => <TextField {...params} label="Validator" variant="outlined" />}
@@ -52,7 +66,7 @@ function NewValidatorForm({ validators, createValidator }) {
             id="predicate-box"
             options={validator.predicates}
             getOptionLabel={(option) => option}
-            style={{ width: 200 }}
+            className={classes.root}
             value={predicate}
             onChange={(event, newValue) => { setPredicate(newValue) }}
             renderInput={(params) => <TextField {...params} label="Predicate" variant="outlined" />}
@@ -65,7 +79,7 @@ function NewValidatorForm({ validators, createValidator }) {
           key={inputField.displayName}>
           <TextField
             label={inputField.displayName}
-            style={{ width: 200 }}
+            className={classes.root}
             variant="outlined"
             fullWidth={true}
             inputProps={{

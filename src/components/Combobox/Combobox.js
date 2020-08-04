@@ -1,36 +1,28 @@
 import React from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
-
 import {
-  TextField,
-  MenuItem
+  TextField
 } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-}));
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 export default function Combobox(props) {
 
-  const classes = useStyles();
-
   const { options, value } = props;
 
-  const onChange = event => {
-    props.onChange(event.target.value);
+  const onChange = newValue => {
+    props.onChange(newValue);
   };
 
   return (
-    <TextField
+    <Autocomplete
+      disableClearable
+      options={options}
+      getOptionLabel={(option) => option}
       style={{ width: 120 }}
-      select
       value={value}
-      onChange={onChange}
-      variant="outlined"
-    >
-      {options.map((element, index) => {
-        return <MenuItem key={index} value={element}>{element}</MenuItem>
-      })}
-    </TextField>
+      onChange={(event, newValue) => onChange(newValue)}
+      renderInput={(params) => <TextField {...params} variant="outlined" />}
+    />
   );
 }
