@@ -21,9 +21,9 @@ import Settings from '@material-ui/icons/Settings';
 import Explore from '@material-ui/icons/Explore';
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.js";
-import TestExplorer from "views/TestExplorer/TestExplorer.js";
 import Integrations from "views/Integrations/Integrations.js";
-import TestCase from "views/TestCaseManagement/TestCase.js"
+import TestSuite from "views/TestSuite/TestSuite.js";
+import TestCase from "views/TestCase/TestCase.js"
 
 const dashboardRoutes = [
   {
@@ -36,16 +36,16 @@ const dashboardRoutes = [
   
   {
     path: "/test-case",
-    name: "Test Case Management",
+    name: "Test Case",
     icon: "content_paste",
     component: TestCase,
     layout: "/general"
   },
   {
-    path: "/explorer",
-    name: "Test Explorer",
+    path: "/test-suite",
+    name: "Test Suite",
     icon: Explore,
-    component: TestExplorer,
+    component: TestSuite,
     layout: "/general"
   },
   {

@@ -36,7 +36,7 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function TestExplorer() {
+export default function TestSuite() {
   const classes = useStyles();
   return (
     <div>

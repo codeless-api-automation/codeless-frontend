@@ -101,7 +101,7 @@ function TestCase({ testCase, validators,
             size="lg"
             color="primary"
             onClick={() => {
-              createTest({ ...testCase, validators: validators })
+              createTest({ testCase, validators })
             }}
             startIcon={<SaveIcon />}
           >Save</Button>

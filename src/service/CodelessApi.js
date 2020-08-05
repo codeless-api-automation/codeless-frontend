@@ -1,7 +1,7 @@
 import * as axios from "axios";
 
 const instance = axios.create({
-    baseURL: "http://localhost/codeless/",
+    baseURL: "http://localhost:8080/codeless/",
     headers: { "Content-Type": "application/json" }
 });
 
@@ -11,7 +11,13 @@ export const testResource = {
         return instance.get(TEST_RESOURCE);
     },
     createTest(test) {
-        return instance.post(TEST_RESOURCE, test);
+        let { testCase, validators } = test;
+        let requestBodyTest = {
+            name: testCase.testName,
+            json: { ...testCase, validators }
+        };
+        console.log(requestBodyTest)
+        return instance.post(TEST_RESOURCE, requestBodyTest);
     },
     getTest(testId) {
         return instance.get(TEST_RESOURCE + '?testId=' + testId);

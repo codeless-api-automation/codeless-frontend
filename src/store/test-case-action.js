@@ -43,7 +43,6 @@ export const isCallFailed = isCallFailed => ({
 })
 
 export const createTest = (test) => {
-    console.log(test)
     return (dispath) => {
         isCallRequested(true);
         testResource.createTest(test)
