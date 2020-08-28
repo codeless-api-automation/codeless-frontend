@@ -18,12 +18,12 @@
 // @material-ui/icons
 import Dashboard from "@material-ui/icons/Dashboard";
 import Settings from '@material-ui/icons/Settings';
-import Explore from '@material-ui/icons/Explore';
+import List from '@material-ui/icons/List';
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import Integrations from "views/Integrations/Integrations.js";
-import TestSuite from "views/TestSuite/TestSuite.js";
-import TestCase from "views/TestCase/TestCase.js"
+import Collections from "views/Collections/Collections.js";
+import Probe from "views/Probe/Probe.js"
 
 const dashboardRoutes = [
   {
@@ -35,17 +35,17 @@ const dashboardRoutes = [
   },
   
   {
-    path: "/test-case",
-    name: "Test Case",
+    path: "/probe",
+    name: "Probe",
     icon: "content_paste",
-    component: TestCase,
+    component: Probe,
     layout: "/general"
   },
   {
-    path: "/test-suite",
-    name: "Test Suite",
-    icon: Explore,
-    component: TestSuite,
+    path: "/collections",
+    name: "Collections",
+    icon: List,
+    component: Collections,
     layout: "/general"
   },
   {

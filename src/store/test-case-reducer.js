@@ -1,6 +1,5 @@
 import {
-    UPDATE_USER_STORY,
-    UPDATE_TEST_NAME,
+    UPDATE_PROBE_NAME,
     UPDATE_HTTP_METHOD,
     UPDATE_REQUEST_URL
 } from './test-case-action'
@@ -8,19 +7,11 @@ import {
 export const testCaseReducer = (state = {}, action) => {
     const { type, payload } = action;
     switch (type) {
-        case UPDATE_USER_STORY: {
-            const { userStory } = payload;
+        case UPDATE_PROBE_NAME: {
+            const { probeName } = payload;
             let testCase = {
                 ...state,
-                userStory
-            }
-            return testCase;
-        }
-        case UPDATE_TEST_NAME: {
-            const { testName } = payload;
-            let testCase = {
-                ...state,
-                testName
+                probeName
             }
             return testCase;
         }

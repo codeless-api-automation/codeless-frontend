@@ -13,16 +13,15 @@ export const testResource = {
     createTest(test) {
         let { testCase, validators } = test;
         let requestBodyTest = {
-            name: testCase.testName,
+            name: testCase.probeName,
             json: { ...testCase, validators }
         };
-        console.log(requestBodyTest)
         return instance.post(TEST_RESOURCE, requestBodyTest);
     },
-    getTest(testId) {
-        return instance.get(TEST_RESOURCE + '?testId=' + testId);
+    getTest(name) {
+        return instance.get(TEST_RESOURCE + '/' + name);
     },
-    deleteTest(testId) {
-        return instance.delete(TEST_RESOURCE + '?testId=' + testId);
+    deleteTest(name) {
+        return instance.delete(TEST_RESOURCE + '/' + name);
     },
 }

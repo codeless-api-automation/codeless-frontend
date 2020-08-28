@@ -7,11 +7,10 @@ import {
   TextField
 } from '@material-ui/core';
 
-import SaveIcon from '@material-ui/icons/Save';
+import Add from '@material-ui/icons/Add';
 
 import {
-  updateUserStory,
-  updateTestName,
+  updateProbeName,
   updateHttpMethod,
   updateRequestUrl,
   createTest
@@ -42,35 +41,20 @@ const RowItem = withStyles((theme) =>
 )(Grid);
 
 function TestCase({ testCase, validators,
-  updateUserStory, updateTestName,
-  updateHttpMethod, updateRequestUrl,
-  createTest }) {
+  updateProbeName, updateHttpMethod, 
+  updateRequestUrl, createTest }) {
 
   return (
     <Grid container>
       <Row container>
         <RowItem item xs>
           <TextField
-            id="user-story"
-            label="User story"
+            label="Probe name"
             variant="outlined"
             fullWidth={true}
             inputProps={{
-              defaultValue: testCase.userStory,
-              onBlur: event => updateUserStory(event.target.value)
-            }}
-          />
-        </RowItem>
-
-        <RowItem item xs>
-          <TextField
-            id="test-name"
-            label="Test name"
-            variant="outlined"
-            fullWidth={true}
-            inputProps={{
-              defaultValue: testCase.userStory,
-              onBlur: event => updateTestName(event.target.value)
+              defaultValue: testCase.probeName,
+              onBlur: event => updateProbeName(event.target.value)
             }}
           />
         </RowItem>
@@ -103,8 +87,8 @@ function TestCase({ testCase, validators,
             onClick={() => {
               createTest({ testCase, validators })
             }}
-            startIcon={<SaveIcon />}
-          >Save</Button>
+            startIcon={<Add fontSize='large'/>}
+          >Create</Button>
         </RowItem>
       </Row>
 
@@ -141,7 +125,6 @@ const mapStateToProps = state => ({
   testCase: state.testCasePage
 });
 export default connect(mapStateToProps, {
-  updateUserStory, updateTestName,
-  updateHttpMethod, updateRequestUrl,
-  createTest
+  updateProbeName, updateHttpMethod, 
+  updateRequestUrl, createTest
 })(TestCase);
