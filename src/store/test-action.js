@@ -1,9 +1,9 @@
-import { testResource } from './../service/CodelessApi.js';
+import { testResource } from '../service/CodelessApi.js';
 
-export const UPDATE_PROBE_NAME = 'UPDATE_PROBE_NAME';
-export const updateProbeName = (probeName) => ({
-    type: UPDATE_PROBE_NAME,
-    payload: { probeName }
+export const UPDATE_NAME = 'UPDATE_NAME';
+export const updateName = (name) => ({
+    type: UPDATE_NAME,
+    payload: { name }
 });
 
 export const UPDATE_HTTP_METHOD = 'UPDATE_HTTP_METHOD';

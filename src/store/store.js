@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { validatorReducer } from './validator-reducer';
-import { testCaseReducer } from './test-case-reducer';
+import { testCaseReducer } from './test-reducer';
 
 const reducers = {
     verificationsTab: validatorReducer,

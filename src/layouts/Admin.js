@@ -3,24 +3,25 @@ import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
-// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
 import Navbar from "components/Navbars/Navbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
-import routes from "routes.js";
+import {
+  dashboardRoutes,
+  routesContainer
+} from "routes.js";
 
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
 import bgImage from "assets/img/sidebar-2.jpg";
-import logo from "assets/img/reactlogo.png";
 
 let ps;
 
 const switchRoutes = (
   <Switch>
-    {routes.map((prop, key) => {
+    {routesContainer.concat(dashboardRoutes).map((prop, key) => {
       if (prop.layout === "/general") {
         return (
           <Route
@@ -38,7 +39,7 @@ const switchRoutes = (
 
 const useStyles = makeStyles(styles);
 
-export default function General({ ...rest }) {
+export default function Admin({ ...rest }) {
   // styles
   const classes = useStyles();
   // ref to help us initialize PerfectScrollbar on windows devices
@@ -76,24 +77,22 @@ export default function General({ ...rest }) {
   return (
     <div className={classes.wrapper}>
       <Sidebar
-        routes={routes}
-        logoText={"Creative Tim"}
-        logo={logo}
+        routes={dashboardRoutes}
         image={image}
         handleDrawerToggle={handleDrawerToggle}
         open={mobileOpen}
         color={color}
         {...rest}
       />
-      <div className={classes.mainPanel} ref={mainPanel}>
+      <div className={classes.mainPanel}>
         <Navbar
-          routes={routes}
+          routes={dashboardRoutes}
           handleDrawerToggle={handleDrawerToggle}
           {...rest}
         />
-       <div className={classes.content}>
-            <div className={classes.container}>{switchRoutes}</div>
-          </div>
+        <div className={classes.content} style={{ paddingTop: '0px' }}>
+          <div className={classes.container}>{switchRoutes}</div>
+        </div>
       </div>
     </div>
   );

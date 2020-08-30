@@ -1,35 +1,35 @@
 import {
-    UPDATE_PROBE_NAME,
+    UPDATE_NAME,
     UPDATE_HTTP_METHOD,
     UPDATE_REQUEST_URL
-} from './test-case-action'
+} from './test-action'
 
 export const testCaseReducer = (state = {}, action) => {
     const { type, payload } = action;
     switch (type) {
-        case UPDATE_PROBE_NAME: {
-            const { probeName } = payload;
-            let testCase = {
+        case UPDATE_NAME: {
+            const { name } = payload;
+            let test = {
                 ...state,
-                probeName
+                name
             }
-            return testCase;
+            return test;
         }
         case UPDATE_HTTP_METHOD: {
             const { httpMethod } = payload;
-            let testCase = {
+            let test = {
                 ...state,
                 httpMethod
             }
-            return testCase;
+            return test;
         }
         case UPDATE_REQUEST_URL: {
             const { requestURL} = payload;
-            let testCase = {
+            let test = {
                 ...state,
                 requestURL
             }
-            return testCase;
+            return test;
         }
         default:
             return state;
