@@ -1,5 +1,5 @@
 import { testResource } from '../service/CodelessApi.js';
-import { addProbe } from './probes-action.js';
+import { addProbes } from './probes-action.js';
 import {
     isCallRequested,
     isCallSuccessful,
@@ -42,7 +42,7 @@ export const createTest = (test) => {
                 dispath(isCallRequested(false));
                 if (response.status === 201) {
                     dispath(isCallSuccessful(true, SUCCESS_MESSAGE));
-                    dispath(addProbe(response.data))
+                    dispath(addProbes(response.data))
                     dispath(cleanAllTestAttributes())
                 } else {
                     dispath(isCallFailed(true, ERROR_MESSAGE));

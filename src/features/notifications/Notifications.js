@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import _ from 'lodash'
+
 import {
   isCallSuccessful,
   isCallFailed
@@ -36,12 +38,12 @@ function Notification({ httpCallResult, isCallFailed, isCallSuccessful }) {
 
   const anchorOrigin = { vertical: 'bottom', horizontal: 'left' };
   const autoHideDuration = 6000;
-
+  const isOpeningNeeded = !_.isEmpty(httpCallResult.message);
   return (
     <div className={classes.root}>
       <Snackbar
         anchorOrigin={anchorOrigin}
-        open={httpCallResult.isCallSuccessful}
+        open={httpCallResult.isCallSuccessful && isOpeningNeeded}
         autoHideDuration={autoHideDuration}
         onClose={handleOnSuccessClose}>
         <Alert
@@ -50,7 +52,7 @@ function Notification({ httpCallResult, isCallFailed, isCallSuccessful }) {
       </Snackbar>
       <Snackbar
         anchorOrigin={anchorOrigin}
-        open={httpCallResult.isCallFailed}
+        open={httpCallResult.isCallFailed && isOpeningNeeded}
         autoHideDuration={autoHideDuration}
         onClose={handleOnErrorClose}>
         <Alert

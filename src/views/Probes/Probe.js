@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { withRouter } from 'react-router-dom';
 
 import { createStyles, withStyles } from "@material-ui/core/styles";
 import {
@@ -45,8 +46,12 @@ const RowItem = withStyles((theme) =>
 
 function Test({ test, validators, httpCallResult,
   updateName, updateHttpMethod,
-  updateRequestUrl, createTest }) {
+  updateRequestUrl, createTest, history }) {
 
+  const navigateToComponent = (path) => {
+    history.push(path);
+  }
+  console.log(test.httpMethod);
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
@@ -67,7 +72,7 @@ function Test({ test, validators, httpCallResult,
           <Row container>
             <RowItem item>
               <ComboBox
-                value={test.httpMethod === undefined ? "GET" : test.httpMethod}
+                value={test.httpMethod}
                 options={["GET", "POST", "PUT", "DELETE"]}
                 onChange={updateHttpMethod}
               />
@@ -92,8 +97,7 @@ function Test({ test, validators, httpCallResult,
                 color="primary"
                 onClick={() => {
                   createTest({ test, validators })
-                  // if the test is stored successfully
-                  // go to probes page
+                  navigateToComponent("/general/probes")
                 }}
                 startIcon={<Add fontSize='large' />}
               >Create</Button>
@@ -138,4 +142,4 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   updateName, updateHttpMethod,
   updateRequestUrl, createTest
-})(Test);
+})(withRouter(Test));

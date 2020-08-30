@@ -5,7 +5,11 @@ import {
     CLEAN_ALL_TEST_ATTRIBUTES
 } from './test-action'
 
-export const testReducer = (state = {}, action) => {
+const initialTestState = {
+    httpMethod: 'GET'
+}
+
+export const testReducer = (state = initialTestState, action) => {
     const { type, payload } = action;
     switch (type) {
         case UPDATE_NAME: {
@@ -33,7 +37,7 @@ export const testReducer = (state = {}, action) => {
             return test;
         }
         case CLEAN_ALL_TEST_ATTRIBUTES: {
-            return {};
+            return initialTestState;
         }
         default:
             return state;

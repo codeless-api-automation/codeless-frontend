@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -11,7 +12,11 @@ import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 
 import Filter from './Filter';
-import SimpleTable from './Table';
+import SimpleTable from './SimpleTable';
+
+import {
+  getProbes
+} from "../../store/probes-action.js"
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -54,13 +59,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Probes() {
+function Probes({ probes, getProbes }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    getProbes();
+  }, [])
 
   return (
     <GridContainer>
@@ -80,8 +89,10 @@ export default function Probes() {
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
+
             <Filter />
-            <SimpleTable />
+            <SimpleTable rows={probes} />
+
           </TabPanel>
           <TabPanel value={value} index={1}>
           </TabPanel>
@@ -90,3 +101,8 @@ export default function Probes() {
     </GridContainer>
   );
 }
+
+const mapStateToProps = state => ({
+  probes: state.probesPage
+});
+export default connect(mapStateToProps, { getProbes })(Probes);

@@ -7,8 +7,8 @@ const instance = axios.create({
 
 const TEST_RESOURCE = "tests";
 export const testResource = {
-    getTests() {
-        return instance.get(TEST_RESOURCE);
+    getTests(page, size) {
+        return instance.get(TEST_RESOURCE + `?page=${page}&size=${size}`);
     },
     createTest(testToCreate) {
         let { test, validators } = testToCreate;

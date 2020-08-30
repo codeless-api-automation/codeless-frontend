@@ -81,33 +81,15 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-function createData(name, calories, fat) {
-  return { name, calories, fat };
-}
-
-const rows = [
-  createData('Cupcake', 305, 3.7),
-  createData('Donut', 452, 25.0),
-  createData('Eclair', 262, 16.0),
-  createData('Frozen yoghurt', 159, 6.0),
-  createData('Gingerbread', 356, 16.0),
-  createData('Honeycomb', 408, 3.2),
-  createData('Ice cream sandwich', 237, 9.0),
-  createData('Jelly Bean', 375, 0.0),
-  createData('KitKat', 518, 26.0),
-  createData('Lollipop', 392, 0.2),
-  createData('Marshmallow', 318, 0),
-  createData('Nougat', 360, 19.0),
-  createData('Oreo', 437, 18.0),
-].sort((a, b) => (a.calories < b.calories ? -1 : 1));
-
 const useStyles2 = makeStyles({
   table: {
     minWidth: 500,
   },
 });
 
-export default function CustomPaginationActionsTable() {
+export default function SimpleTable(props) {
+  const { rows } = props;
+  
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -122,15 +104,14 @@ export default function CustomPaginationActionsTable() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
   return (
     <TableContainer>
-      <Table className={classes.table} aria-label="custom pagination table">
+      <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <TableCell>Dessert</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>HTTP method</TableCell>
+            <TableCell>URL</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -139,14 +120,14 @@ export default function CustomPaginationActionsTable() {
             : rows
           ).map((row) => (
             <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
+              <TableCell style={{ width: 160 }}>
+                {row.json['name']}
               </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {row.calories}
+              <TableCell style={{ width: 160 }}>
+                {row.json['httpMethod']}
               </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {row.fat}
+              <TableCell>
+                {row.json['requestURL']}
               </TableCell>
             </TableRow>
           ))}
