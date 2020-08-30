@@ -1,4 +1,5 @@
 import { testResource } from '../service/CodelessApi.js';
+import { addProbe } from './probes-action.js';
 import {
     isCallRequested,
     isCallSuccessful,
@@ -23,18 +24,33 @@ export const updateRequestUrl = requestURL => ({
     payload: { requestURL }
 })
 
+export const CLEAN_ALL_TEST_ATTRIBUTES = 'CLEAN_ALL_TEST_ATTRIBUTES';
+export const cleanAllTestAttributes = () => ({
+    type: CLEAN_ALL_TEST_ATTRIBUTES
+})
+
+const SUCCESS_MESSAGE = "The probe has been created successfully!";
+const ERROR_MESSAGE = "The probe has not been created!";
+
 export const createTest = (test) => {
     return (dispath) => {
         isCallRequested(true);
         testResource.createTest(test)
             .then(response => {
+                console.log(test);
                 console.log(response);
                 dispath(isCallRequested(false));
-                dispath(isCallSuccessful(true, "The probe has been created successfully!"));
+                if (response.status === 201) {
+                    dispath(isCallSuccessful(true, SUCCESS_MESSAGE));
+                    dispath(addProbe(response.data))
+                    dispath(cleanAllTestAttributes())
+                } else {
+                    dispath(isCallFailed(true, ERROR_MESSAGE));
+                }
             })
             .catch(error => {
                 console.log(error);
-                dispath(isCallFailed(true, "The probe has not been created!"));
+                dispath(isCallFailed(true, ERROR_MESSAGE));
             });
     }
 }

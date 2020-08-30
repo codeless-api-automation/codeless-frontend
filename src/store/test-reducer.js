@@ -1,7 +1,8 @@
 import {
     UPDATE_NAME,
     UPDATE_HTTP_METHOD,
-    UPDATE_REQUEST_URL
+    UPDATE_REQUEST_URL,
+    CLEAN_ALL_TEST_ATTRIBUTES
 } from './test-action'
 
 export const testReducer = (state = {}, action) => {
@@ -30,6 +31,9 @@ export const testReducer = (state = {}, action) => {
                 requestURL
             }
             return test;
+        }
+        case CLEAN_ALL_TEST_ATTRIBUTES: {
+            return {};
         }
         default:
             return state;

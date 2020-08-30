@@ -43,7 +43,7 @@ const RowItem = withStyles((theme) =>
   }),
 )(Grid);
 
-function Test({ test, validators,
+function Test({ test, validators, httpCallResult,
   updateName, updateHttpMethod,
   updateRequestUrl, createTest }) {
 
@@ -87,12 +87,13 @@ function Test({ test, validators,
 
             <RowItem item>
               <Button style={{ margin: "0px" }}
+                disabled={httpCallResult.isCallRequested}
                 size="lg"
                 color="primary"
                 onClick={() => {
-
                   createTest({ test, validators })
-                  
+                  // if the test is stored successfully
+                  // go to probes page
                 }}
                 startIcon={<Add fontSize='large' />}
               >Create</Button>
@@ -131,7 +132,8 @@ function Test({ test, validators,
 
 const mapStateToProps = state => ({
   validators: state.verificationsTab,
-  test: state.testPage
+  test: state.testPage,
+  httpCallResult: state.httpCallResult
 });
 export default connect(mapStateToProps, {
   updateName, updateHttpMethod,
