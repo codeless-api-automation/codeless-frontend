@@ -33,6 +33,7 @@ export default function Filter() {
 
       <OutlinedInput
         margin="dense"
+        placeholder="Filter probes"
         //value={values.password}
         //onChange={handleChange('password')}
         endAdornment={
