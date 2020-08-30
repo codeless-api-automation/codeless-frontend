@@ -43,7 +43,7 @@ const RowItem = withStyles((theme) =>
   }),
 )(Grid);
 
-function Test({ testCase, validators,
+function Test({ test, validators,
   updateName, updateHttpMethod,
   updateRequestUrl, createTest }) {
 
@@ -58,7 +58,7 @@ function Test({ testCase, validators,
                 variant="outlined"
                 fullWidth={true}
                 inputProps={{
-                  defaultValue: testCase.probeName,
+                  defaultValue: test.name,
                   onBlur: event => updateName(event.target.value)
                 }}
               />
@@ -67,7 +67,7 @@ function Test({ testCase, validators,
           <Row container>
             <RowItem item>
               <ComboBox
-                value={testCase.httpMethod === undefined ? "GET" : testCase.httpMethod}
+                value={test.httpMethod === undefined ? "GET" : test.httpMethod}
                 options={["GET", "POST", "PUT", "DELETE"]}
                 onChange={updateHttpMethod}
               />
@@ -79,7 +79,7 @@ function Test({ testCase, validators,
                 placeholder="Enter request URL"
                 fullWidth={true}
                 inputProps={{
-                  defaultValue: testCase.requestURL,
+                  defaultValue: test.requestURL,
                   onBlur: event => updateRequestUrl(event.target.value)
                 }}
               />
@@ -90,7 +90,9 @@ function Test({ testCase, validators,
                 size="lg"
                 color="primary"
                 onClick={() => {
-                  createTest({ testCase, validators })
+
+                  createTest({ test, validators })
+                  
                 }}
                 startIcon={<Add fontSize='large' />}
               >Create</Button>
@@ -129,7 +131,7 @@ function Test({ testCase, validators,
 
 const mapStateToProps = state => ({
   validators: state.verificationsTab,
-  testCase: state.testCasePage
+  test: state.testPage
 });
 export default connect(mapStateToProps, {
   updateName, updateHttpMethod,

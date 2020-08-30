@@ -1,11 +1,13 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { validatorReducer } from './validator-reducer';
-import { testCaseReducer } from './test-reducer';
+import { testReducer } from './test-reducer';
+import { httpCallReducer } from './http-call-reducer';
 
 const reducers = {
+    httpCallResult: httpCallReducer,
     verificationsTab: validatorReducer,
-    testCasePage: testCaseReducer
+    testPage: testReducer
 };
 
 const rootReducer = combineReducers(reducers);

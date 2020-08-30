@@ -8,6 +8,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Navbar from "components/Navbars/Navbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
+import Notifications from "features/notifications/Notifications.js";
+
 import {
   dashboardRoutes,
   routesContainer
@@ -92,6 +94,7 @@ export default function Admin({ ...rest }) {
         />
         <div className={classes.content} style={{ paddingTop: '0px' }}>
           <div className={classes.container}>{switchRoutes}</div>
+          <Notifications />
         </div>
       </div>
     </div>

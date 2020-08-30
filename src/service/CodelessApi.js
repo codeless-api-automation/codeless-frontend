@@ -10,11 +10,11 @@ export const testResource = {
     getTests() {
         return instance.get(TEST_RESOURCE);
     },
-    createTest(test) {
-        let { testCase, validators } = test;
+    createTest(testToCreate) {
+        let { test, validators } = testToCreate;
         let requestBodyTest = {
-            name: testCase.probeName,
-            json: { ...testCase, validators }
+            name: test.name,
+            json: { ...test, validators }
         };
         return instance.post(TEST_RESOURCE, requestBodyTest);
     },

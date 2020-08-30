@@ -1,4 +1,9 @@
 import { testResource } from '../service/CodelessApi.js';
+import {
+    isCallRequested,
+    isCallSuccessful,
+    isCallFailed
+} from '../store/http-call-action';
 
 export const UPDATE_NAME = 'UPDATE_NAME';
 export const updateName = (name) => ({
@@ -18,36 +23,18 @@ export const updateRequestUrl = requestURL => ({
     payload: { requestURL }
 })
 
-export const CALL_REQUESTED = 'CALL_REQUESTED';
-export const isCallRequested = isCallRequested => ({
-    type: CALL_REQUESTED,
-    payload: { isCallRequested }
-})
-
-export const CALL_SUCCESSFUL = 'CALL_SUCCESSFUL';
-export const isCallSuccessful = isCallSuccessful => ({
-    type: CALL_SUCCESSFUL,
-    payload: { isCallSuccessful }
-})
-
-export const CALL_FAILED = 'CALL_FAILED';
-export const isCallFailed = isCallFailed => ({
-    type: CALL_FAILED,
-    payload: { isCallFailed }
-})
-
 export const createTest = (test) => {
     return (dispath) => {
         isCallRequested(true);
         testResource.createTest(test)
             .then(response => {
                 console.log(response);
-                isCallRequested(false);
-                isCallSuccessful(true);
+                dispath(isCallRequested(false));
+                dispath(isCallSuccessful(true, "The probe has been created successfully!"));
             })
             .catch(error => {
                 console.log(error);
-                isCallFailed(true);
+                dispath(isCallFailed(true, "The probe has not been created!"));
             });
     }
 }

@@ -4,7 +4,7 @@ import {
     UPDATE_REQUEST_URL
 } from './test-action'
 
-export const testCaseReducer = (state = {}, action) => {
+export const testReducer = (state = {}, action) => {
     const { type, payload } = action;
     switch (type) {
         case UPDATE_NAME: {
