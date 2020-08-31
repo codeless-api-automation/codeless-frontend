@@ -51,7 +51,6 @@ function Test({ test, validators, httpCallResult,
   const navigateToComponent = (path) => {
     history.push(path);
   }
-  console.log(test.httpMethod);
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
@@ -97,7 +96,7 @@ function Test({ test, validators, httpCallResult,
                 color="primary"
                 onClick={() => {
                   createTest({ test, validators })
-                  navigateToComponent("/general/probes")
+                  navigateToComponent("/general/probes/view")
                 }}
                 startIcon={<Add fontSize='large' />}
               >Create</Button>

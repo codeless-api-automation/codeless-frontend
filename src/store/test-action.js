@@ -37,8 +37,6 @@ export const createTest = (test) => {
         isCallRequested(true);
         testResource.createTest(test)
             .then(response => {
-                console.log(test);
-                console.log(response);
                 dispath(isCallRequested(false));
                 if (response.status === 201) {
                     dispath(isCallSuccessful(true, SUCCESS_MESSAGE));

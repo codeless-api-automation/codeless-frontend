@@ -1,4 +1,5 @@
 import {
+    CLEAN_PROBES,
     ADD_PROBES
 } from './probes-action'
 
@@ -8,6 +9,9 @@ export const probesReducer = (state = [], action) => {
         case ADD_PROBES: {
             const { probes } = payload;
             return state.concat(probes);
+        }
+        case CLEAN_PROBES: {
+            return [];
         }
         default:
             return state;

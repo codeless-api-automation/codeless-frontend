@@ -1,12 +1,21 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { connect } from "react-redux";
+
+import _ from 'lodash'
+
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+
+import {
+  AppBar,
+  Tabs,
+  Tab,
+  Container,
+  Box,
+  Paper,
+  Link
+} from '@material-ui/core';
 
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -14,25 +23,25 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Filter from './Filter';
 import SimpleTable from './SimpleTable';
 
-import {
-  getProbes
-} from "../../store/probes-action.js"
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const { children, value, index, classes, ...other } = props;
 
   return (
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`scrollable-auto-tabpanel-${index}`}
-      aria-labelledby={`scrollable-auto-tab-${index}`}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
       {value === index && (
-        <Box>
-          <Typography>{children}</Typography>
-        </Box>
+        <Container>
+          <Box>
+            {children}
+          </Box>
+        </Container>
       )}
     </div>
   );
@@ -57,19 +66,18 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     backgroundColor: theme.palette.background.paper,
   },
+  alertArea: {
+    marginTop: '16px'
+  }
 }));
 
-function Probes({ probes, getProbes }) {
+function Probes({ probes }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  useEffect(() => {
-    getProbes();
-  }, [])
 
   return (
     <GridContainer>
@@ -89,15 +97,31 @@ function Probes({ probes, getProbes }) {
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
-
-            <Filter />
-            <SimpleTable rows={probes} />
-
+            {!_.isEmpty(probes) &&
+              <div>
+                <Filter />
+                <SimpleTable rows={probes} />
+              </div>
+            }
           </TabPanel>
           <TabPanel value={value} index={1}>
           </TabPanel>
         </div>
       </GridItem>
+
+      {_.isEmpty(probes) && value === 0 &&
+        <GridItem>
+          <div className={classes.alertArea}>
+            <Paper elevation={3} square>
+              <Alert severity="warning">
+                <AlertTitle>This is no created probe, yet!</AlertTitle>
+                <AlertTitle>You can <Link component={RouterLink} to="/general/probes/create">create probe</Link>
+                </AlertTitle>
+              </Alert>
+            </Paper>
+          </div>
+        </GridItem>}
+
     </GridContainer>
   );
 }
@@ -105,4 +129,4 @@ function Probes({ probes, getProbes }) {
 const mapStateToProps = state => ({
   probes: state.probesPage
 });
-export default connect(mapStateToProps, { getProbes })(Probes);
+export default connect(mapStateToProps, {})(Probes);

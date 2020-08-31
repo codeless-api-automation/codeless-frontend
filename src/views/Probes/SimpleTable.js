@@ -118,8 +118,8 @@ export default function SimpleTable(props) {
           {(rowsPerPage > 0
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
-          ).map((row) => (
-            <TableRow key={row.name}>
+          ).map((row, index) => (
+            <TableRow key={index}>
               <TableCell style={{ width: 160 }}>
                 {row.json['name']}
               </TableCell>
