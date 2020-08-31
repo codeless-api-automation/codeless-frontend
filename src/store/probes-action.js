@@ -16,7 +16,7 @@ export const addProbes = probes => ({
     payload: { probes }
 })
 
-export const getProbes = (page = 0, size = 5) => {
+export const getProbes = (page = 0, size = 20) => {
     return (dispath) => {
         isCallRequested(true);
         testResource.getTests(page, size)
