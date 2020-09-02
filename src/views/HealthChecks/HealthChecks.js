@@ -116,8 +116,8 @@ function HealthChecks({ healthChecks }) {
           <div className={classes.alertArea}>
             <Paper elevation={3} square>
               <Alert severity="warning">
-                <AlertTitle>This is no created probe, yet!</AlertTitle>
-                <AlertTitle>You can <Link component={RouterLink} to={componentsPaths.CREATE_HEALTH_CHECK}>create probe</Link>
+                <AlertTitle>This is no created health check, yet!</AlertTitle>
+                <AlertTitle>You can <Link component={RouterLink} to={componentsPaths.CREATE_HEALTH_CHECK}>create health check</Link>
                 </AlertTitle>
               </Alert>
             </Paper>
