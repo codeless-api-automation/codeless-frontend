@@ -3,13 +3,15 @@ import thunk from 'redux-thunk';
 import { validatorReducer } from './validator-reducer';
 import { testReducer } from './test-reducer';
 import { httpCallReducer } from './http-call-reducer';
-import { probesReducer } from './probes-reducer';
+import { healthChecksReducer } from './health-checks-reducer';
+import { utilReducer } from './util-reducer';
 
 const reducers = {
     httpCallResult: httpCallReducer,
     verificationsTab: validatorReducer,
     testPage: testReducer,
-    probesPage: probesReducer
+    healthChecksPage: healthChecksReducer,
+    utilEvents: utilReducer
 };
 
 const rootReducer = combineReducers(reducers);

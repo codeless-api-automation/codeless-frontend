@@ -1,10 +1,18 @@
+import _ from 'lodash'
+
 import { testResource } from '../service/CodelessApi.js';
-import { addProbes } from './probes-action.js';
+import { addHealthChecks } from './health-checks-action.js';
 import {
     isCallRequested,
     isCallSuccessful,
     isCallFailed
 } from '../store/http-call-action';
+import {
+    redirect,
+    setErrorMessage
+} from './util-action.js';
+
+import * as componentsPaths from './../constants/ComponentsPaths';
 
 export const UPDATE_NAME = 'UPDATE_NAME';
 export const updateName = (name) => ({
@@ -33,15 +41,21 @@ const SUCCESS_MESSAGE = "The probe has been created successfully!";
 const ERROR_MESSAGE = "The probe has not been created!";
 
 export const createTest = (test) => {
+    debugger
     return (dispath) => {
+        if (_.isEmpty(test.test['name']) || _.isEmpty(test.test['requestURL'])) {
+            dispath(setErrorMessage("Name, request URL and at least one verification are required!"));
+            return;
+        }
         isCallRequested(true);
         testResource.createTest(test)
             .then(response => {
                 dispath(isCallRequested(false));
                 if (response.status === 201) {
                     dispath(isCallSuccessful(true, SUCCESS_MESSAGE));
-                    dispath(addProbes(response.data))
+                    dispath(addHealthChecks(response.data))
                     dispath(cleanAllTestAttributes())
+                    dispath(redirect(componentsPaths.VIEW_HEALTH_CHECKS))
                 } else {
                     dispath(isCallFailed(true, ERROR_MESSAGE));
                 }

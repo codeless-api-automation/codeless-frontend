@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 
+import * as componentsPaths from "constants/ComponentsPaths.js";
+
 import {
   AddCircleOutline,
   Search,
@@ -27,7 +29,7 @@ export default function Filter() {
   return (
     <div className={classes.root}>
 
-      <Link to="/general/probes/create">
+      <Link to={componentsPaths.CREATE_HEALTH_CHECK}>
         <IconButton color="primary">
           <AddCircleOutline fontSize="large" />
         </IconButton>
@@ -51,7 +53,7 @@ export default function Filter() {
           </InputAdornment>
         } />
 
-      <Link to="/general/probes">
+      <Link to={componentsPaths.VIEW_HEALTH_CHECKS}>
         <IconButton color="primary">
           <Refresh fontSize="large" />
         </IconButton>

@@ -8,6 +8,10 @@ import {
   isCallFailed
 } from '../../store/http-call-action';
 
+import {
+  setErrorMessage
+} from "../../store/util-action.js"
+
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
@@ -25,7 +29,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Notification({ httpCallResult, isCallFailed, isCallSuccessful }) {
+function Notification({ httpCallResult, utilEvents,
+  isCallFailed, isCallSuccessful,
+  setErrorMessage }) {
   const classes = useStyles();
 
   const handleOnSuccessClose = () => {
@@ -34,16 +40,18 @@ function Notification({ httpCallResult, isCallFailed, isCallSuccessful }) {
 
   const handleOnErrorClose = () => {
     isCallFailed(false);
+    setErrorMessage(null);
   }
 
   const anchorOrigin = { vertical: 'bottom', horizontal: 'left' };
   const autoHideDuration = 6000;
-  const isOpeningNeeded = !_.isEmpty(httpCallResult.message);
+  const isOpeningNeededByHttpCallResult = !_.isEmpty(httpCallResult.message);
+  const isErrorAlertOpeningNeeded = !_.isEmpty(utilEvents.errorMessage);
   return (
     <div className={classes.root}>
       <Snackbar
         anchorOrigin={anchorOrigin}
-        open={httpCallResult.isCallSuccessful && isOpeningNeeded}
+        open={httpCallResult.isCallSuccessful && isOpeningNeededByHttpCallResult}
         autoHideDuration={autoHideDuration}
         onClose={handleOnSuccessClose}>
         <Alert
@@ -52,18 +60,19 @@ function Notification({ httpCallResult, isCallFailed, isCallSuccessful }) {
       </Snackbar>
       <Snackbar
         anchorOrigin={anchorOrigin}
-        open={httpCallResult.isCallFailed && isOpeningNeeded}
+        open={(httpCallResult.isCallFailed && isOpeningNeededByHttpCallResult) || isErrorAlertOpeningNeeded}
         autoHideDuration={autoHideDuration}
         onClose={handleOnErrorClose}>
         <Alert
           severity="error"
-          onClose={handleOnErrorClose}>{httpCallResult.message}</Alert>
+          onClose={handleOnErrorClose}>{isErrorAlertOpeningNeeded ? utilEvents.errorMessage : httpCallResult.message}</Alert>
       </Snackbar>
     </div>
   );
 }
 
 const mapStateToProps = state => ({
-  httpCallResult: state.httpCallResult
+  httpCallResult: state.httpCallResult,
+  utilEvents: state.utilEvents
 });
-export default connect(mapStateToProps, { isCallFailed, isCallSuccessful })(Notification);
+export default connect(mapStateToProps, { isCallFailed, isCallSuccessful, setErrorMessage })(Notification);

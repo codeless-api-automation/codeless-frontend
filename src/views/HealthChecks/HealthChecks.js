@@ -17,6 +17,8 @@ import {
   Link
 } from '@material-ui/core';
 
+import * as componentsPaths from "constants/ComponentsPaths";
+
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 
@@ -71,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Probes({ probes }) {
+function HealthChecks({ healthChecks }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -92,15 +94,15 @@ function Probes({ probes }) {
               variant="scrollable"
               scrollButtons="auto"
             >
-              <Tab label="Probes" {...a11yProps(0)} />
+              <Tab label="Health Checks" {...a11yProps(0)} />
               <Tab label="Executions" {...a11yProps(1)} />
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
-            {!_.isEmpty(probes) &&
+            {!_.isEmpty(healthChecks) &&
               <div>
                 <Filter />
-                <SimpleTable rows={probes} />
+                <SimpleTable rows={healthChecks} />
               </div>
             }
           </TabPanel>
@@ -109,13 +111,13 @@ function Probes({ probes }) {
         </div>
       </GridItem>
 
-      {_.isEmpty(probes) && value === 0 &&
+      {_.isEmpty(healthChecks) && value === 0 &&
         <GridItem>
           <div className={classes.alertArea}>
             <Paper elevation={3} square>
               <Alert severity="warning">
                 <AlertTitle>This is no created probe, yet!</AlertTitle>
-                <AlertTitle>You can <Link component={RouterLink} to="/general/probes/create">create probe</Link>
+                <AlertTitle>You can <Link component={RouterLink} to={componentsPaths.CREATE_HEALTH_CHECK}>create probe</Link>
                 </AlertTitle>
               </Alert>
             </Paper>
@@ -127,6 +129,6 @@ function Probes({ probes }) {
 }
 
 const mapStateToProps = state => ({
-  probes: state.probesPage
+  healthChecks: state.healthChecksPage
 });
-export default connect(mapStateToProps, {})(Probes);
+export default connect(mapStateToProps, {})(HealthChecks);

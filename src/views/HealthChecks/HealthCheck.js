@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { withRouter } from 'react-router-dom';
+import { compose } from "redux";
+
+import { withRedirectAtSuccessfulHttpCall } from "../../hoc/withRedirectAtSuccessfulHttpCall";
 
 import { createStyles, withStyles } from "@material-ui/core/styles";
 import {
@@ -33,7 +35,7 @@ const Row = withStyles((theme) =>
       margin: "5px 0px",
       flexDirection: "row"
     }
-  }),
+  })
 )(Grid);
 
 const RowItem = withStyles((theme) =>
@@ -41,16 +43,14 @@ const RowItem = withStyles((theme) =>
     root: {
       margin: "1px"
     }
-  }),
+  })
 )(Grid);
 
-function Test({ test, validators, httpCallResult,
+function Test({ test, validators,
   updateName, updateHttpMethod,
-  updateRequestUrl, createTest, history }) {
+  updateRequestUrl, createTest,
+  httpCallResult, setErrorMessage }) {
 
-  const navigateToComponent = (path) => {
-    history.push(path);
-  }
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
@@ -58,7 +58,7 @@ function Test({ test, validators, httpCallResult,
           <Row container>
             <RowItem item xs>
               <TextField
-                label="Probe name"
+                label="Name"
                 variant="outlined"
                 fullWidth={true}
                 inputProps={{
@@ -94,10 +94,7 @@ function Test({ test, validators, httpCallResult,
                 disabled={httpCallResult.isCallRequested}
                 size="lg"
                 color="primary"
-                onClick={() => {
-                  createTest({ test, validators })
-                  navigateToComponent("/general/probes/view")
-                }}
+                onClick={() => createTest({ test, validators })}
                 startIcon={<Add fontSize='large' />}
               >Create</Button>
             </RowItem>
@@ -136,9 +133,9 @@ function Test({ test, validators, httpCallResult,
 const mapStateToProps = state => ({
   validators: state.verificationsTab,
   test: state.testPage,
-  httpCallResult: state.httpCallResult
+  httpCallResult: state.httpCallResult,
+  redirectTo: state.utilEvents.redirectTo
 });
-export default connect(mapStateToProps, {
-  updateName, updateHttpMethod,
-  updateRequestUrl, createTest
-})(withRouter(Test));
+export default compose(
+  connect(mapStateToProps, { updateName, updateHttpMethod, updateRequestUrl, createTest }),
+  withRedirectAtSuccessfulHttpCall)(Test);

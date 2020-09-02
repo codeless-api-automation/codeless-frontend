@@ -1,10 +1,8 @@
 import Dashboard from "@material-ui/icons/Dashboard";
-import Cloud from '@material-ui/icons/Cloud';
 
 import DashboardPage from "views/Dashboard/Dashboard.js";
-import ProbesContainer from "views/Probes/ProbesContainer.js"
-import Probes from "views/Probes/Probes.js"
-import Probe from "views/Probes/Probe.js"
+import HealthChecksContainer from "views/HealthChecks/HealthChecksContainer.js"
+import HealthCheck from "views/HealthChecks/HealthCheck.js"
 
 export const dashboardRoutes = [
   {
@@ -15,25 +13,19 @@ export const dashboardRoutes = [
     layout: "/general"
   },
   {
-    path: "/probes",
-    name: "Probes",
-    icon: Cloud,
-    component: ProbesContainer,
+    path: "/health-checks",
+    name: "Health checks",
+    icon: "",
+    component: HealthChecksContainer,
     layout: "/general"
   }
 ];
 
 export const routesContainer = [
   {
-    path: "/probes/create",
-    name: "Create a probe",
-    component: Probe,
-    layout: "/general"
-  },
-  {
-    path: "/probes/view",
-    name: "Probes",
-    component: Probes,
+    path: "/health-checks/create",
+    name: "Create a health check",
+    component: HealthCheck,
     layout: "/general"
   }
 ];
