@@ -25,3 +25,15 @@ export const testResource = {
         return instance.delete(TEST_RESOURCE + '/' + name);
     },
 }
+
+const EXECUTION_RESOURCE = "executions";
+export const executionResource = {
+    createExecution(execution) {
+        let { region, healthChecks } = execution;
+        let requestBodyExecution = {
+            region: region,
+            tests: [...healthChecks]
+        };
+        return instance.post(EXECUTION_RESOURCE, requestBodyExecution);
+    },
+}

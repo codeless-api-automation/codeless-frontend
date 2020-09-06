@@ -1,0 +1,40 @@
+import {
+    REQUEST_EXECUTION,
+    CANCELE_EXECUTION_REQUEST,
+    COMPLETE_EXECUTION_REQUEST,
+} from './execution-action'
+
+const initState = {
+    isExecutionRequsted: false
+}
+
+export const executionHelperReducer = (state = initState, action) => {
+    const { type, payload } = action;
+    switch (type) {
+        case REQUEST_EXECUTION: {
+            const { healthCheckIndex } = payload;
+            const newState = {
+                ...state,
+                healthCheckIndex,
+                isExecutionRequsted: true
+            }
+            return newState;
+        }
+        case CANCELE_EXECUTION_REQUEST: {
+            const newState = {
+                ...state,
+                isExecutionRequsted: false
+            }
+            return newState;
+        }
+        case COMPLETE_EXECUTION_REQUEST: {
+            const newState = {
+                ...state,
+                isExecutionRequsted: false
+            }
+            return newState;
+        }
+        default:
+            return state;
+    }
+}

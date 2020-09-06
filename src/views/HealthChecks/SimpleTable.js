@@ -99,7 +99,7 @@ const useStyles2 = makeStyles({
 });
 
 export default function SimpleTable(props) {
-  const { rows } = props;
+  const { rows, onRowExecute, onRowDelete, onRowEdit } = props;
 
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
@@ -144,17 +144,17 @@ export default function SimpleTable(props) {
               <TableCell align="right" padding="none">
                 <Grid container direction="row-reverse">
                   <IconButton
-                    onClick={() => console.log("Delete")}
+                    onClick={() => onRowDelete(index)}
                     color="primary">
                     <Delete fontSize="small" />
                   </IconButton>
                   <IconButton
-                    onClick={() => console.log("Edit")}
+                    onClick={() => onRowEdit(index)}
                     color="primary">
                     <Edit fontSize="small" />
                   </IconButton>
                   <IconButton
-                    onClick={() => console.log("PlayArrow")}
+                    onClick={() => onRowExecute(index)}
                     color="primary">
                     <PlayArrow fontSize="small" />
                   </IconButton>

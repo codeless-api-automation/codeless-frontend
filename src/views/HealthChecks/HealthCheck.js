@@ -78,7 +78,7 @@ function Test({ test, validators,
             </RowItem>
             <RowItem item xs>
               <TextField
-                id="request-url"
+                required
                 variant="outlined"
                 placeholder="Enter request URL"
                 fullWidth={true}

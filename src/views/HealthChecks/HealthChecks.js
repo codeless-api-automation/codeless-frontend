@@ -8,6 +8,10 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 
 import {
+  requestExecution
+} from "../../store/execution-action.js"
+
+import {
   AppBar,
   Tabs,
   Tab,
@@ -24,6 +28,7 @@ import GridContainer from "components/Grid/GridContainer.js";
 
 import Filter from './Filter';
 import SimpleTable from './SimpleTable';
+import RunHealthCheck from './RunHealthCheck';
 
 import { Alert, AlertTitle } from '@material-ui/lab';
 
@@ -73,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function HealthChecks({ healthChecks }) {
+function HealthChecks({ healthChecks, requestExecution }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -102,7 +107,11 @@ function HealthChecks({ healthChecks }) {
             {!_.isEmpty(healthChecks) &&
               <div>
                 <Filter />
-                <SimpleTable rows={healthChecks} />
+                <SimpleTable
+                  onRowExecute={(rowIndex) => requestExecution(rowIndex)}
+                  onRowEdit={(rowIndex) => console.log("onRowEdit: " + rowIndex)}
+                  onRowDelete={(rowIndex) => console.log("onRowDelete: " + rowIndex)}
+                  rows={healthChecks} />
               </div>
             }
           </TabPanel>
@@ -124,6 +133,7 @@ function HealthChecks({ healthChecks }) {
           </div>
         </GridItem>}
 
+      <RunHealthCheck />
     </GridContainer>
   );
 }
@@ -131,4 +141,4 @@ function HealthChecks({ healthChecks }) {
 const mapStateToProps = state => ({
   healthChecks: state.healthChecksPage
 });
-export default connect(mapStateToProps, {})(HealthChecks);
+export default connect(mapStateToProps, { requestExecution })(HealthChecks);

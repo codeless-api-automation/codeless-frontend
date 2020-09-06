@@ -5,13 +5,16 @@ import { testReducer } from './test-reducer';
 import { httpCallReducer } from './http-call-reducer';
 import { healthChecksReducer } from './health-checks-reducer';
 import { utilReducer } from './util-reducer';
+import { executionHelperReducer } from './execution-reducer';
+
 
 const reducers = {
     httpCallResult: httpCallReducer,
     verificationsTab: validatorReducer,
     testPage: testReducer,
     healthChecksPage: healthChecksReducer,
-    utilEvents: utilReducer
+    utilEvents: utilReducer,
+    executionHelper: executionHelperReducer 
 };
 
 const rootReducer = combineReducers(reducers);

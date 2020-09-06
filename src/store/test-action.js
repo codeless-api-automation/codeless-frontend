@@ -1,7 +1,6 @@
 import _ from 'lodash'
 
 import { testResource } from '../service/CodelessApi.js';
-import { addHealthChecks } from './health-checks-action.js';
 import {
     isCallRequested,
     isCallSuccessful,
@@ -37,11 +36,9 @@ export const cleanAllTestAttributes = () => ({
     type: CLEAN_ALL_TEST_ATTRIBUTES
 })
 
-const SUCCESS_MESSAGE = "The health check has been created successfully!";
-const ERROR_MESSAGE = "The health check has not been created!";
-
+const SUCCESS_MESSAGE = "The health check has been created successfully.";
+const ERROR_MESSAGE = "The health check has not been created.";
 export const createTest = (test) => {
-    debugger
     return (dispath) => {
         if (_.isEmpty(test.test['name']) || _.isEmpty(test.test['requestURL'])) {
             dispath(setErrorMessage("Name, request URL and at least one verification are required!"));
@@ -53,7 +50,6 @@ export const createTest = (test) => {
                 dispath(isCallRequested(false));
                 if (response.status === 201) {
                     dispath(isCallSuccessful(true, SUCCESS_MESSAGE));
-                    dispath(addHealthChecks(response.data))
                     dispath(cleanAllTestAttributes())
                     dispath(redirect(componentsPaths.VIEW_HEALTH_CHECKS))
                 } else {
