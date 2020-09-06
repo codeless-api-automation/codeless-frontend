@@ -37,8 +37,8 @@ export const cleanAllTestAttributes = () => ({
     type: CLEAN_ALL_TEST_ATTRIBUTES
 })
 
-const SUCCESS_MESSAGE = "The probe has been created successfully!";
-const ERROR_MESSAGE = "The probe has not been created!";
+const SUCCESS_MESSAGE = "The health check has been created successfully!";
+const ERROR_MESSAGE = "The health check has not been created!";
 
 export const createTest = (test) => {
     debugger

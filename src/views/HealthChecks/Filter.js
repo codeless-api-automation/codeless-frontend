@@ -37,7 +37,7 @@ export default function Filter() {
 
       <OutlinedInput
         margin="dense"
-        placeholder="Filter probes"
+        placeholder="Filter items"
         //value={values.password}
         //onChange={handleChange('password')}
         endAdornment={

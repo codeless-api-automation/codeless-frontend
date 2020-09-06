@@ -1,20 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableHead from '@material-ui/core/TableHead';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableFooter from '@material-ui/core/TableFooter';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import FirstPageIcon from '@material-ui/icons/FirstPage';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import LastPageIcon from '@material-ui/icons/LastPage';
 
-import { IconButton } from '@material-ui/core';
+import {
+  Table,
+  TableHead,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TablePagination,
+  TableRow,
+  IconButton,
+  Grid
+} from '@material-ui/core';
+
+import {
+  Edit,
+  Delete,
+  PlayArrow,
+  FirstPage,
+  KeyboardArrowLeft,
+  KeyboardArrowRight,
+  LastPage
+} from '@material-ui/icons';
+
+import OverflowTextContainer from './../../components/OverflowTextContainer/OverflowTextContainer';
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -51,7 +62,7 @@ function TablePaginationActions(props) {
         disabled={page === 0}
         aria-label="first page"
       >
-        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+        {theme.direction === 'rtl' ? <LastPage /> : <FirstPage />}
       </IconButton>
       <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
         {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
@@ -68,7 +79,7 @@ function TablePaginationActions(props) {
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
         aria-label="last page"
       >
-        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+        {theme.direction === 'rtl' ? <FirstPage /> : <LastPage />}
       </IconButton>
     </div>
   );
@@ -89,7 +100,7 @@ const useStyles2 = makeStyles({
 
 export default function SimpleTable(props) {
   const { rows } = props;
-  
+
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -106,12 +117,13 @@ export default function SimpleTable(props) {
   };
   return (
     <TableContainer>
-      <Table className={classes.table}>
+      <Table className={classes.table} style={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>HTTP method</TableCell>
-            <TableCell>URL</TableCell>
+            <TableCell style={{ width: '20%' }}>Name</TableCell>
+            <TableCell style={{ width: '10%' }}>Method</TableCell>
+            <TableCell style={{ width: '50%' }}>URL</TableCell>
+            <TableCell style={{ width: '20%' }} align="right"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -120,14 +132,33 @@ export default function SimpleTable(props) {
             : rows
           ).map((row, index) => (
             <TableRow key={index}>
-              <TableCell style={{ width: 160 }}>
-                {row.json['name']}
+              <TableCell>
+                <OverflowTextContainer text={row.json['name']} />
               </TableCell>
-              <TableCell style={{ width: 160 }}>
+              <TableCell>
                 {row.json['httpMethod']}
               </TableCell>
               <TableCell>
-                {row.json['requestURL']}
+                <OverflowTextContainer text={row.json['requestURL']} />
+              </TableCell>
+              <TableCell align="right" padding="none">
+                <Grid container direction="row-reverse">
+                  <IconButton
+                    onClick={() => console.log("Delete")}
+                    color="primary">
+                    <Delete fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    onClick={() => console.log("Edit")}
+                    color="primary">
+                    <Edit fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    onClick={() => console.log("PlayArrow")}
+                    color="primary">
+                    <PlayArrow fontSize="small" />
+                  </IconButton>
+                </Grid>
               </TableCell>
             </TableRow>
           ))}
@@ -142,7 +173,7 @@ export default function SimpleTable(props) {
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[10, 25, { label: 'All', value: -1 }]}
-              colSpan={3}
+              colSpan={4}
               count={rows.length}
               rowsPerPage={rowsPerPage}
               page={page}
