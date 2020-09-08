@@ -21,3 +21,9 @@ export const updateInputField = (validator, inputField, newInputFieldValue) => (
     type: UPDATE_INPUT_FIELD,
     payload: { validator, inputField, newInputFieldValue }
 })
+
+
+export const CLEAN_VALIDATORS = 'CLEAN_VALIDATORS';
+export const cleanValidators = () => ({
+    type: CLEAN_VALIDATORS
+})

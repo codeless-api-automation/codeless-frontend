@@ -18,7 +18,7 @@ export const addHealthChecks = healthChecks => ({
 const ERROR_MESSAGE = "The error occured!"
 export const getHealthChecks = (page = 0, size = 20) => {
     return (dispath) => {
-        isCallRequested(true)
+        dispath(isCallRequested(true))
         testResource.getTests(page, size)
             .then(response => {
                 dispath(isCallRequested(false))
@@ -31,6 +31,7 @@ export const getHealthChecks = (page = 0, size = 20) => {
             })
             .catch(error => {
                 console.log(error)
+                dispath(isCallRequested(false))
                 dispath(isCallFailed(true, ERROR_MESSAGE))
             });
     }

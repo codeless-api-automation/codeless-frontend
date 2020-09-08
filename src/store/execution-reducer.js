@@ -2,6 +2,7 @@ import {
     REQUEST_EXECUTION,
     CANCELE_EXECUTION_REQUEST,
     COMPLETE_EXECUTION_REQUEST,
+    ADD_REGIONS
 } from './execution-action'
 
 const initState = {
@@ -34,7 +35,18 @@ export const executionHelperReducer = (state = initState, action) => {
             }
             return newState;
         }
+        case ADD_REGIONS: {
+            const { regions } = payload;
+            const newState = {
+                ...state,
+                regions,
+                defaultRegion: getDefaultRegio(regions),
+            }
+            return newState;
+        }
         default:
             return state;
     }
 }
+
+const getDefaultRegio = (regions) => regions.find(region => region['defaultRegion']);

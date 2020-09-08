@@ -10,9 +10,9 @@ export const utilReducer = (state = {}, action) => {
             return { redirectTo: payload };
         }
         case ERROR: {
-            return { ...state, errorMessage: payload };
+            const { errorMessage } = payload;
+            return { ...state, errorMessage };
         }
-
         default:
             return state;
     }

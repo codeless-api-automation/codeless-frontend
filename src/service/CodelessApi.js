@@ -37,3 +37,10 @@ export const executionResource = {
         return instance.post(EXECUTION_RESOURCE, requestBodyExecution);
     },
 }
+
+const REGIONS_RESOURCE = "regions";
+export const regionsResource = {    
+    getRegions() {
+        return instance.get(REGIONS_RESOURCE);
+    }
+}

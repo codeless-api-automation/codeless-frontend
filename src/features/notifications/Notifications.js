@@ -44,7 +44,7 @@ function Notification({ httpCallResult, utilEvents,
   }
 
   const anchorOrigin = { vertical: 'bottom', horizontal: 'left' };
-  const autoHideDuration = 6000;
+  const autoHideDuration = 5000;
   const isOpeningNeededByHttpCallResult = !_.isEmpty(httpCallResult.message);
   const isErrorAlertOpeningNeeded = !_.isEmpty(utilEvents.errorMessage);
   return (

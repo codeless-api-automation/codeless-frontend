@@ -4,13 +4,7 @@ import {
     CALL_FAILED
 } from './http-call-action'
 
-const httpCallState = {
-    isCallRequested: false,
-    isCallSuccessful: false,
-    isCallFailed: false
-};
-
-export const httpCallReducer = (state = httpCallState, action) => {
+export const httpCallReducer = (state = {}, action) => {
     const { type, payload } = action;
     switch (type) {
         case CALL_REQUESTED: {

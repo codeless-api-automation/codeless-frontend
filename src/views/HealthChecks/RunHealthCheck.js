@@ -46,7 +46,7 @@ function GeolocationSelect(props) {
             getOptionLabel={(option) => buildRegion(option)}
             renderOption={(option) => (
                 <React.Fragment>
-                    <span>{countryToFlag(option.countryCode)}</span>
+                    <span>{countryToFlag(option.iso2)}</span>
                     {buildRegion(option)}
                 </React.Fragment>
             )}
@@ -68,26 +68,21 @@ function GeolocationSelect(props) {
     );
 }
 
-const regions = [
-    { countryCode: 'US', country: 'US', city: 'San Francisco' },
-    { countryCode: 'US', country: 'US', city: 'New York' },
-    { countryCode: 'CA', country: 'Canada', city: 'Toronto' }
-]
-
 function RunHealthCheck({ executionHelper, healthChecks, canceleExecutionRequest, runExecution }) {
 
-    const [region, setRegion] = useState(regions[0]);
+    const [region, setRegion] = useState(executionHelper.defaultRegion);
 
     const handleRun = () => {
         runExecution({
             healthChecks: [healthChecks[executionHelper.healthCheckIndex]],
             region: region
         });
+        setRegion(executionHelper.defaultRegion);
     };
 
     const handleClose = () => {
         canceleExecutionRequest();
-        setRegion(regions[0]);
+        setRegion(executionHelper.defaultRegion);
     };
 
     return (
@@ -98,7 +93,7 @@ function RunHealthCheck({ executionHelper, healthChecks, canceleExecutionRequest
             <DialogTitle>{"Run Health Check"}</DialogTitle>
             <DialogContent>
                 <GeolocationSelect
-                    regions={regions}
+                    regions={executionHelper.regions}
                     value={region}
                     onChange={setRegion}
                 />

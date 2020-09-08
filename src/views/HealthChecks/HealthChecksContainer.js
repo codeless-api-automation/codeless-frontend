@@ -6,21 +6,28 @@ import {
 } from "../../store/health-checks-action.js"
 
 import {
+    getRegions
+} from "../../store/execution-action.js"
+
+import {
     redirect
 } from "../../store/util-action.js"
 
 import HealthChecks from './HealthChecks.js';
 
-function HealthChecksContainer({ getHealthChecks, redirect }) {
+
+function HealthChecksContainer({ getHealthChecks, getRegions, redirect }) {
 
     useEffect(() => {
         redirect(null);
+        getRegions();
         getHealthChecks();
     })
 
-    return (<HealthChecks />);
+    return <HealthChecks />;
+
 }
 
 const mapStateToProps = state => ({
 });
-export default connect(mapStateToProps, { redirect, getHealthChecks })(HealthChecksContainer);
+export default connect(mapStateToProps, { redirect, getHealthChecks, getRegions })(HealthChecksContainer);

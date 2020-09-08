@@ -7,5 +7,5 @@ export const redirect = link => ({
 export const ERROR = 'ERROR';
 export const setErrorMessage = errorMessage => ({
     type: ERROR,
-    payload: errorMessage
+    payload: { errorMessage }
 })

@@ -1,4 +1,7 @@
-import { executionResource } from '../service/CodelessApi.js';
+import {
+    executionResource,
+    regionsResource
+} from '../service/CodelessApi.js';
 
 import {
     isCallRequested,
@@ -21,6 +24,24 @@ export const COMPLETE_EXECUTION_REQUEST = 'COMPLETE_EXECUTION_REQUEST';
 export const completeExecutionRequest = () => ({
     type: COMPLETE_EXECUTION_REQUEST
 })
+
+export const ADD_REGIONS = 'ADD_REGIONS';
+export const addRegions = (regions) => ({
+    type: ADD_REGIONS,
+    payload: { regions }
+})
+
+export const getRegions = () => {
+    return (dispath) => {
+        regionsResource.getRegions()
+            .then(response => {
+                dispath(addRegions(response.data));
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+}
 
 const SUCCESS_MESSAGE = "The health check has been launched successfully.";
 const ERROR_MESSAGE = "The health check has not been launched.";

@@ -7,6 +7,9 @@ import {
     isCallFailed
 } from '../store/http-call-action';
 import {
+    cleanValidators
+} from '../store/validator-action';
+import {
     redirect,
     setErrorMessage
 } from './util-action.js';
@@ -51,6 +54,7 @@ export const createTest = (test) => {
                 if (response.status === 201) {
                     dispath(isCallSuccessful(true, SUCCESS_MESSAGE));
                     dispath(cleanAllTestAttributes())
+                    dispath(cleanValidators())
                     dispath(redirect(componentsPaths.VIEW_HEALTH_CHECKS))
                 } else {
                     dispath(isCallFailed(true, ERROR_MESSAGE));

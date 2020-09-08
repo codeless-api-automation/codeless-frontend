@@ -3,7 +3,8 @@ import {
     CREATE_VALIDATOR,
     REMOVE_VALIDATOR,
     UPDATE_PREDICATE,
-    UPDATE_INPUT_FIELD
+    UPDATE_INPUT_FIELD,
+    CLEAN_VALIDATORS
 } from './validator-action'
 
 export const validatorReducer = (state = [], action) => {
@@ -50,7 +51,9 @@ export const validatorReducer = (state = [], action) => {
 
             return newValidators;
         }
-
+        case CLEAN_VALIDATORS: {
+            return [];
+        }
         default:
             return state;
     }
