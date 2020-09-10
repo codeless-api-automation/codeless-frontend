@@ -7,13 +7,12 @@ import { withRedirectAtSuccessfulHttpCall } from "../../hoc/withRedirectAtSucces
 import { createStyles, withStyles } from "@material-ui/core/styles";
 import {
   Grid,
-  TextField
+  TextField,
+  Button
 } from '@material-ui/core';
 
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-
-import Add from '@material-ui/icons/Add';
 
 import {
   updateName,
@@ -22,7 +21,9 @@ import {
   createTest
 } from "../../store/test-action.js"
 
-import Button from "components/CustomButtons/Button.js";
+import { CheckCircle, Cancel } from '@material-ui/icons';
+
+
 import ComboBox from "components/Combobox/Combobox.js";
 import CustomTabs from "components/CustomTabs/CustomTabs.js";
 
@@ -54,6 +55,27 @@ function Test({ test, validators,
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
+        <Row container>
+          <RowItem item>
+            <Button 
+              variant="outlined"
+              size="large"
+              startIcon={<Cancel />}>
+              Cancel
+              </Button>
+          </RowItem>
+          <RowItem item>
+            <Button
+              variant="outlined"
+              size="large"
+              color="primary"
+              disabled={httpCallResult.isCallRequested}
+              onClick={() => createTest({ test, validators })}
+              startIcon={<CheckCircle />}>
+              Create
+              </Button>
+          </RowItem>
+        </Row>
         <Grid container>
           <Row container>
             <RowItem item xs>
@@ -87,16 +109,6 @@ function Test({ test, validators,
                   onBlur: event => updateRequestUrl(event.target.value)
                 }}
               />
-            </RowItem>
-
-            <RowItem item>
-              <Button style={{ margin: "0px" }}
-                disabled={httpCallResult.isCallRequested}
-                size="lg"
-                color="primary"
-                onClick={() => createTest({ test, validators })}
-                startIcon={<Add fontSize='large' />}
-              >Create</Button>
             </RowItem>
           </Row>
 

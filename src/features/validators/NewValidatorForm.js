@@ -89,7 +89,7 @@ function NewValidatorForm({ validators, createValidator }) {
         </Grid>
       ))}
 
-      <Grid item>
+      <Grid item style={{ display: "flex", alignItems: "center" }}>
         <IconButton
           disabled={!isAddValidatorButtonEnable(validator, predicate)}
           onClick={() => {

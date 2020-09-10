@@ -117,7 +117,7 @@ export default function SimpleTable(props) {
   };
   return (
     <TableContainer>
-      <Table className={classes.table} style={{ tableLayout: 'fixed' }}>
+      <Table className={classes.table} size="small" style={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
             <TableCell style={{ width: '20%' }}>Name</TableCell>

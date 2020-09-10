@@ -72,7 +72,7 @@ function ValidatorListItem({ validator, removeValidator, updatePredicate, update
                 </Grid>
             ))}
 
-            <Grid item>
+            <Grid item style={{display: "flex", alignItems: "center"}}>
                 <IconButton onClick={() => removeValidator(validator)}>
                     <DeleteIcon />
                 </IconButton>

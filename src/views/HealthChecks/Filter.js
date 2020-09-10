@@ -7,7 +7,7 @@ import * as componentsPaths from "constants/ComponentsPaths.js";
 import {
   AddCircleOutline,
   Search,
-  Refresh
+  Sync
 } from '@material-ui/icons';
 
 import {
@@ -35,7 +35,14 @@ export default function Filter() {
         </IconButton>
       </Link>
 
+      <Link to={componentsPaths.VIEW_HEALTH_CHECKS}>
+        <IconButton color="primary">
+          <Sync fontSize="large" />
+        </IconButton>
+      </Link>
+
       <OutlinedInput
+        fullWidth
         margin="dense"
         placeholder="Filter items"
         //value={values.password}
@@ -52,12 +59,6 @@ export default function Filter() {
             </IconButton>
           </InputAdornment>
         } />
-
-      <Link to={componentsPaths.VIEW_HEALTH_CHECKS}>
-        <IconButton color="primary">
-          <Refresh fontSize="large" />
-        </IconButton>
-      </Link>
 
     </div>
   );

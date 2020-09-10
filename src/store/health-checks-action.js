@@ -9,9 +9,9 @@ export const cleanHealthChecks = () => ({
     type: CLEAN_HEALTH_CHECKS
 })
 
-export const ADD_HEALTH_CHECKS = 'ADD_HEALTH_CHECKS';
-export const addHealthChecks = healthChecks => ({
-    type: ADD_HEALTH_CHECKS,
+export const SET_HEALTH_CHECKS = 'SET_HEALTH_CHECKS';
+export const setHealthChecks = healthChecks => ({
+    type: SET_HEALTH_CHECKS,
     payload: { healthChecks }
 })
 
@@ -24,7 +24,7 @@ export const getHealthChecks = (page = 0, size = 20) => {
                 dispath(isCallRequested(false))
                 if (response.status === 200) {
                     dispath(cleanHealthChecks())
-                    dispath(addHealthChecks(response.data.items))
+                    dispath(setHealthChecks(response.data.items))
                 } else {
                     dispath(isCallFailed(true, ERROR_MESSAGE))
                 }
