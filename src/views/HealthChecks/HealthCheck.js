@@ -18,6 +18,7 @@ import {
   updateName,
   updateHttpMethod,
   updateRequestUrl,
+  updateRequestBody,
   createTest
 } from "../../store/test-action.js"
 
@@ -30,7 +31,7 @@ import CustomTabs from "components/CustomTabs/CustomTabs.js";
 import HeaderList from "features/headers/HeaderList.js";
 import ValidatorList from "features/validators/ValidatorList.js";
 
-const Row = withStyles((theme) =>
+const Row = withStyles(() =>
   createStyles({
     root: {
       margin: "5px 0px",
@@ -39,7 +40,7 @@ const Row = withStyles((theme) =>
   })
 )(Grid);
 
-const RowItem = withStyles((theme) =>
+const RowItem = withStyles(() =>
   createStyles({
     root: {
       margin: "1px"
@@ -49,15 +50,15 @@ const RowItem = withStyles((theme) =>
 
 function Test({ test, validators,
   updateName, updateHttpMethod,
-  updateRequestUrl, createTest,
-  httpCallResult, setErrorMessage }) {
+  updateRequestUrl, updateRequestBody,
+  createTest, httpCallResult }) {
 
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
         <Row container>
           <RowItem item>
-            <Button 
+            <Button
               variant="outlined"
               size="large"
               startIcon={<Cancel />}>
@@ -127,7 +128,11 @@ function Test({ test, validators,
                     variant="outlined"
                     fullWidth={true}
                     multiline={true}
-                    placeholder="Enter request body" />
+                    placeholder="Enter request body"
+                    inputProps={{
+                      defaultValue: test.requestBody,
+                      onBlur: event => updateRequestBody(event.target.value)
+                    }} />
                 },
                 {
                   tabName: "Verifications",
@@ -149,5 +154,5 @@ const mapStateToProps = state => ({
   redirectTo: state.utilEvents.redirectTo
 });
 export default compose(
-  connect(mapStateToProps, { updateName, updateHttpMethod, updateRequestUrl, createTest }),
+  connect(mapStateToProps, { updateName, updateHttpMethod, updateRequestUrl, updateRequestBody, createTest }),
   withRedirectAtSuccessfulHttpCall)(Test);

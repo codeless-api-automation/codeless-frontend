@@ -68,7 +68,7 @@ function GeolocationSelect(props) {
     );
 }
 
-function RunHealthCheck({ httpCallResult, executionHelper, healthChecksPage, canceleExecutionRequest, runExecution }) {
+function RunHealthCheckDialog({ httpCallResult, executionHelper, healthChecksPage, canceleExecutionRequest, runExecution }) {
 
     const [region, setRegion] = useState(executionHelper.defaultRegion);
 
@@ -103,7 +103,8 @@ function RunHealthCheck({ httpCallResult, executionHelper, healthChecksPage, can
                     Cancel
                 </Button>
                 <Button
-                    desabled={httpCallResult.isCallRequested}
+                    variant="outlined"
+                    disabled={httpCallResult.isCallRequested}
                     onClick={handleRun}
                     color="primary">
                     Run
@@ -118,4 +119,4 @@ const mapStateToProps = state => ({
     executionHelper: state.executionHelper,
     httpCallResult: state.httpCallResult
 });
-export default connect(mapStateToProps, { canceleExecutionRequest, runExecution })(RunHealthCheck);
+export default connect(mapStateToProps, { canceleExecutionRequest, runExecution })(RunHealthCheckDialog);

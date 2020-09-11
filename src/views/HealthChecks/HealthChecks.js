@@ -32,7 +32,7 @@ import GridContainer from "components/Grid/GridContainer.js";
 
 import Filter from './Filter';
 import SimpleTable from './SimpleTable';
-import RunHealthCheck from './RunHealthCheck';
+import RunHealthCheckDialog from './RunHealthCheckDialog';
 
 import ConfirmationDialog from '../../components/ConfirmationDialog/ConfirmationDialog.js';
 
@@ -142,6 +142,8 @@ function HealthChecks({ healthChecksPage, requestExecution, requestHealthCheckRe
           </div>
         </GridItem>}
 
+
+      <RunHealthCheckDialog />
       <ConfirmationDialog
         open={healthChecksPage.isHealthCheckRemovalRequsted}
         title="Delete Health Check"
@@ -151,7 +153,6 @@ function HealthChecks({ healthChecksPage, requestExecution, requestHealthCheckRe
         handleClose={() => console.log("OLEG")}
         handleAccept={() => console.log("OLEG")}
       />
-      <RunHealthCheck />
     </GridContainer>
   );
 }

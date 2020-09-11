@@ -34,6 +34,12 @@ export const updateRequestUrl = requestURL => ({
     payload: { requestURL }
 })
 
+export const UPDATE_REQUEST_BODY = 'UPDATE_REQUEST_BODY';
+export const updateRequestBody = requestBody => ({
+    type: UPDATE_REQUEST_BODY,
+    payload: { requestBody }
+})
+
 export const CLEAN_ALL_TEST_ATTRIBUTES = 'CLEAN_ALL_TEST_ATTRIBUTES';
 export const cleanAllTestAttributes = () => ({
     type: CLEAN_ALL_TEST_ATTRIBUTES

@@ -4,8 +4,8 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle
+  DialogTitle,
+  Typography
 } from '@material-ui/core';
 
 export default function ConfirmationDialog(props) {
@@ -15,11 +15,11 @@ export default function ConfirmationDialog(props) {
       open={open}
       onClose={() => console.log()}
     >
-      <DialogTitle>{title}</DialogTitle>
+      <DialogTitle >{title}</DialogTitle>
       <DialogContent dividers>
-        <DialogContentText>
+        <Typography gutterBottom>
           {content}
-        </DialogContentText>
+        </Typography>
       </DialogContent>
       <DialogActions>
         <Button
@@ -27,6 +27,7 @@ export default function ConfirmationDialog(props) {
           {closeButtomContent}
         </Button>
         <Button
+        variant="outlined"
           onClick={() => handleAccept}
           color="primary">
           {acceptButtomContent}

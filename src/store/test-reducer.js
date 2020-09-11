@@ -2,6 +2,7 @@ import {
     UPDATE_NAME,
     UPDATE_HTTP_METHOD,
     UPDATE_REQUEST_URL,
+    UPDATE_REQUEST_BODY,
     CLEAN_ALL_TEST_ATTRIBUTES
 } from './test-action'
 
@@ -33,6 +34,14 @@ export const testReducer = (state = initialTestState, action) => {
             let test = {
                 ...state,
                 requestURL
+            }
+            return test;
+        }
+        case UPDATE_REQUEST_BODY: {
+            const { requestBody} = payload;
+            let test = {
+                ...state,
+                requestBody
             }
             return test;
         }
