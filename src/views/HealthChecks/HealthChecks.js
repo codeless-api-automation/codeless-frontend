@@ -12,6 +12,10 @@ import {
 } from "../../store/execution-action.js"
 
 import {
+  requestHealthCheckRemoval
+} from "../../store/health-checks-action.js"
+
+import {
   AppBar,
   Tabs,
   Tab,
@@ -30,7 +34,12 @@ import Filter from './Filter';
 import SimpleTable from './SimpleTable';
 import RunHealthCheck from './RunHealthCheck';
 
-import { Alert, AlertTitle } from '@material-ui/lab';
+import ConfirmationDialog from '../../components/ConfirmationDialog/ConfirmationDialog.js';
+
+import {
+  Alert,
+  AlertTitle
+} from '@material-ui/lab';
 
 function TabPanel(props) {
   const { children, value, index, classes, ...other } = props;
@@ -78,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function HealthChecks({ healthChecks, requestExecution }) {
+function HealthChecks({ healthChecksPage, requestExecution, requestHealthCheckRemoval }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -104,14 +113,14 @@ function HealthChecks({ healthChecks, requestExecution }) {
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
-            {!_.isEmpty(healthChecks) &&
+            {!_.isEmpty(healthChecksPage.healthChecks) &&
               <div>
                 <Filter />
                 <SimpleTable
                   onRowExecute={(rowIndex) => requestExecution(rowIndex)}
                   onRowEdit={(rowIndex) => console.log("onRowEdit: " + rowIndex)}
-                  onRowDelete={(rowIndex) => console.log("onRowDelete: " + rowIndex)}
-                  rows={healthChecks} />
+                  onRowDelete={(rowIndex) => requestHealthCheckRemoval(rowIndex)}
+                  rows={healthChecksPage.healthChecks} />
               </div>
             }
           </TabPanel>
@@ -120,7 +129,7 @@ function HealthChecks({ healthChecks, requestExecution }) {
         </div>
       </GridItem>
 
-      {_.isEmpty(healthChecks) && value === 0 &&
+      {_.isEmpty(healthChecksPage.healthChecks) && value === 0 &&
         <GridItem>
           <div className={classes.alertArea}>
             <Paper elevation={3} square>
@@ -133,12 +142,21 @@ function HealthChecks({ healthChecks, requestExecution }) {
           </div>
         </GridItem>}
 
+      <ConfirmationDialog
+        open={healthChecksPage.isHealthCheckRemovalRequsted}
+        title="Delete Health Check"
+        content="This action will delete the health check"
+        closeButtomContent="Cancel"
+        acceptButtomContent="Confirm"
+        handleClose={() => console.log("OLEG")}
+        handleAccept={() => console.log("OLEG")}
+      />
       <RunHealthCheck />
     </GridContainer>
   );
 }
 
 const mapStateToProps = state => ({
-  healthChecks: state.healthChecksPage
+  healthChecksPage: state.healthChecksPage
 });
-export default connect(mapStateToProps, { requestExecution })(HealthChecks);
+export default connect(mapStateToProps, { requestExecution, requestHealthCheckRemoval })(HealthChecks);

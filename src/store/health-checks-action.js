@@ -4,6 +4,12 @@ import {
     isCallFailed
 } from './http-call-action';
 
+export const REQUEST_HEALTH_CHECK_REMOVAL = 'REQUEST_HEALTH_CHECK_REMOVAL';
+export const requestHealthCheckRemoval = (healthCheckIndex) => ({
+    type: REQUEST_HEALTH_CHECK_REMOVAL,
+    payload: { healthCheckIndex }
+})
+
 export const CLEAN_HEALTH_CHECKS = 'CLEAN_HEALTH_CHECKS';
 export const cleanHealthChecks = () => ({
     type: CLEAN_HEALTH_CHECKS

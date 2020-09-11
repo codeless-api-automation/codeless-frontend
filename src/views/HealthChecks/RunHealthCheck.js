@@ -68,21 +68,19 @@ function GeolocationSelect(props) {
     );
 }
 
-function RunHealthCheck({ executionHelper, healthChecks, canceleExecutionRequest, runExecution }) {
+function RunHealthCheck({ httpCallResult, executionHelper, healthChecksPage, canceleExecutionRequest, runExecution }) {
 
     const [region, setRegion] = useState(executionHelper.defaultRegion);
 
     const handleRun = () => {
         runExecution({
-            healthChecks: [healthChecks[executionHelper.healthCheckIndex]],
+            healthChecks: [healthChecksPage.healthChecks[executionHelper.healthCheckIndex]],
             region: region
         });
-        setRegion(executionHelper.defaultRegion);
     };
 
     const handleClose = () => {
         canceleExecutionRequest();
-        setRegion(executionHelper.defaultRegion);
     };
 
     return (
@@ -105,8 +103,8 @@ function RunHealthCheck({ executionHelper, healthChecks, canceleExecutionRequest
                     Cancel
                 </Button>
                 <Button
+                    desabled={httpCallResult.isCallRequested}
                     onClick={handleRun}
-                    variant="outlined"
                     color="primary">
                     Run
                 </Button>
@@ -116,7 +114,8 @@ function RunHealthCheck({ executionHelper, healthChecks, canceleExecutionRequest
 }
 
 const mapStateToProps = state => ({
-    healthChecks: state.healthChecksPage,
-    executionHelper: state.executionHelper
+    healthChecksPage: state.healthChecksPage,
+    executionHelper: state.executionHelper,
+    httpCallResult: state.httpCallResult
 });
 export default connect(mapStateToProps, { canceleExecutionRequest, runExecution })(RunHealthCheck);
