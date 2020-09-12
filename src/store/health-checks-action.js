@@ -10,6 +10,11 @@ export const requestHealthCheckRemoval = (healthCheckIndex) => ({
     payload: { healthCheckIndex }
 })
 
+export const CANCEL_HEALTH_CHECK_REMOVAL_REQUEST = 'CANCEL_HEALTH_CHECK_REMOVAL_REQUEST';
+export const cancelHealthCheckRemovalRequest = () => ({
+    type: CANCEL_HEALTH_CHECK_REMOVAL_REQUEST,
+})
+
 export const CLEAN_HEALTH_CHECKS = 'CLEAN_HEALTH_CHECKS';
 export const cleanHealthChecks = () => ({
     type: CLEAN_HEALTH_CHECKS

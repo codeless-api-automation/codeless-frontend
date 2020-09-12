@@ -13,7 +13,7 @@ export default function ConfirmationDialog(props) {
   return (
     <Dialog
       open={open}
-      onClose={() => console.log()}
+      onClose={handleClose}
     >
       <DialogTitle >{title}</DialogTitle>
       <DialogContent dividers>
@@ -23,12 +23,12 @@ export default function ConfirmationDialog(props) {
       </DialogContent>
       <DialogActions>
         <Button
-          onClick={() => handleClose}>
+          onClick={handleClose}>
           {closeButtomContent}
         </Button>
         <Button
         variant="outlined"
-          onClick={() => handleAccept}
+          onClick={handleAccept}
           color="primary">
           {acceptButtomContent}
         </Button>

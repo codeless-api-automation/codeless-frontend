@@ -21,8 +21,8 @@ export const testResource = {
     getTest(name) {
         return instance.get(TEST_RESOURCE + '/' + name);
     },
-    deleteTest(name) {
-        return instance.delete(TEST_RESOURCE + '/' + name);
+    deleteTests(tests) {
+        return instance.patch(TEST_RESOURCE, tests);
     },
 }
 
