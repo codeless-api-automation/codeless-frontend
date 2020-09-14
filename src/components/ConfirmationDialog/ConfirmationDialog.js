@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 
 export default function ConfirmationDialog(props) {
-  const { title, content, closeButtomContent, acceptButtomContent, handleClose, handleAccept, open } = props;
+  const { title, content, closeButtomContent, acceptButtomContent, acceptButtonDisabled, handleClose, handleAccept, open } = props;
   return (
     <Dialog
       open={open}
@@ -27,7 +27,8 @@ export default function ConfirmationDialog(props) {
           {closeButtomContent}
         </Button>
         <Button
-        variant="outlined"
+          disabled={acceptButtonDisabled}
+          variant="outlined"
           onClick={handleAccept}
           color="primary">
           {acceptButtomContent}

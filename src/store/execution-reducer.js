@@ -21,14 +21,8 @@ export const executionHelperReducer = (state = initState, action) => {
             }
             return newState;
         }
+        case COMPLETE_EXECUTION_REQUEST:
         case CANCELE_EXECUTION_REQUEST: {
-            const newState = {
-                ...state,
-                isExecutionRequsted: false
-            }
-            return newState;
-        }
-        case COMPLETE_EXECUTION_REQUEST: {
             const newState = {
                 ...state,
                 isExecutionRequsted: false

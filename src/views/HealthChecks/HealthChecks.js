@@ -13,7 +13,8 @@ import {
 
 import {
   requestHealthCheckRemoval,
-  cancelHealthCheckRemovalRequest
+  cancelHealthCheckRemovalRequest,
+  removeHealthCheck
 } from "../../store/health-checks-action.js"
 
 import {
@@ -88,7 +89,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function HealthChecks({ healthChecksPage, requestExecution, requestHealthCheckRemoval, cancelHealthCheckRemovalRequest }) {
+function HealthChecks({ httpCallResult, healthChecksPage, requestExecution,
+  requestHealthCheckRemoval, cancelHealthCheckRemovalRequest, removeHealthCheck }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -147,18 +149,23 @@ function HealthChecks({ healthChecksPage, requestExecution, requestHealthCheckRe
       <RunHealthCheckDialog />
       <ConfirmationDialog
         open={healthChecksPage.isHealthCheckRemovalRequsted}
+        acceptButtonDisabled={httpCallResult.isCallRequested}
         title="Delete Health Check"
         content="This action will delete the health check"
         closeButtomContent="Cancel"
         acceptButtomContent="Confirm"
         handleClose={() => cancelHealthCheckRemovalRequest()}
-        handleAccept={() => console.log("OLEG")}
+        handleAccept={() => removeHealthCheck(healthChecksPage.healthChecks[healthChecksPage.healthCheckIndex])}
       />
     </GridContainer>
   );
 }
 
 const mapStateToProps = state => ({
+  httpCallResult: state.httpCallResult,
   healthChecksPage: state.healthChecksPage
 });
-export default connect(mapStateToProps, { requestExecution, requestHealthCheckRemoval, cancelHealthCheckRemovalRequest })(HealthChecks);
+export default connect(mapStateToProps, {
+  requestExecution, requestHealthCheckRemoval,
+  cancelHealthCheckRemovalRequest, removeHealthCheck
+})(HealthChecks);
