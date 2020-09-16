@@ -17,7 +17,7 @@ export default function ConfirmationDialog(props) {
     >
       <DialogTitle >{title}</DialogTitle>
       <DialogContent dividers>
-        <Typography gutterBottom>
+        <Typography>
           {content}
         </Typography>
       </DialogContent>

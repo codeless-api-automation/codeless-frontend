@@ -68,13 +68,13 @@ function GeolocationSelect(props) {
     );
 }
 
-function RunHealthCheckDialog({ httpCallResult, executionHelper, healthChecksPage, canceleExecutionRequest, runExecution }) {
+function RunHealthCheckDialog({ httpCallResult, executionHelper, canceleExecutionRequest, runExecution }) {
 
     const [region, setRegion] = useState(executionHelper.defaultRegion);
 
     const handleRun = () => {
         runExecution({
-            healthChecks: [healthChecksPage.healthChecks[executionHelper.healthCheckIndex]],
+            healthChecks: [executionHelper.requestedHealthCheck],
             region: region
         });
     };

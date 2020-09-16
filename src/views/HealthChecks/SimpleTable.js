@@ -25,7 +25,7 @@ import {
   LastPage
 } from '@material-ui/icons';
 
-import OverflowTextContainer from './../../components/OverflowTextContainer/OverflowTextContainer';
+import OverflowTip from 'components/OverflowTip/OverflowTip';
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -133,28 +133,28 @@ export default function SimpleTable(props) {
           ).map((row, index) => (
             <TableRow key={index}>
               <TableCell>
-                <OverflowTextContainer text={row.json['name']} />
+                <OverflowTip originalValue={row.json['name']} />
               </TableCell>
               <TableCell>
                 {row.json['httpMethod']}
               </TableCell>
               <TableCell>
-                <OverflowTextContainer text={row.json['requestURL']} />
+                <OverflowTip originalValue={row.json['requestURL']} />
               </TableCell>
               <TableCell align="right" padding="none">
                 <Grid container direction="row-reverse">
                   <IconButton
-                    onClick={() => onRowDelete(index)}
+                    onClick={() => onRowDelete(row)}
                     color="primary">
                     <Delete fontSize="small" />
                   </IconButton>
                   <IconButton
-                    onClick={() => onRowEdit(index)}
+                    onClick={() => onRowEdit(row)}
                     color="primary">
                     <Edit fontSize="small" />
                   </IconButton>
                   <IconButton
-                    onClick={() => onRowExecute(index)}
+                    onClick={() => onRowExecute(row)}
                     color="primary">
                     <PlayArrow fontSize="small" />
                   </IconButton>

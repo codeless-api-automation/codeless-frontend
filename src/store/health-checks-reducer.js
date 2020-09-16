@@ -23,10 +23,10 @@ export const healthChecksReducer = (state = initState, action) => {
             return newHealthChecksState;
         }
         case REQUEST_HEALTH_CHECK_REMOVAL: {
-            const { healthCheckIndex } = payload;
+            const { healthCheck } = payload;
             const newHealthChecksState = {
                 ...state,
-                healthCheckIndex,
+                requestedHealthCheck: healthCheck,
                 isHealthCheckRemovalRequsted: true
             }
             return newHealthChecksState;

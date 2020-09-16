@@ -8,14 +8,14 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 
 import {
-  requestExecution
-} from "../../store/execution-action.js"
-
-import {
   requestHealthCheckRemoval,
   cancelHealthCheckRemovalRequest,
   removeHealthCheck
 } from "../../store/health-checks-action.js"
+
+import {
+  requestHealthCheckExecution
+} from "../../store/execution-action.js"
 
 import {
   AppBar,
@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function HealthChecks({ httpCallResult, healthChecksPage, requestExecution,
+function HealthChecks({ httpCallResult, healthChecksPage, requestHealthCheckExecution,
   requestHealthCheckRemoval, cancelHealthCheckRemovalRequest, removeHealthCheck }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -97,6 +97,10 @@ function HealthChecks({ httpCallResult, healthChecksPage, requestExecution,
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const getHealthCheckName = (healthCheck) => {
+    return healthCheck != null ? healthCheck.name : "";
+  }
 
   return (
     <GridContainer>
@@ -120,9 +124,9 @@ function HealthChecks({ httpCallResult, healthChecksPage, requestExecution,
               <div>
                 <Filter />
                 <SimpleTable
-                  onRowExecute={(rowIndex) => requestExecution(rowIndex)}
-                  onRowEdit={(rowIndex) => console.log("onRowEdit: " + rowIndex)}
-                  onRowDelete={(rowIndex) => requestHealthCheckRemoval(rowIndex)}
+                  onRowExecute={(row) => requestHealthCheckExecution(row)}
+                  onRowEdit={(row) => console.log("onRowEdit: " + row)}
+                  onRowDelete={(row) => requestHealthCheckRemoval(row)}
                   rows={healthChecksPage.healthChecks} />
               </div>
             }
@@ -145,17 +149,16 @@ function HealthChecks({ httpCallResult, healthChecksPage, requestExecution,
           </div>
         </GridItem>}
 
-
       <RunHealthCheckDialog />
       <ConfirmationDialog
         open={healthChecksPage.isHealthCheckRemovalRequsted}
         acceptButtonDisabled={httpCallResult.isCallRequested}
         title="Delete Health Check"
-        content="This action will delete the health check"
+        content={<>This action will delete the health check <strong>{getHealthCheckName(healthChecksPage.requestedHealthCheck)}</strong>. Are you sure?</>}
         closeButtomContent="Cancel"
         acceptButtomContent="Confirm"
         handleClose={() => cancelHealthCheckRemovalRequest()}
-        handleAccept={() => removeHealthCheck(healthChecksPage.healthChecks[healthChecksPage.healthCheckIndex])}
+        handleAccept={() => removeHealthCheck(healthChecksPage.requestedHealthCheck)}
       />
     </GridContainer>
   );
@@ -166,6 +169,6 @@ const mapStateToProps = state => ({
   healthChecksPage: state.healthChecksPage
 });
 export default connect(mapStateToProps, {
-  requestExecution, requestHealthCheckRemoval,
+  requestHealthCheckExecution, requestHealthCheckRemoval,
   cancelHealthCheckRemovalRequest, removeHealthCheck
 })(HealthChecks);

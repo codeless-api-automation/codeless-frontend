@@ -1,5 +1,5 @@
 import {
-    REQUEST_EXECUTION,
+    REQUEST_HEALTH_CHECK_EXECUTION,
     CANCELE_EXECUTION_REQUEST,
     COMPLETE_EXECUTION_REQUEST,
     SET_REGIONS
@@ -12,14 +12,15 @@ const initState = {
 export const executionHelperReducer = (state = initState, action) => {
     const { type, payload } = action;
     switch (type) {
-        case REQUEST_EXECUTION: {
-            const { healthCheckIndex } = payload;
-            const newState = {
+        case REQUEST_HEALTH_CHECK_EXECUTION: {
+            const { healthCheck } = payload;
+            const newHealthChecksState = {
                 ...state,
-                healthCheckIndex,
-                isExecutionRequsted: true
+                isExecutionRequsted: true,
+                requestedHealthCheck: healthCheck
             }
-            return newState;
+            console.log(newHealthChecksState)
+            return newHealthChecksState;
         }
         case COMPLETE_EXECUTION_REQUEST:
         case CANCELE_EXECUTION_REQUEST: {

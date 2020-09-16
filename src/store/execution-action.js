@@ -9,10 +9,10 @@ import {
     isCallFailed
 } from '../store/http-call-action';
 
-export const REQUEST_EXECUTION = 'REQUEST_EXECUTION';
-export const requestExecution = (healthCheckIndex) => ({
-    type: REQUEST_EXECUTION,
-    payload: { healthCheckIndex }
+export const REQUEST_HEALTH_CHECK_EXECUTION = 'REQUEST_HEALTH_CHECK_EXECUTION';
+export const requestHealthCheckExecution = (healthCheck) => ({
+    type: REQUEST_HEALTH_CHECK_EXECUTION,
+    payload: { healthCheck }
 })
 
 export const CANCELE_EXECUTION_REQUEST = 'CANCELE_EXECUTION_REQUEST';
@@ -61,6 +61,7 @@ export const runExecution = (execution) => {
             })
             .catch(error => {
                 console.log(error);
+                dispath(isCallRequested(false));
                 dispath(isCallFailed(true, ERROR_MESSAGE));
                 dispath(canceleExecutionRequest());
             });

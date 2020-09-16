@@ -6,9 +6,9 @@ import {
 } from './http-call-action';
 
 export const REQUEST_HEALTH_CHECK_REMOVAL = 'REQUEST_HEALTH_CHECK_REMOVAL';
-export const requestHealthCheckRemoval = (healthCheckIndex) => ({
+export const requestHealthCheckRemoval = (healthCheck) => ({
     type: REQUEST_HEALTH_CHECK_REMOVAL,
-    payload: { healthCheckIndex }
+    payload: { healthCheck }
 })
 
 export const CANCEL_HEALTH_CHECK_REMOVAL_REQUEST = 'CANCEL_HEALTH_CHECK_REMOVAL_REQUEST';
