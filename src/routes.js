@@ -29,11 +29,14 @@ export const dashboardRoutes = [
   }
 ];
 
-export const routesContainer = [
+export const otherRoutes = [
   {
-    path: "/health-checks/create",
-    name: "Create a health check",
+    path: "/health-checks/new",
+    name: "Health check",
     component: HealthCheck,
-    layout: "/general"
+    layout: "/general",
+    isStepBackAllowed: true
   }
 ];
+
+export const allRoutes = dashboardRoutes.concat(otherRoutes);

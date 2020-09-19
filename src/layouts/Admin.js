@@ -12,7 +12,8 @@ import Notifications from "features/notifications/Notifications.js";
 
 import {
   dashboardRoutes,
-  routesContainer
+  otherRoutes,
+  allRoutes
 } from "routes.js";
 
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
@@ -23,7 +24,7 @@ let ps;
 
 const switchRoutes = (
   <Switch>
-    {routesContainer.concat(dashboardRoutes).map((prop, key) => {
+    {otherRoutes.concat(dashboardRoutes).map((prop, key) => {
       if (prop.layout === "/general") {
         return (
           <Route
@@ -88,7 +89,7 @@ export default function Admin({ ...rest }) {
       />
       <div className={classes.mainPanel}>
         <Navbar
-          routes={dashboardRoutes}
+          routes={allRoutes}
           handleDrawerToggle={handleDrawerToggle}
           {...rest}
         />

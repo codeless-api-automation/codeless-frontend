@@ -22,7 +22,7 @@ import {
   createTest
 } from "../../store/test-action.js"
 
-import { CheckCircle, Cancel } from '@material-ui/icons';
+import { CheckCircleOutline } from '@material-ui/icons';
 
 
 import ComboBox from "components/Combobox/Combobox.js";
@@ -52,31 +52,9 @@ function Test({ test, validators,
   updateName, updateHttpMethod,
   updateRequestUrl, updateRequestBody,
   createTest, httpCallResult }) {
-
   return (
     <GridContainer>
-      <GridItem xs={12} sm={12} md={12}>
-        <Row container>
-          <RowItem item>
-            <Button
-              variant="outlined"
-              size="large"
-              startIcon={<Cancel />}>
-              Cancel
-              </Button>
-          </RowItem>
-          <RowItem item>
-            <Button
-              variant="outlined"
-              size="large"
-              color="primary"
-              disabled={httpCallResult.isCallRequested}
-              onClick={() => createTest({ test, validators })}
-              startIcon={<CheckCircle />}>
-              Create
-              </Button>
-          </RowItem>
-        </Row>
+      <GridItem xs={12}>
         <Grid container>
           <Row container>
             <RowItem item xs>
@@ -111,6 +89,18 @@ function Test({ test, validators,
                 }}
               />
             </RowItem>
+            <RowItem item style={{ display: "flex" }}>
+              <Button
+                size="large"
+                variant="outlined"
+                disabled={httpCallResult.isCallRequested}
+                onClick={() => createTest({ test, validators })}
+                startIcon={<CheckCircleOutline fontSize="inherit" />}
+              >
+                save
+              </Button>
+            </RowItem>
+
           </Row>
 
           <Grid container direction="row">

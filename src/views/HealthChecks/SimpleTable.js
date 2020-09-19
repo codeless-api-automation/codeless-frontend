@@ -12,7 +12,8 @@ import {
   TablePagination,
   TableRow,
   IconButton,
-  Grid
+  Grid,
+  Paper
 } from '@material-ui/core';
 
 import {
@@ -116,78 +117,80 @@ export default function SimpleTable(props) {
     setPage(0);
   };
   return (
-    <TableContainer>
-      <Table className={classes.table} size="small" style={{ tableLayout: 'fixed' }}>
-        <TableHead>
-          <TableRow>
-            <TableCell style={{ width: '20%' }}>Name</TableCell>
-            <TableCell style={{ width: '10%' }}>Method</TableCell>
-            <TableCell style={{ width: '50%' }}>URL</TableCell>
-            <TableCell style={{ width: '20%' }} align="right"></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {(rowsPerPage > 0
-            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : rows
-          ).map((row, index) => (
-            <TableRow key={index}>
-              <TableCell>
-                <OverflowTip originalValue={row.json['name']} />
-              </TableCell>
-              <TableCell>
-                {row.json['httpMethod']}
-              </TableCell>
-              <TableCell>
-                <OverflowTip originalValue={row.json['requestURL']} />
-              </TableCell>
-              <TableCell align="right" padding="none">
-                <Grid container direction="row-reverse">
-                  <IconButton
-                    onClick={() => onRowDelete(row)}
-                    color="primary">
-                    <Delete fontSize="small" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => onRowEdit(row)}
-                    color="primary">
-                    <Edit fontSize="small" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => onRowExecute(row)}
-                    color="primary">
-                    <PlayArrow fontSize="small" />
-                  </IconButton>
-                </Grid>
-              </TableCell>
+    <Paper elevation={3}>
+      <TableContainer>
+        <Table className={classes.table} style={{ tableLayout: 'fixed' }}>
+          <TableHead>
+            <TableRow>
+              <TableCell style={{ width: '20%' }}>Name</TableCell>
+              <TableCell style={{ width: '10%' }}>Method</TableCell>
+              <TableCell style={{ width: '50%' }}>URL</TableCell>
+              <TableCell style={{ width: '20%' }} align="right"></TableCell>
             </TableRow>
-          ))}
+          </TableHead>
+          <TableBody>
+            {(rowsPerPage > 0
+              ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              : rows
+            ).map((row, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  <OverflowTip originalValue={row.json['name']} />
+                </TableCell>
+                <TableCell>
+                  {row.json['httpMethod']}
+                </TableCell>
+                <TableCell>
+                  <OverflowTip originalValue={row.json['requestURL']} />
+                </TableCell>
+                <TableCell align="right" padding="none">
+                  <Grid container direction="row-reverse">
+                    <IconButton
+                      onClick={() => onRowDelete(row)}
+                      color="primary">
+                      <Delete fontSize="small" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => onRowEdit(row)}
+                      color="primary">
+                      <Edit fontSize="small" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => onRowExecute(row)}
+                      color="primary">
+                      <PlayArrow fontSize="small" />
+                    </IconButton>
+                  </Grid>
+                </TableCell>
+              </TableRow>
+            ))}
 
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={6} />
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[10, 25, { label: 'All', value: -1 }]}
+                colSpan={4}
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: { 'aria-label': 'rows per page' },
+                  native: true,
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
             </TableRow>
-          )}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[10, 25, { label: 'All', value: -1 }]}
-              colSpan={4}
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              SelectProps={{
-                inputProps: { 'aria-label': 'rows per page' },
-                native: true,
-              }}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
+          </TableFooter>
+        </Table>
+      </TableContainer>
+    </Paper>
   );
 }

@@ -19,7 +19,6 @@ export const executionHelperReducer = (state = initState, action) => {
                 isExecutionRequsted: true,
                 requestedHealthCheck: healthCheck
             }
-            console.log(newHealthChecksState)
             return newHealthChecksState;
         }
         case COMPLETE_EXECUTION_REQUEST:
