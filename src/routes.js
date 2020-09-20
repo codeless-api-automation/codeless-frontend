@@ -1,5 +1,7 @@
 import React from "react";
 
+import * as componentsPaths from "constants/ComponentsPaths.js";
+
 import { Icon } from "@material-ui/core";
 
 import Dashboard from "@material-ui/icons/Dashboard";
@@ -35,7 +37,7 @@ export const otherRoutes = [
     name: "Health check",
     component: HealthCheck,
     layout: "/general",
-    isStepBackAllowed: true
+    previousRoute: componentsPaths.VIEW_HEALTH_CHECKS
   }
 ];
 

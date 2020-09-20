@@ -40,9 +40,9 @@ export const updateRequestBody = requestBody => ({
     payload: { requestBody }
 })
 
-export const CLEAN_ALL_TEST_ATTRIBUTES = 'CLEAN_ALL_TEST_ATTRIBUTES';
-export const cleanAllTestAttributes = () => ({
-    type: CLEAN_ALL_TEST_ATTRIBUTES
+export const CLEAN_TEST_ATTRIBUTES = 'CLEAN_TEST_ATTRIBUTES';
+export const cleanTestAttributes = () => ({
+    type: CLEAN_TEST_ATTRIBUTES
 })
 
 const SUCCESS_MESSAGE = "The health check has been created successfully.";
@@ -59,8 +59,6 @@ export const createTest = (test) => {
                 dispath(isCallRequested(false));
                 if (response.status === 201) {
                     dispath(isCallSuccessful(true, SUCCESS_MESSAGE));
-                    dispath(cleanAllTestAttributes())
-                    dispath(cleanValidators())
                     dispath(redirect(componentsPaths.VIEW_HEALTH_CHECKS))
                 } else {
                     dispath(isCallFailed(true, ERROR_MESSAGE));
@@ -70,5 +68,12 @@ export const createTest = (test) => {
                 console.log(error);
                 dispath(isCallFailed(true, ERROR_MESSAGE));
             });
+    }
+}
+
+export const cleanAllTestAttributes = () => {
+    return (dispath) => {
+        dispath(cleanTestAttributes())
+        dispath(cleanValidators())
     }
 }

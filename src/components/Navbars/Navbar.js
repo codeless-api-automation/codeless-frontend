@@ -1,4 +1,6 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import {
@@ -21,28 +23,34 @@ const useStyles = makeStyles(styles);
 
 export default function Header(props) {
   const classes = useStyles();
-  function makeBrand() {
-    let name;
-    props.routes.map(prop => {
-      console.log(window.location.href)
-      if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
-        name = prop.name;
-      }
-      return null;
-    });
-    return name;
+
+  function getRouteInfo() {
+    return props.routes.find(prop => window.location.href.endsWith(prop.layout + prop.path));
   }
+  let { name, previousRoute } = getRouteInfo();
+
   const { color } = props;
   const appBarClasses = classNames({
     [" " + classes[color]]: color
   });
+
+  const history = useHistory();
+  const changeRoute = (newPath) => {
+    history.push(newPath);
+  }
+
   return (
     <AppBar className={classes.appBar + appBarClasses}>
       <Toolbar className={classes.container}>
         <div className={classes.flex}>
-          <Button color="transparent" className={classes.title}>
-            <ArrowBackIos />
-            {makeBrand()}
+          <Button
+            color="transparent"
+            className={classes.title}
+            onClick={() => changeRoute(previousRoute)}>
+            {previousRoute !== undefined &&
+              <ArrowBackIos />
+            }
+            {name}
           </Button>
         </div>
         <Hidden smDown implementation="css">

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 
-import { withRedirectAtSuccessfulHttpCall } from "../../hoc/withRedirectAtSuccessfulHttpCall";
+import { withRedirect } from "../../hoc/withRedirect";
 
 import { createStyles, withStyles } from "@material-ui/core/styles";
 import {
@@ -19,11 +19,11 @@ import {
   updateHttpMethod,
   updateRequestUrl,
   updateRequestBody,
-  createTest
+  createTest,
+  cleanAllTestAttributes
 } from "../../store/test-action.js"
 
 import { CheckCircleOutline } from '@material-ui/icons';
-
 
 import ComboBox from "components/Combobox/Combobox.js";
 import CustomTabs from "components/CustomTabs/CustomTabs.js";
@@ -51,7 +51,12 @@ const RowItem = withStyles(() =>
 function Test({ test, validators,
   updateName, updateHttpMethod,
   updateRequestUrl, updateRequestBody,
-  createTest, httpCallResult }) {
+  createTest, httpCallResult, cleanAllTestAttributes }) {
+
+  useEffect(() => {
+    return () => cleanAllTestAttributes()
+  }, [cleanAllTestAttributes])
+
   return (
     <GridContainer>
       <GridItem xs={12}>
@@ -74,7 +79,7 @@ function Test({ test, validators,
               <ComboBox
                 value={test.httpMethod}
                 options={["GET", "POST", "PUT", "DELETE"]}
-                onChange={updateHttpMethod}
+                onChange={newValue => updateHttpMethod(newValue)}
               />
             </RowItem>
             <RowItem item xs>
@@ -144,5 +149,5 @@ const mapStateToProps = state => ({
   redirectTo: state.utilEvents.redirectTo
 });
 export default compose(
-  connect(mapStateToProps, { updateName, updateHttpMethod, updateRequestUrl, updateRequestBody, createTest }),
-  withRedirectAtSuccessfulHttpCall)(Test);
+  connect(mapStateToProps, { updateName, updateHttpMethod, updateRequestUrl, updateRequestBody, createTest, cleanAllTestAttributes }),
+  withRedirect)(Test);

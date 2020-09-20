@@ -3,7 +3,7 @@ import {
     UPDATE_HTTP_METHOD,
     UPDATE_REQUEST_URL,
     UPDATE_REQUEST_BODY,
-    CLEAN_ALL_TEST_ATTRIBUTES
+    CLEAN_TEST_ATTRIBUTES
 } from './test-action'
 
 const initialTestState = {
@@ -45,7 +45,7 @@ export const testReducer = (state = initialTestState, action) => {
             }
             return test;
         }
-        case CLEAN_ALL_TEST_ATTRIBUTES: {
+        case CLEAN_TEST_ATTRIBUTES: {
             return initialTestState;
         }
         default:
