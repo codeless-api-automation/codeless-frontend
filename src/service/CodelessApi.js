@@ -36,6 +36,9 @@ export const executionResource = {
         };
         return instance.post(EXECUTION_RESOURCE, requestBodyExecution);
     },
+    getExecutions(page, size) {
+        return instance.get(EXECUTION_RESOURCE + `?page=${page}&size=${size}`);
+    },
 }
 
 const REGIONS_RESOURCE = "regions";

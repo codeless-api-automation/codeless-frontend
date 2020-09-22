@@ -2,7 +2,7 @@ import {
     REQUEST_HEALTH_CHECK_EXECUTION,
     CANCELE_EXECUTION_REQUEST,
     COMPLETE_EXECUTION_REQUEST,
-    SET_REGIONS
+    SET_REGIONS, SET_EXECUTIONS
 } from './execution-action'
 
 const initState = {
@@ -35,6 +35,14 @@ export const executionHelperReducer = (state = initState, action) => {
                 ...state,
                 regions,
                 defaultRegion: getDefaultRegio(regions),
+            }
+            return newState;
+        }
+        case SET_EXECUTIONS: {
+            const { executions } = payload;
+            const newState = {
+                ...state,
+                executions: executions
             }
             return newState;
         }

@@ -6,27 +6,21 @@ import {
   Table,
   TableHead,
   TableBody,
+  TableRow,
   TableCell,
   TableContainer,
   TableFooter,
   TablePagination,
-  TableRow,
   IconButton,
-  Grid,
   Paper
 } from '@material-ui/core';
 
 import {
-  Edit,
-  Delete,
-  PlayArrow,
   FirstPage,
   KeyboardArrowLeft,
   KeyboardArrowRight,
   LastPage
 } from '@material-ui/icons';
-
-import OverflowTip from 'components/OverflowTip/OverflowTip';
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -99,8 +93,8 @@ const useStyles2 = makeStyles({
   },
 });
 
-export default function SimpleTable(props) {
-  const { rows, onRowExecute, onRowDelete, onRowEdit } = props;
+export default function CustomTable(props) {
+  const { rows, colSpan, headerRow, bodyRow } = props;
 
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
@@ -121,50 +115,15 @@ export default function SimpleTable(props) {
       <TableContainer>
         <Table className={classes.table} style={{ tableLayout: 'fixed' }}>
           <TableHead>
-            <TableRow>
-              <TableCell style={{ width: '20%' }}>Name</TableCell>
-              <TableCell style={{ width: '10%' }}>Method</TableCell>
-              <TableCell style={{ width: '50%' }}>URL</TableCell>
-              <TableCell style={{ width: '20%' }} align="right"></TableCell>
-            </TableRow>
+            {headerRow}
           </TableHead>
           <TableBody>
             {(rowsPerPage > 0
               ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               : rows
             ).map((row, index) => (
-              <TableRow key={index}>
-                <TableCell>
-                  <OverflowTip originalValue={row.json['name']} />
-                </TableCell>
-                <TableCell>
-                  {row.json['httpMethod']}
-                </TableCell>
-                <TableCell>
-                  <OverflowTip originalValue={row.json['requestURL']} />
-                </TableCell>
-                <TableCell align="right" padding="none">
-                  <Grid container direction="row-reverse">
-                    <IconButton
-                      onClick={() => onRowDelete(row)}
-                      color="primary">
-                      <Delete fontSize="small" />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => onRowEdit(row)}
-                      color="primary">
-                      <Edit fontSize="small" />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => onRowExecute(row)}
-                      color="primary">
-                      <PlayArrow fontSize="small" />
-                    </IconButton>
-                  </Grid>
-                </TableCell>
-              </TableRow>
+              React.cloneElement(bodyRow, { row: row, key: index }, null)
             ))}
-
             {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>
                 <TableCell colSpan={6} />
@@ -175,7 +134,7 @@ export default function SimpleTable(props) {
             <TableRow>
               <TablePagination
                 rowsPerPageOptions={[10, 25, { label: 'All', value: -1 }]}
-                colSpan={4}
+                colSpan={colSpan}
                 count={rows.length}
                 rowsPerPage={rowsPerPage}
                 page={page}

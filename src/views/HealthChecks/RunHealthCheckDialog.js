@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from "react-redux";
+
 import {
     runExecution,
     canceleExecutionRequest
@@ -15,19 +16,7 @@ import {
 } from '@material-ui/core';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
-
-function countryToFlag(isoCode) {
-    return typeof String.fromCodePoint !== 'undefined'
-        ? isoCode
-            .toUpperCase()
-            .replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
-        : isoCode;
-}
-
-function buildRegion(region) {
-    return region.city + ", " + region.country;
-}
+import Region from 'components/Region/Region.js';
 
 function GeolocationSelect(props) {
 
@@ -44,12 +33,7 @@ function GeolocationSelect(props) {
             options={regions}
             autoHighlight
             getOptionLabel={(option) => buildRegion(option)}
-            renderOption={(option) => (
-                <React.Fragment>
-                    <span>{countryToFlag(option.iso2)}</span>
-                    {buildRegion(option)}
-                </React.Fragment>
-            )}
+            renderOption={(option) => (<Region region={option} />)}
             value={value}
             onChange={(event, newValue) => onChange(newValue)}
             renderInput={(params) => (

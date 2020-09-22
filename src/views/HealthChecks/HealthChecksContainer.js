@@ -22,7 +22,7 @@ function HealthChecksContainer({ getHealthChecks, getRegions, redirect }) {
         redirect(null);
         getRegions();
         getHealthChecks();
-    })
+    }, [redirect, getRegions, getHealthChecks])
 
     return <HealthChecks />;
 
