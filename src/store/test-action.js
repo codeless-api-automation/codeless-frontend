@@ -53,7 +53,7 @@ export const createTest = (test) => {
             dispath(setErrorMessage("Name, request URL and at least one verification are required!"));
             return;
         }
-        isCallRequested(true);
+        dispath(isCallRequested(true));
         testResource.createTest(test)
             .then(response => {
                 dispath(isCallRequested(false));

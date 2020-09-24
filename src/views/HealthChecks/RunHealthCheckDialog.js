@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { connect } from "react-redux";
 
 import {
+    buildRegion
+} from "utils/Formatter"
+
+import {
     runExecution,
     canceleExecutionRequest
 } from "../../store/execution-action.js"
@@ -16,7 +20,7 @@ import {
 } from '@material-ui/core';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import Region from 'components/Region/Region.js';
+import Region from '../../components/Region/Region.js';
 
 function GeolocationSelect(props) {
 
