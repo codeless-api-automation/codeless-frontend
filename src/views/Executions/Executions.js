@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
 
-import _ from 'lodash'
-
 import {
     buildRegion
 } from "utils/Formatter"
@@ -76,19 +74,16 @@ function Executions({ executionHelper }) {
     return (
         <GridContainer>
             <GridItem xs={12}>
-                {!_.isEmpty(executionHelper.executions) &&
-
-                    <div>
-                        <CustomTable
-                            rows={executionHelper.executions}
-                            colSpan={4}
-                            headerRow={<HeaderRow />}
-                            bodyRow={<BodyRow
-                                onRowShowDetails={(row) => console.log("onRowShowDetails: " + row)}
-                                onRowDelete={(row) => console.log("onRowDelete: " + row)}
-                            />} />
-                    </div>
-                }
+                <div>
+                    <CustomTable
+                        rows={executionHelper.executions}
+                        colSpan={4}
+                        headerRow={<HeaderRow />}
+                        bodyRow={<BodyRow
+                            onRowShowDetails={(row) => console.log("onRowShowDetails: " + row)}
+                            onRowDelete={(row) => console.log("onRowDelete: " + row)}
+                        />} />
+                </div>
             </GridItem>
         </GridContainer>
     );

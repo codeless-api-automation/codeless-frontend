@@ -6,6 +6,7 @@ import {
 } from './execution-action'
 
 const initState = {
+    executions: [],
     isExecutionRequsted: false
 }
 

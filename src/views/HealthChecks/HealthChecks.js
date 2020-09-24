@@ -1,10 +1,5 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import { connect } from "react-redux";
-
-import { makeStyles } from '@material-ui/core/styles';
-
-import _ from 'lodash'
 
 import {
   requestHealthCheckRemoval,
@@ -18,8 +13,6 @@ import {
 
 import {
   Grid,
-  Paper,
-  Link,
   IconButton,
   TableRow,
   TableCell
@@ -31,8 +24,6 @@ import {
   PlayArrow
 } from '@material-ui/icons';
 
-import * as componentsPaths from "constants/ComponentsPaths";
-
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 
@@ -42,17 +33,6 @@ import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog
 
 import TablePanel from './TablePanel';
 import RunHealthCheckDialog from './RunHealthCheckDialog';
-
-import {
-  Alert,
-  AlertTitle
-} from '@material-ui/lab';
-
-const useStyles = makeStyles((theme) => ({
-  alertArea: {
-    marginTop: '16px'
-  }
-}));
 
 function HeaderRow() {
   return (
@@ -105,8 +85,6 @@ function BodyRow(props) {
 function HealthChecks({ httpCallResult, healthChecksPage, requestHealthCheckExecution,
   requestHealthCheckRemoval, cancelHealthCheckRemovalRequest, removeHealthCheck }) {
 
-  const classes = useStyles();
-
   const getHealthCheckName = (healthCheck) => {
     return healthCheck != null ? healthCheck.name : "";
   }
@@ -114,34 +92,19 @@ function HealthChecks({ httpCallResult, healthChecksPage, requestHealthCheckExec
   return (
     <GridContainer>
       <GridItem xs={12}>
-        {!_.isEmpty(healthChecksPage.healthChecks) &&
-          <div>
-            <TablePanel />
-            <CustomTable
-              rows={healthChecksPage.healthChecks}
-              colSpan={4}
-              headerRow={<HeaderRow />}
-              bodyRow={<BodyRow
-                onRowExecute={(row) => requestHealthCheckExecution(row)}
-                onRowEdit={(row) => console.log("onRowEdit: " + row)}
-                onRowDelete={(row) => requestHealthCheckRemoval(row)}
-              />} />
-          </div>
-        }
+        <div>
+          <TablePanel />
+          <CustomTable
+            rows={healthChecksPage.healthChecks}
+            colSpan={4}
+            headerRow={<HeaderRow />}
+            bodyRow={<BodyRow
+              onRowExecute={(row) => requestHealthCheckExecution(row)}
+              onRowEdit={(row) => console.log("onRowEdit: " + row)}
+              onRowDelete={(row) => requestHealthCheckRemoval(row)}
+            />} />
+        </div>
       </GridItem>
-
-      {_.isEmpty(healthChecksPage.healthChecks) &&
-        <GridItem>
-          <div className={classes.alertArea}>
-            <Paper elevation={3} square>
-              <Alert severity="warning">
-                <AlertTitle>This is no created health check, yet!</AlertTitle>
-                <AlertTitle>You can <Link component={RouterLink} to={componentsPaths.VIEW_HEALTH_CHECK}>create health check</Link>
-                </AlertTitle>
-              </Alert>
-            </Paper>
-          </div>
-        </GridItem>}
 
       <RunHealthCheckDialog />
       <ConfirmationDialog

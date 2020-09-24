@@ -8,6 +8,7 @@ import {
 } from './health-checks-action'
 
 const initState = {
+    healthChecks: [],
     isHealthCheckRemovalRequsted: false
 }
 
