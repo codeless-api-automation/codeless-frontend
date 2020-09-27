@@ -18,6 +18,15 @@ export const testResource = {
         };
         return instance.post(TEST_RESOURCE, requestBodyTest);
     },
+    updateTest(testToUpdate) {
+        let { id, test, validators } = testToUpdate;
+        let requestBodyTest = {
+            id,
+            name: test.name,
+            json: { ...test, validators }
+        };
+        return instance.put(TEST_RESOURCE, requestBodyTest);
+    },
     getTest(name) {
         return instance.get(TEST_RESOURCE + '/' + name);
     },
@@ -42,7 +51,7 @@ export const executionResource = {
 }
 
 const REGIONS_RESOURCE = "regions";
-export const regionsResource = {    
+export const regionsResource = {
     getRegions() {
         return instance.get(REGIONS_RESOURCE);
     }
