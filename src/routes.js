@@ -10,9 +10,12 @@ import {
 } from "@material-ui/icons";
 
 import DashboardPage from "views/Dashboard/Dashboard.js";
+
 import HealthChecksContainer from "views/HealthChecks/HealthChecksContainer.js"
 import HealthCheck from "views/HealthChecks/HealthCheck.js"
-import ExecutionsContainer from "views/Executions/ExecutionsContainer";
+
+import ExecutionsContainer from "views/Executions/ExecutionsContainer.js";
+import Execution from "views/Executions/Execution.js";
 
 function Heartbeat() {
   return <Icon className="fa fa-heartbeat" style={{ float: 'left', marginRight: '15px' }} />;
@@ -49,6 +52,13 @@ export const otherRoutes = [
     component: HealthCheck,
     layout: "/general",
     previousRoute: componentsPaths.VIEW_HEALTH_CHECKS
+  },
+  {
+    path: "/execution",
+    name: "Execution",
+    component: Execution,
+    layout: "/general",
+    previousRoute: componentsPaths.VIEW_EXECUTIONS
   }
 ];
 
