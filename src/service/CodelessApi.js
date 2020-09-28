@@ -40,6 +40,7 @@ export const executionResource = {
     createExecution(execution) {
         let { region, healthChecks } = execution;
         let requestBodyExecution = {
+            name: healthChecks[0].name,
             region: region,
             tests: [...healthChecks]
         };

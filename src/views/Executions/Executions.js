@@ -43,7 +43,7 @@ function BodyRow(props) {
                 {row.executionId}
             </TableCell>
             <TableCell>
-                <OverflowTip originalValue={row.tests[0].name} />
+                <OverflowTip originalValue={row.name} />
             </TableCell>
             <TableCell>
                 {buildRegion(row.region)}
@@ -77,7 +77,7 @@ function Executions({ executionHelper }) {
                 <div>
                     <CustomTable
                         rows={executionHelper.executions}
-                        colSpan={4}
+                        colSpan={5}
                         headerRow={<HeaderRow />}
                         bodyRow={<BodyRow
                             onRowShowDetails={(row) => console.log("onRowShowDetails: " + row)}
