@@ -27,3 +27,9 @@ export const CLEAN_VALIDATORS = 'CLEAN_VALIDATORS';
 export const cleanValidators = () => ({
     type: CLEAN_VALIDATORS
 })
+
+export const UPDATE_VALIDATORS = 'UPDATE_VALIDATORS';
+export const updateValidators = (validators) => ({
+    type: UPDATE_VALIDATORS,
+    payload: { validators }
+})

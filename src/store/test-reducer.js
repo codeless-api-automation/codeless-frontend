@@ -3,7 +3,8 @@ import {
     UPDATE_HTTP_METHOD,
     UPDATE_REQUEST_URL,
     UPDATE_REQUEST_BODY,
-    CLEAN_TEST_ATTRIBUTES
+    CLEAN_TEST_ATTRIBUTES, 
+    UPDATE_ID
 } from './test-action'
 
 const initialTestState = {
@@ -13,6 +14,14 @@ const initialTestState = {
 export const testReducer = (state = initialTestState, action) => {
     const { type, payload } = action;
     switch (type) {
+        case UPDATE_ID: {
+            const { id } = payload;
+            let test = {
+                ...state,
+                id
+            }
+            return test;
+        }
         case UPDATE_NAME: {
             const { name } = payload;
             let test = {
@@ -30,7 +39,7 @@ export const testReducer = (state = initialTestState, action) => {
             return test;
         }
         case UPDATE_REQUEST_URL: {
-            const { requestURL} = payload;
+            const { requestURL } = payload;
             let test = {
                 ...state,
                 requestURL
@@ -38,7 +47,7 @@ export const testReducer = (state = initialTestState, action) => {
             return test;
         }
         case UPDATE_REQUEST_BODY: {
-            const { requestBody} = payload;
+            const { requestBody } = payload;
             let test = {
                 ...state,
                 requestBody

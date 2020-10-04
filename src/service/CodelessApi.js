@@ -19,9 +19,9 @@ export const testResource = {
         return instance.post(TEST_RESOURCE, requestBodyTest);
     },
     updateTest(testToUpdate) {
-        let { id, test, validators } = testToUpdate;
+        let { test, validators } = testToUpdate;
         let requestBodyTest = {
-            id,
+            id: test.id,
             name: test.name,
             json: { ...test, validators }
         };

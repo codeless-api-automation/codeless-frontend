@@ -1,11 +1,18 @@
 import React from 'react';
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+
+import * as componentsPaths from "constants/ComponentsPaths.js";
 
 import {
   requestHealthCheckRemoval,
   cancelHealthCheckRemovalRequest,
   removeHealthCheck
 } from "../../store/health-checks-action.js"
+
+import {
+  updateAllTestAttributes
+} from "../../store/test-action.js"
 
 import {
   requestHealthCheckExecution
@@ -83,7 +90,15 @@ function BodyRow(props) {
 
 
 function HealthChecks({ httpCallResult, healthChecksPage, requestHealthCheckExecution,
-  requestHealthCheckRemoval, cancelHealthCheckRemovalRequest, removeHealthCheck }) {
+  requestHealthCheckRemoval, cancelHealthCheckRemovalRequest, removeHealthCheck, updateAllTestAttributes }) {
+
+  const history = useHistory();
+
+  const requestHealthCheckEditing = (healthCheck) => {
+    let { json, id } = healthCheck;
+    updateAllTestAttributes({ ...json, id });
+    history.push(componentsPaths.VIEW_HEALTH_CHECK);
+  }
 
   const getHealthCheckName = (healthCheck) => {
     return healthCheck != null ? healthCheck.name : "";
@@ -100,7 +115,7 @@ function HealthChecks({ httpCallResult, healthChecksPage, requestHealthCheckExec
             headerRow={<HeaderRow />}
             bodyRow={<BodyRow
               onRowExecute={(row) => requestHealthCheckExecution(row)}
-              onRowEdit={(row) => console.log("onRowEdit: " + row)}
+              onRowEdit={(row) => requestHealthCheckEditing(row)}
               onRowDelete={(row) => requestHealthCheckRemoval(row)}
             />} />
         </div>
@@ -127,5 +142,6 @@ const mapStateToProps = state => ({
 });
 export default connect(mapStateToProps, {
   requestHealthCheckExecution, requestHealthCheckRemoval,
-  cancelHealthCheckRemovalRequest, removeHealthCheck
+  cancelHealthCheckRemovalRequest, removeHealthCheck,
+  updateAllTestAttributes
 })(HealthChecks);

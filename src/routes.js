@@ -47,7 +47,7 @@ export const dashboardRoutes = [
 
 export const otherRoutes = [
   {
-    path: "/health-checks/new",
+    path: "/health-checks/save",
     name: "Health check",
     component: HealthCheck,
     layout: "/general",

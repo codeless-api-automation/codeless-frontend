@@ -12,7 +12,7 @@ import {
 import {
   IconButton,
   OutlinedInput,
-  InputAdornment, 
+  InputAdornment,
   Grid,
   Paper
 } from '@material-ui/core';
@@ -49,7 +49,8 @@ export default function TablePanel() {
         </Grid>
         <Grid item>
           <Grid container justify="center" alignItems="center">
-            <Link to={componentsPaths.VIEW_HEALTH_CHECK}>
+            <Link
+              to={componentsPaths.VIEW_HEALTH_CHECK}>
               <IconButton color="primary">
                 <AddCircleOutline fontSize="large" />
               </IconButton>

@@ -4,7 +4,8 @@ import {
     REMOVE_VALIDATOR,
     UPDATE_PREDICATE,
     UPDATE_INPUT_FIELD,
-    CLEAN_VALIDATORS
+    CLEAN_VALIDATORS,
+    UPDATE_VALIDATORS
 } from './validator-action'
 
 export const validatorReducer = (state = [], action) => {
@@ -50,6 +51,10 @@ export const validatorReducer = (state = [], action) => {
             newValidators[validatorIndexNeededUpdate] = copiedValidatorWithUpdatedInputFields
 
             return newValidators;
+        }
+        case UPDATE_VALIDATORS: {
+            const { validators } = payload;
+            return validators;
         }
         case CLEAN_VALIDATORS: {
             return [];

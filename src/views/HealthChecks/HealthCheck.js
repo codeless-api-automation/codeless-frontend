@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 
 import { withRedirect } from "../../hoc/withRedirect";
-
 import { createStyles, withStyles } from "@material-ui/core/styles";
 import {
   Grid,
@@ -19,7 +18,7 @@ import {
   updateHttpMethod,
   updateRequestUrl,
   updateRequestBody,
-  createTest,
+  saveTest,
   cleanAllTestAttributes
 } from "../../store/test-action.js"
 
@@ -51,7 +50,8 @@ const RowItem = withStyles(() =>
 function Test({ test, validators,
   updateName, updateHttpMethod,
   updateRequestUrl, updateRequestBody,
-  createTest, httpCallResult, cleanAllTestAttributes }) {
+  saveTest, httpCallResult,
+  cleanAllTestAttributes }) {
 
   useEffect(() => {
     return () => cleanAllTestAttributes()
@@ -99,7 +99,7 @@ function Test({ test, validators,
                 size="large"
                 variant="outlined"
                 disabled={httpCallResult.isCallRequested}
-                onClick={() => createTest({ test, validators })}
+                onClick={() => saveTest({ test, validators })}
                 startIcon={<CheckCircleOutline fontSize="inherit" />}
               >
                 save
@@ -149,5 +149,5 @@ const mapStateToProps = state => ({
   redirectTo: state.utilEvents.redirectTo
 });
 export default compose(
-  connect(mapStateToProps, { updateName, updateHttpMethod, updateRequestUrl, updateRequestBody, createTest, cleanAllTestAttributes }),
+  connect(mapStateToProps, { updateName, updateHttpMethod, updateRequestUrl, updateRequestBody, saveTest, cleanAllTestAttributes }),
   withRedirect)(Test);

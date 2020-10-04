@@ -7,7 +7,8 @@ import {
     isCallFailed
 } from '../store/http-call-action';
 import {
-    cleanValidators
+    cleanValidators,
+    updateValidators
 } from '../store/validator-action';
 import {
     redirect,
@@ -15,6 +16,12 @@ import {
 } from './util-action.js';
 
 import * as componentsPaths from './../constants/ComponentsPaths';
+
+export const UPDATE_ID = 'UPDATE_ID';
+export const updateId = (id) => ({
+    type: UPDATE_ID,
+    payload: { id }
+});
 
 export const UPDATE_NAME = 'UPDATE_NAME';
 export const updateName = (name) => ({
@@ -45,8 +52,30 @@ export const cleanTestAttributes = () => ({
     type: CLEAN_TEST_ATTRIBUTES
 })
 
-const SUCCESS_MESSAGE = "The health check has been created successfully.";
-const ERROR_MESSAGE = "The health check has not been created.";
+const SUCCESS_MESSAGE_UPDATE = "The health check has been updated successfully.";
+const ERROR_MESSAGE_UPDATE = "The health check has not updated.";
+export const updateTest = (test) => {
+    return (dispath) => {
+        dispath(isCallRequested(true));
+        testResource.updateTest(test)
+            .then(response => {
+                dispath(isCallRequested(false));
+                if (response.status === 200) {
+                    dispath(isCallSuccessful(true, SUCCESS_MESSAGE_UPDATE));
+                    dispath(redirect(componentsPaths.VIEW_HEALTH_CHECKS))
+                } else {
+                    dispath(isCallFailed(true, ERROR_MESSAGE_UPDATE));
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                dispath(isCallFailed(true, ERROR_MESSAGE_UPDATE));
+            });
+    }
+}
+
+const SUCCESS_MESSAGE_CREATE = "The health check has been created successfully.";
+const ERROR_MESSAGE_CREATE = "The health check has not been created.";
 export const createTest = (test) => {
     return (dispath) => {
         if (_.isEmpty(test.test['name']) || _.isEmpty(test.test['requestURL'])) {
@@ -58,16 +87,23 @@ export const createTest = (test) => {
             .then(response => {
                 dispath(isCallRequested(false));
                 if (response.status === 201) {
-                    dispath(isCallSuccessful(true, SUCCESS_MESSAGE));
+                    dispath(isCallSuccessful(true, SUCCESS_MESSAGE_CREATE));
                     dispath(redirect(componentsPaths.VIEW_HEALTH_CHECKS))
                 } else {
-                    dispath(isCallFailed(true, ERROR_MESSAGE));
+                    dispath(isCallFailed(true, ERROR_MESSAGE_CREATE));
                 }
             })
             .catch(error => {
                 console.log(error);
-                dispath(isCallFailed(true, ERROR_MESSAGE));
+                dispath(isCallFailed(true, ERROR_MESSAGE_CREATE));
             });
+    }
+}
+
+export const saveTest = (test) => {
+    return (dispath) => {
+        console.log(test)
+        test.test.id === undefined ? dispath(createTest(test)) : dispath(updateTest(test))
     }
 }
 
@@ -75,5 +111,18 @@ export const cleanAllTestAttributes = () => {
     return (dispath) => {
         dispath(cleanTestAttributes())
         dispath(cleanValidators())
+    }
+}
+
+export const updateAllTestAttributes = (test) => {
+    console.log(test)
+    return (dispath) => {
+        let { id, name, httpMethod, requestURL, requestBody, validators } = test;
+        dispath(updateId(id))
+        dispath(updateName(name))
+        dispath(updateHttpMethod(httpMethod))
+        dispath(updateRequestUrl(requestURL))
+        dispath(updateRequestBody(requestBody))
+        dispath(updateValidators(validators))
     }
 }
