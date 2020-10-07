@@ -1,5 +1,9 @@
 import React from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
+
+import GridItem from "components/Grid/GridItem.js";
+import GridContainer from "components/Grid/GridContainer.js";
+
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
@@ -25,18 +29,8 @@ const AntTab = withStyles((theme) => ({
     selected: {},
 }))((props) => <Tab disableRipple {...props} />);
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-    },
-    padding: {
-        padding: theme.spacing(3),
-    }
-}));
-
 export default function Execution() {
 
-    const classes = useStyles();
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
@@ -44,13 +38,15 @@ export default function Execution() {
     };
 
     return (
-        <div className={classes.root}>
-            <div>
-                <AntTabs value={value} onChange={handleChange}>
-                    <AntTab label="Summary" />
-                    <AntTab label="Logs" />
-                </AntTabs>
-            </div>
-        </div>
+        <GridContainer>
+            <GridItem xs={12}>
+                <div>
+                    <AntTabs value={value} onChange={handleChange}>
+                        <AntTab label="Summary" />
+                        <AntTab label="Logs" />
+                    </AntTabs>
+                </div>
+            </GridItem>
+        </GridContainer>
     );
 }

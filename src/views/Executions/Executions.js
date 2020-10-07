@@ -1,5 +1,8 @@
 import React from 'react';
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+
+import * as componentsPaths from "constants/ComponentsPaths.js";
 
 import {
     buildRegion
@@ -71,6 +74,13 @@ function BodyRow(props) {
 
 
 function Executions({ executionHelper }) {
+
+    const history = useHistory();
+
+    const requestExecutionViewing = (execution) => {
+        history.push(componentsPaths.VIEW_EXECUTION);
+    }
+
     return (
         <GridContainer>
             <GridItem xs={12}>
@@ -80,7 +90,7 @@ function Executions({ executionHelper }) {
                         colSpan={5}
                         headerRow={<HeaderRow />}
                         bodyRow={<BodyRow
-                            onRowShowDetails={(row) => console.log("onRowShowDetails: " + row)}
+                            onRowShowDetails={(row) => requestExecutionViewing(row)}
                             onRowDelete={(row) => console.log("onRowDelete: " + row)}
                         />} />
                 </div>

@@ -6,7 +6,8 @@ import { Icon } from "@material-ui/core";
 
 import {
   Dashboard,
-  InsertChartOutlined
+  InsertChartOutlined,
+  SettingsApplications
 } from "@material-ui/icons";
 
 import DashboardPage from "views/Dashboard/Dashboard.js";
@@ -16,6 +17,8 @@ import HealthCheck from "views/HealthChecks/HealthCheck.js"
 
 import ExecutionsContainer from "views/Executions/ExecutionsContainer.js";
 import Execution from "views/Executions/Execution.js";
+
+import Variables from "views/Variables/Variables.js";
 
 function Heartbeat() {
   return <Icon className="fa fa-heartbeat" style={{ float: 'left', marginRight: '15px' }} />;
@@ -42,6 +45,13 @@ export const dashboardRoutes = [
     icon: InsertChartOutlined,
     component: ExecutionsContainer,
     layout: "/general"
+  },
+  {
+    path: "/variables",
+    name: "Variables",
+    icon: SettingsApplications,
+    component: Variables,
+    layout: "/general"
   }
 ];
 
@@ -54,7 +64,7 @@ export const otherRoutes = [
     previousRoute: componentsPaths.VIEW_HEALTH_CHECKS
   },
   {
-    path: "/execution",
+    path: "/executions/view",
     name: "Execution",
     component: Execution,
     layout: "/general",

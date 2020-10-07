@@ -42,7 +42,8 @@ export const executionResource = {
         let requestBodyExecution = {
             name: healthChecks[0].name,
             region: region,
-            tests: [...healthChecks]
+            tests: [...healthChecks],
+            type: "MANUAL_EXECUTION"
         };
         return instance.post(EXECUTION_RESOURCE, requestBodyExecution);
     },
