@@ -52,7 +52,7 @@ function BodyRow(props) {
                 {buildRegion(row.region)}
             </TableCell>
             <TableCell>
-                {"running"}
+                {row.executionStatus}
             </TableCell>
             <TableCell align="right" padding="none">
                 <Grid container direction="row-reverse">
