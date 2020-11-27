@@ -26,6 +26,8 @@ import GridContainer from "components/Grid/GridContainer.js";
 import OverflowTip from 'components/OverflowTip/OverflowTip';
 import CustomTable from 'components/Table/CustomTable.js';
 
+import TablePanel from './TablePanel';
+
 function HeaderRow() {
     return (
         <TableRow>
@@ -40,6 +42,7 @@ function HeaderRow() {
 
 function BodyRow(props) {
     let { key, row, onRowDelete, onRowShowDetails } = props;
+    let disabledActionButton = row.executionStatus === 'PENDING'
     return (
         <TableRow key={key}>
             <TableCell>
@@ -57,11 +60,13 @@ function BodyRow(props) {
             <TableCell align="right" padding="none">
                 <Grid container direction="row-reverse">
                     <IconButton
+                        disabled={disabledActionButton}
                         onClick={() => onRowDelete(row)}
                         color="primary">
                         <Delete fontSize="small" />
                     </IconButton>
                     <IconButton
+                        disabled={disabledActionButton}
                         onClick={() => onRowShowDetails(row)}
                         color="primary">
                         <Info fontSize="small" />
@@ -85,6 +90,7 @@ function Executions({ executionHelper }) {
         <GridContainer>
             <GridItem xs={12}>
                 <div>
+                    <TablePanel />
                     <CustomTable
                         rows={executionHelper.executions}
                         colSpan={5}

@@ -126,7 +126,7 @@ export default function CustomTable(props) {
             ))}
             {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={6} />
+                <TableCell colSpan={colSpan} />
               </TableRow>
             )}
           </TableBody>
