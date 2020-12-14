@@ -36,6 +36,7 @@ export const testResource = {
 }
 
 const EXECUTION_RESOURCE = "executions";
+const EXECUTION_RESULT_RESOURCE = "/results";
 export const executionResource = {
     createExecution(execution) {
         let { region, healthChecks } = execution;
@@ -49,6 +50,9 @@ export const executionResource = {
     },
     getExecutions(page, size) {
         return instance.get(EXECUTION_RESOURCE + `?page=${page}&size=${size}`);
+    },
+    getExecutionResult(executionId) {
+        return instance.get(EXECUTION_RESOURCE + `/${executionId}` + EXECUTION_RESULT_RESOURCE);
     },
 }
 

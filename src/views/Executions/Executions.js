@@ -28,6 +28,10 @@ import CustomTable from 'components/Table/CustomTable.js';
 
 import TablePanel from './TablePanel';
 
+import {
+    getExecutionResult
+} from "../../store/execution-action.js"
+
 function HeaderRow() {
     return (
         <TableRow>
@@ -78,11 +82,12 @@ function BodyRow(props) {
 }
 
 
-function Executions({ executionHelper }) {
+function Executions({ executionHelper, getExecutionResult }) {
 
     const history = useHistory();
 
     const requestExecutionViewing = (execution) => {
+        getExecutionResult(execution.executionId);
         history.push(componentsPaths.VIEW_EXECUTION);
     }
 
@@ -108,4 +113,4 @@ function Executions({ executionHelper }) {
 const mapStateToProps = state => ({
     executionHelper: state.executionHelper,
 });
-export default connect(mapStateToProps, {})(Executions);
+export default connect(mapStateToProps, { getExecutionResult })(Executions);

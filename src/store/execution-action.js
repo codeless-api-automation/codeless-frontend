@@ -31,6 +31,12 @@ export const setExecutions = (executions) => ({
     payload: { executions }
 })
 
+export const SET_EXECUTION_RESULT = 'SET_EXECUTION_RESULT';
+export const setExecutionResult = (executionResult) => ({
+    type: SET_EXECUTION_RESULT,
+    payload: { executionResult }
+})
+
 export const SET_REGIONS = 'SET_REGIONS';
 export const setRegions = (regions) => ({
     type: SET_REGIONS,
@@ -54,13 +60,13 @@ export const getExecutions = (page = 0, size = 20) => {
         dispath(isCallRequested(true));
         executionResource.getExecutions(page, size)
             .then(response => {
-                dispath(isCallRequested(false));
                 if (response.status === 200) {
                     dispath(isCallSuccessful(true));
                     dispath(setExecutions(response.data.items));
                 } else {
                     dispath(isCallFailed(true));
                 }
+                dispath(isCallRequested(false));
             })
             .catch(error => {
                 console.log(error);
@@ -91,6 +97,27 @@ export const runExecution = (execution) => {
                 dispath(isCallRequested(false));
                 dispath(isCallFailed(true, ERROR_MESSAGE));
                 dispath(canceleExecutionRequest());
+            });
+    }
+}
+
+export const getExecutionResult = (executionId) => {
+    return (dispath) => {
+        dispath(isCallRequested(true));
+        executionResource.getExecutionResult(executionId)
+            .then(response => {
+                if (response.status === 200) {
+                    dispath(isCallSuccessful(true));
+                    dispath(setExecutionResult(response.data))
+                } else {
+                    dispath(isCallFailed(true));
+                }
+                dispath(isCallRequested(false));
+            })
+            .catch(error => {
+                console.log(error);
+                dispath(isCallRequested(false));
+                dispath(isCallFailed(true));
             });
     }
 }

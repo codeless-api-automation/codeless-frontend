@@ -2,12 +2,13 @@ import {
     REQUEST_HEALTH_CHECK_EXECUTION,
     CANCELE_EXECUTION_REQUEST,
     COMPLETE_EXECUTION_REQUEST,
-    SET_REGIONS, SET_EXECUTIONS
+    SET_REGIONS, SET_EXECUTIONS,
+    SET_EXECUTION_RESULT
 } from './execution-action'
 
 const initState = {
     executions: [],
-    isExecutionRequsted: false
+    isExecutionRequsted: false,
 }
 
 export const executionHelperReducer = (state = initState, action) => {
@@ -44,6 +45,14 @@ export const executionHelperReducer = (state = initState, action) => {
             const newState = {
                 ...state,
                 executions: executions
+            }
+            return newState;
+        }
+        case SET_EXECUTION_RESULT: {
+            const { executionResult } = payload;
+            const newState = {
+                ...state,
+                executionResult: executionResult
             }
             return newState;
         }
