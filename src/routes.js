@@ -7,7 +7,7 @@ import { Icon } from "@material-ui/core";
 import {
   Dashboard,
   InsertChartOutlined,
-  Schedule
+  ScheduleOutlined
 } from "@material-ui/icons";
 
 import DashboardPage from "views/Dashboard/Dashboard.js";
@@ -19,6 +19,7 @@ import ExecutionsContainer from "views/Executions/ExecutionsContainer.js";
 import Execution from "views/Executions/Execution.js";
 
 import Schedules from "views/Schedules/Schedules";
+import Schedule from "views/Schedules/Schedule";
 
 function Heartbeat() {
   return <Icon className="fa fa-heartbeat" style={{ float: 'left', marginRight: '15px' }} />;
@@ -49,7 +50,7 @@ export const dashboardRoutes = [
   {
     path: "/schedules",
     name: "Schedules",
-    icon: Schedule,
+    icon: ScheduleOutlined,
     component: Schedules,
     layout: "/general"
   }
@@ -69,6 +70,13 @@ export const otherRoutes = [
     component: Execution,
     layout: "/general",
     previousRoute: componentsPaths.VIEW_EXECUTIONS
+  },
+  {
+    path: "/schedules/schedule",
+    name: "Schedule",
+    component: Schedule,
+    layout: "/general",
+    previousRoute: componentsPaths.VIEW_SCHEDULES
   }
 ];
 
