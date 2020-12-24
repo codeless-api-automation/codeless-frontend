@@ -23,9 +23,6 @@ import Schedules from "views/Schedules/Schedules";
 function Heartbeat() {
   return <Icon className="fa fa-heartbeat" style={{ float: 'left', marginRight: '15px' }} />;
 }
-function Clock() {
-  return <Icon className="fa fa-clock" style={{ float: 'left', marginRight: '15px' }} />;
-}
 
 export const dashboardRoutes = [
   {
@@ -52,7 +49,7 @@ export const dashboardRoutes = [
   {
     path: "/schedules",
     name: "Schedules",
-    icon: Clock,
+    icon: Schedule,
     component: Schedules,
     layout: "/general"
   }
