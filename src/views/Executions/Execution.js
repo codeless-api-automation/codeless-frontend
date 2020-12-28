@@ -97,22 +97,24 @@ function CustomizedAccordions(props) {
     setExpanded(newExpanded ? panel : false);
   };
 
+  const RESPONSE_BODY_LOG_ENTRY = "Response Body:";
+
   const getSummary = (row) => {
-    if (row.includes("Response Body:")) {
-      return "Response Body: please expand to see the response body"
+    if (row.includes(RESPONSE_BODY_LOG_ENTRY)) {
+      return "Response Body"
     } else {
       return row;
     }
   }
 
   const getDetails = (row) => {
-    if (row.includes("Response Body:")) {
-      return row.split('Response Body:')[1];
+    if (row.includes(RESPONSE_BODY_LOG_ENTRY)) {
+      return row.split(RESPONSE_BODY_LOG_ENTRY)[1];
     }
   }
 
   const isDetailsEnabled = (row) => {
-    return row.includes("Response Body:");
+    return row.includes(RESPONSE_BODY_LOG_ENTRY);
   }
 
   return (

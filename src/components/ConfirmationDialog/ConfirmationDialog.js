@@ -28,7 +28,7 @@ export default function ConfirmationDialog(props) {
         </Button>
         <Button
           disabled={acceptButtonDisabled}
-          variant="outlined"
+          variant="contained"
           onClick={handleAccept}
           color="primary">
           {acceptButtomContent}

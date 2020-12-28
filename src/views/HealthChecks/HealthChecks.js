@@ -28,7 +28,8 @@ import {
 import {
   Edit,
   Delete,
-  PlayArrow
+  PlayArrow,
+  ScheduleOutlined
 } from '@material-ui/icons';
 
 import GridItem from "components/Grid/GridItem.js";
@@ -53,7 +54,7 @@ function HeaderRow() {
 }
 
 function BodyRow(props) {
-  let { key, row, onRowDelete, onRowEdit, onRowExecute } = props;
+  let { key, row, onRowDelete, onRowEdit, onRowExecute, onRowSchedule } = props;
   return (
     <TableRow key={key}>
       <TableCell>
@@ -76,6 +77,11 @@ function BodyRow(props) {
             onClick={() => onRowEdit(row)}
             color="primary">
             <Edit fontSize="small" />
+          </IconButton>
+          <IconButton
+            onClick={() => onRowSchedule(row)}
+            color="primary">
+            <ScheduleOutlined fontSize="small" />
           </IconButton>
           <IconButton
             onClick={() => onRowExecute(row)}
@@ -115,6 +121,7 @@ function HealthChecks({ httpCallResult, healthChecksPage, requestHealthCheckExec
             headerRow={<HeaderRow />}
             bodyRow={<BodyRow
               onRowExecute={(row) => requestHealthCheckExecution(row)}
+              onRowSchedule={(row) => console.log(row)}
               onRowEdit={(row) => requestHealthCheckEditing(row)}
               onRowDelete={(row) => requestHealthCheckRemoval(row)}
             />} />

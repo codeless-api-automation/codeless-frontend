@@ -19,10 +19,6 @@ import {
     TextField
 } from '@material-ui/core';
 
-import {
-    Schedule
-} from '@material-ui/icons';
-
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Region from '../../components/Region/Region.js';
 
@@ -87,13 +83,6 @@ function RunHealthCheckDialog({ httpCallResult, executionHelper, canceleExecutio
                     value={region}
                     onChange={setRegion}
                 />
-                <Button
-                    variant="outlined"
-                    fullWidth={true}
-                    startIcon={<Schedule />}
-                >
-                    Schedule
-                </Button>
             </DialogContent>
             <DialogActions>
                 <Button
@@ -102,7 +91,7 @@ function RunHealthCheckDialog({ httpCallResult, executionHelper, canceleExecutio
                     Cancel
                 </Button>
                 <Button
-                    variant="outlined"
+                    variant="contained"
                     disabled={httpCallResult.isCallRequested}
                     onClick={handleRun}
                     color="primary">

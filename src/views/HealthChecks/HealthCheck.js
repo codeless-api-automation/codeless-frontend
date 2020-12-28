@@ -107,7 +107,6 @@ function Test({ test, validators,
             </RowItem>
 
           </Row>
-
           <Grid container direction="row">
             <CustomTabs
               title=""
@@ -136,7 +135,10 @@ function Test({ test, validators,
               ]}
             />
           </Grid>
+
+
         </Grid>
+
       </GridItem>
     </GridContainer>
   );
