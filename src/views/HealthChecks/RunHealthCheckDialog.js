@@ -2,10 +2,6 @@ import React, { useState } from 'react';
 import { connect } from "react-redux";
 
 import {
-    buildRegion
-} from "utils/Formatter"
-
-import {
     runExecution,
     canceleExecutionRequest
 } from "../../store/execution-action.js"
@@ -15,50 +11,14 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogTitle,
-    TextField
+    DialogTitle
 } from '@material-ui/core';
 
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import Region from '../../components/Region/Region.js';
-
-function GeolocationSelect(props) {
-
-    const { regions, value } = props;
-
-    const onChange = newValue => {
-        props.onChange(newValue);
-    };
-
-    return (
-        <Autocomplete
-            disableClearable
-            style={{ width: 300 }}
-            options={regions}
-            autoHighlight
-            getOptionLabel={(option) => buildRegion(option)}
-            renderOption={(option) => (<Region region={option} />)}
-            value={value}
-            onChange={(event, newValue) => onChange(newValue)}
-            renderInput={(params) => (
-                <TextField
-                    {...params}
-                    margin="dense"
-                    label="Geolocation"
-                    variant="outlined"
-                    inputProps={{
-                        ...params.inputProps,
-                        autoComplete: 'new-password',
-                    }}
-                />
-            )}
-        />
-    );
-}
+import GeolocationSelect from "../../components/GeolocationSelect/GeolocationSelect"
 
 function RunHealthCheckDialog({ httpCallResult, executionHelper, canceleExecutionRequest, runExecution }) {
 
-    const [region, setRegion] = useState(executionHelper.defaultRegion);
+    const [region, setRegion] = useState(null);
 
     const handleRun = () => {
         runExecution({
@@ -80,8 +40,8 @@ function RunHealthCheckDialog({ httpCallResult, executionHelper, canceleExecutio
             <DialogContent>
                 <GeolocationSelect
                     regions={executionHelper.regions}
-                    value={region}
-                    onChange={setRegion}
+                    regionShownByDefault={executionHelper.defaultRegion}
+                    onChange={(region) => setRegion(region)}
                 />
             </DialogContent>
             <DialogActions>
