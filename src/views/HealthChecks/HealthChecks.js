@@ -19,6 +19,10 @@ import {
 } from "../../store/execution-action.js"
 
 import {
+  requestHealthCheckSchedule
+} from "../../store/schedule-action.js"
+
+import {
   Grid,
   IconButton,
   TableRow,
@@ -96,14 +100,20 @@ function BodyRow(props) {
 
 
 function HealthChecks({ httpCallResult, healthChecksPage, requestHealthCheckExecution,
-  requestHealthCheckRemoval, cancelHealthCheckRemovalRequest, removeHealthCheck, updateAllTestAttributes }) {
+  requestHealthCheckRemoval, cancelHealthCheckRemovalRequest, removeHealthCheck, updateAllTestAttributes,
+  requestHealthCheckSchedule }) {
 
   const history = useHistory();
 
-  const requestHealthCheckEditing = (healthCheck) => {
+  const onRowEdit = (healthCheck) => {
     let { json, id } = healthCheck;
     updateAllTestAttributes({ ...json, id });
     history.push(componentsPaths.VIEW_HEALTH_CHECK);
+  }
+
+  const onRowSchedule = (healthCheck) => {
+    requestHealthCheckSchedule(healthCheck);
+    history.push(componentsPaths.VIEW_SCHEDULE);
   }
 
   const getHealthCheckName = (healthCheck) => {
@@ -121,8 +131,8 @@ function HealthChecks({ httpCallResult, healthChecksPage, requestHealthCheckExec
             headerRow={<HeaderRow />}
             bodyRow={<BodyRow
               onRowExecute={(row) => requestHealthCheckExecution(row)}
-              onRowSchedule={(row) => console.log(row)}
-              onRowEdit={(row) => requestHealthCheckEditing(row)}
+              onRowSchedule={(row) => onRowSchedule(row)}
+              onRowEdit={(row) => onRowEdit(row)}
               onRowDelete={(row) => requestHealthCheckRemoval(row)}
             />} />
         </div>
@@ -150,5 +160,5 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   requestHealthCheckExecution, requestHealthCheckRemoval,
   cancelHealthCheckRemovalRequest, removeHealthCheck,
-  updateAllTestAttributes
+  updateAllTestAttributes, requestHealthCheckSchedule
 })(HealthChecks);

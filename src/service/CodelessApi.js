@@ -56,6 +56,22 @@ export const executionResource = {
     },
 }
 
+const SCHEDULE_RESOURCE = "schedules";
+export const scheduleResource = {
+    createSchedule(schedule) {
+        let { scheduleName, region, healthChecks } = schedule;
+        let requestBody = {
+            scheduleName: scheduleName,
+            region: region,
+            tests: [...healthChecks]
+        };
+        return instance.post(SCHEDULE_RESOURCE, requestBody);
+    },
+    getSchedules(page, size) {
+        return instance.get(SCHEDULE_RESOURCE + `?page=${page}&size=${size}`);
+    }
+}
+
 const REGIONS_RESOURCE = "regions";
 export const regionsResource = {
     getRegions() {

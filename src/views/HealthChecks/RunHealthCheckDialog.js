@@ -43,7 +43,7 @@ function RunHealthCheckDialog({ httpCallResult, executionHelper, canceleExecutio
                     textFieldParams={{ margin: "dense" }}
                     regions={executionHelper.regions}
                     regionShownByDefault={executionHelper.defaultRegion}
-                    onChange={(region) => setRegion(region)}
+                    onChange={(event) => setRegion(event.target.value)}
                 />
             </DialogContent>
             <DialogActions>
@@ -65,7 +65,6 @@ function RunHealthCheckDialog({ httpCallResult, executionHelper, canceleExecutio
 }
 
 const mapStateToProps = state => ({
-    healthChecksPage: state.healthChecksPage,
     executionHelper: state.executionHelper,
     httpCallResult: state.httpCallResult
 });

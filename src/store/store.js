@@ -6,6 +6,8 @@ import { httpCallReducer } from './http-call-reducer';
 import { healthChecksReducer } from './health-checks-reducer';
 import { utilReducer } from './util-reducer';
 import { executionHelperReducer } from './execution-reducer';
+import { scheduleReducer } from './schedule-reducer';
+
 
 
 const reducers = {
@@ -14,7 +16,8 @@ const reducers = {
     testPage: testReducer,
     healthChecksPage: healthChecksReducer,
     utilEvents: utilReducer,
-    executionHelper: executionHelperReducer 
+    executionHelper: executionHelperReducer,
+    scheduleHelper: scheduleReducer
 };
 
 const rootReducer = combineReducers(reducers);

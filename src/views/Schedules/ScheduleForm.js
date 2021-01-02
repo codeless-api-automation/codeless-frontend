@@ -1,4 +1,6 @@
 import React from 'react'
+import { connect } from "react-redux";
+
 import { Grid, } from '@material-ui/core';
 import Controls from "../../components/Controls/Controls";
 import { useForm, Form } from '../../components/useForm';
@@ -6,7 +8,6 @@ import { useForm, Form } from '../../components/useForm';
 import GeolocationSelect from "../../components/GeolocationSelect/GeolocationSelect"
 
 const initialFValues = {
-    id: 0,
     healthCheckName: 'Verify my service',
     scheduleName: '',
     runFrequency: '',
@@ -17,7 +18,6 @@ const initialFValues = {
     defaultRegion: {},
     isNotFollowingRedirect: true,
     isSslValidationDisabled: true
-
 }
 
 function FormRow(props) {
@@ -28,7 +28,7 @@ function FormRow(props) {
     );
 }
 
-export default function ScheduleForm() {
+function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult }) {
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -208,9 +208,12 @@ export default function ScheduleForm() {
                     row={
                         <Grid item xs={4}>
                             <GeolocationSelect
-                                autocompleteParams={{ fullWidth: true }}
-                                regions={values.regions}
-                                regionShownByDefault={values.defaultRegion}
+                                autocompleteParams={{
+                                    fullWidth: true,
+                                    name: "region"
+                                }}
+                                regions={executionHelper.regions}
+                                regionShownByDefault={executionHelper.defaultRegion}
                                 onChange={handleInputChange}
                             />
                         </Grid>
@@ -255,6 +258,7 @@ export default function ScheduleForm() {
                             text="RESET"
                             onClick={resetForm} />
                         <Controls.Button
+                            disabled={httpCallResult.isCallRequested}
                             type="submit"
                             text="SAVE" />
                     </Grid>
@@ -264,3 +268,10 @@ export default function ScheduleForm() {
         </Form >
     )
 }
+
+const mapStateToProps = state => ({
+    scheduleHelper: state.scheduleHelper,
+    executionHelper: state.executionHelper,
+    httpCallResult: state.httpCallResult
+});
+export default connect(mapStateToProps, {})(ScheduleForm);

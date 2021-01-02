@@ -18,8 +18,14 @@ export default function GeolocationSelect(props) {
 
     const onChangeInternal = newValue => {
         setRegion(newValue);
-        onChange(newValue);
+        onChange(convertToDefEventPara(autocompleteParams.name, newValue));
     };
+
+    const convertToDefEventPara = (name, value) => ({
+        target: {
+            name, value
+        }
+    })
 
     return (
         <Autocomplete
