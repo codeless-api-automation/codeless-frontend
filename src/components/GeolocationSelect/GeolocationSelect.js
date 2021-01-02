@@ -12,7 +12,7 @@ import Region from './Region.js';
 
 export default function GeolocationSelect(props) {
 
-    const { regionShownByDefault, regions, onChange } = props;
+    const { regionShownByDefault, regions, onChange, autocompleteParams, textFieldParams } = props;
 
     const [region, setRegion] = useState(regionShownByDefault);
 
@@ -23,7 +23,7 @@ export default function GeolocationSelect(props) {
 
     return (
         <Autocomplete
-            style={{ width: 300 }}
+            {...autocompleteParams}
             options={regions}
             disableClearable
             getOptionLabel={(option) => buildRegion(option)}
@@ -33,12 +33,12 @@ export default function GeolocationSelect(props) {
             renderInput={(params) => (
                 <TextField
                     {...params}
-                    margin="dense"
                     label="Geolocation"
                     variant="outlined"
                     inputProps={{
                         ...params.inputProps
                     }}
+                    {...textFieldParams}
                 />
             )}
         />

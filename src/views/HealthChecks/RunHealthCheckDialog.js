@@ -39,6 +39,8 @@ function RunHealthCheckDialog({ httpCallResult, executionHelper, canceleExecutio
             <DialogTitle>{"Run Health Check"}</DialogTitle>
             <DialogContent>
                 <GeolocationSelect
+                    autocompleteParams={{ style: { width: 300 } }}
+                    textFieldParams={{ margin: "dense" }}
                     regions={executionHelper.regions}
                     regionShownByDefault={executionHelper.defaultRegion}
                     onChange={(region) => setRegion(region)}

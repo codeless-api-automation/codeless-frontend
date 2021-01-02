@@ -3,6 +3,8 @@ import { Grid, } from '@material-ui/core';
 import Controls from "../../components/Controls/Controls";
 import { useForm, Form } from '../../components/useForm';
 
+import GeolocationSelect from "../../components/GeolocationSelect/GeolocationSelect"
+
 const initialFValues = {
     id: 0,
     healthCheckName: 'Verify my service',
@@ -11,9 +13,19 @@ const initialFValues = {
     hourTimer: '',
     weekTimer: '',
     time: '',
+    regions: [],
+    defaultRegion: {},
     isNotFollowingRedirect: true,
     isSslValidationDisabled: true
 
+}
+
+function FormRow(props) {
+    return (
+        <Grid container item xs={12} spacing={3}>
+            {props.row}
+        </Grid>
+    );
 }
 
 export default function ScheduleForm() {
@@ -107,104 +119,147 @@ export default function ScheduleForm() {
         <Form onSubmit={handleSubmit}>
             <Grid container spacing={1}>
 
-                <Grid item xs={12}>
-                    <Controls.Input
-                        name="healthCheckName"
-                        label="Health check name"
-                        value={values.healthCheckName}
-                        onChange={handleInputChange}
-                        error={errors.healthCheckName}
-                        InputProps={{
-                            readOnly: true
-                        }}
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <Controls.Input
-                        name="scheduleName"
-                        label="Schedule name"
-                        value={values.scheduleName}
-                        onChange={handleInputChange}
-                        error={errors.scheduleName}
-                    />
-                </Grid>
-
-                <Grid item xs>
-                    <Controls.Select
-                        name="runFrequency"
-                        label="Run frequency"
-                        value={values.runFrequency}
-                        onChange={handleInputChange}
-                        options={getRunFrequency()}
-                        error={errors.runFrequency}
-                    />
-                </Grid>
-
-                <Grid item xs>
-                    {values.runFrequency === "2" &&
-                        <Controls.Select
-                            name="hourTimer"
-                            label="Hour Timer"
-                            value={values.hourTimer}
-                            onChange={handleInputChange}
-                            options={getHourTimer()}
-                            error={errors.hourTimer}
-                        />
+                <FormRow
+                    row={
+                        <Grid item xs={12}>
+                            <Controls.Input
+                                name="scheduleName"
+                                label="Schedule name"
+                                value={values.scheduleName}
+                                onChange={handleInputChange}
+                                error={errors.scheduleName}
+                            />
+                        </Grid>
                     }
-                    {values.runFrequency === "3" &&
-                        <Controls.Select
-                            name="weekTimer"
-                            label="Week Timer"
-                            value={values.weekTimer}
-                            onChange={handleInputChange}
-                            options={getWeekTimer()}
-                            error={errors.weekTimer}
-                        />
+                />
+
+                <FormRow
+                    row={
+                        <Grid item xs={12}>
+                            <Controls.Input
+                                name="healthCheckName"
+                                label="Health check name"
+                                value={values.healthCheckName}
+                                onChange={handleInputChange}
+                                error={errors.healthCheckName}
+                                InputProps={{
+                                    readOnly: true
+                                }}
+                            />
+                        </Grid>
                     }
-                </Grid>
+                />
 
-                <Grid item xs>
-                    {values.runFrequency === "3" &&
-                        <Controls.Select
-                            name="time"
-                            label="Time"
-                            value={values.time}
-                            onChange={handleInputChange}
-                            options={getTime()}
-                            error={errors.time}
-                        />
+                <FormRow
+                    row={
+                        <>
+                            <Grid item xs={4}>
+                                <Controls.Select
+                                    name="runFrequency"
+                                    label="Run frequency"
+                                    value={values.runFrequency}
+                                    onChange={handleInputChange}
+                                    options={getRunFrequency()}
+                                    error={errors.runFrequency}
+                                />
+                            </Grid>
+
+                            <Grid item xs={4}>
+                                {values.runFrequency === "2" &&
+                                    <Controls.Select
+                                        name="hourTimer"
+                                        label="Hour Timer"
+                                        value={values.hourTimer}
+                                        onChange={handleInputChange}
+                                        options={getHourTimer()}
+                                        error={errors.hourTimer}
+                                    />
+                                }
+                                {values.runFrequency === "3" &&
+                                    <Controls.Select
+                                        name="weekTimer"
+                                        label="Week Timer"
+                                        value={values.weekTimer}
+                                        onChange={handleInputChange}
+                                        options={getWeekTimer()}
+                                        error={errors.weekTimer}
+                                    />
+                                }
+                            </Grid>
+
+                            <Grid item xs={4} >
+                                {values.runFrequency === "3" &&
+                                    <Controls.Select
+                                        name="time"
+                                        label="Time"
+                                        value={values.time}
+                                        onChange={handleInputChange}
+                                        options={getTime()}
+                                        error={errors.time}
+                                    />
+                                }
+                            </Grid>
+                        </>
                     }
+                />
+
+
+                <FormRow
+                    row={
+                        <Grid item xs={4}>
+                            <GeolocationSelect
+                                autocompleteParams={{ fullWidth: true }}
+                                regions={values.regions}
+                                regionShownByDefault={values.defaultRegion}
+                                onChange={handleInputChange}
+                            />
+                        </Grid>
+                    }
+                />
+
+
+                <FormRow
+                    row={
+                        <Grid item xs={3}>
+                            <Controls.Checkbox
+                                name="isNotFollowingRedirect"
+                                label="Don't follow redirect"
+                                value={values.isNotFollowingRedirect}
+                                onChange={handleInputChange}
+                            />
+                        </Grid>
+                    }
+                />
+
+                <FormRow
+                    row={
+                        <Grid item xs={3}>
+                            <Controls.Checkbox
+                                name="isSslValidationDisabled"
+                                label="Disable SSL validation"
+                                value={values.isSslValidationDisabled}
+                                onChange={handleInputChange}
+                            />
+                        </Grid>
+                    }
+                />
+
+                <Grid
+                    container
+                    direction="column"
+                    alignItems="flex-end"
+                >
+                    <Grid item xs={12}>
+                        <Controls.Button
+                            variant="outlined"
+                            text="RESET"
+                            onClick={resetForm} />
+                        <Controls.Button
+                            type="submit"
+                            text="SAVE" />
+                    </Grid>
                 </Grid>
 
-                <Grid item xs={12}>
-                    <Controls.Checkbox
-                        name="isNotFollowingRedirect"
-                        label="Don't follow redirect"
-                        value={values.isNotFollowingRedirect}
-                        onChange={handleInputChange}
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <Controls.Checkbox
-                        name="isSslValidationDisabled"
-                        label="Disable SSL validation"
-                        value={values.isSslValidationDisabled}
-                        onChange={handleInputChange}
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <Controls.Button
-                        style={{ marginLeft: "8px" }}
-                        variant="outlined"
-                        text="RESET"
-                        onClick={resetForm} />
-                    <Controls.Button
-                        type="submit"
-                        text="SAVE" />
-                </Grid>
             </Grid>
         </Form >
     )
