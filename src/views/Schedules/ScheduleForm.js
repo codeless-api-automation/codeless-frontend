@@ -7,18 +7,74 @@ import { useForm, Form } from '../../components/useForm';
 
 import GeolocationSelect from "../../components/GeolocationSelect/GeolocationSelect"
 
-const initialFValues = {
-    healthCheckName: 'Verify my service',
-    scheduleName: '',
-    runFrequency: '',
-    hourTimer: '',
-    weekTimer: '',
-    time: '',
-    regions: [],
-    defaultRegion: {},
-    isNotFollowingRedirect: true,
-    isSslValidationDisabled: true
-}
+import {
+    runSchedule
+} from "../../store/schedule-action.js"
+
+
+const getRunFrequency = () => ([
+    { id: 'MINUTE_TIMER', title: 'Minute Timer' },
+    { id: 'HOUR_TIMER', title: 'Hour Timer' },
+    { id: 'WEEK_TIMER', title: 'Week Timer' }
+])
+
+const getMinuteTimer = () => ([
+    { id: '*/5', title: 'Every 5 Minutes' },
+    { id: '*/10', title: 'Every 10 Minutes' },
+    { id: '*/15', title: 'Every 15 Minutes' },
+    { id: '*/30', title: 'Every 30 Minutes' },
+    { id: '*/45', title: 'Every 45 Minutes' }
+])
+
+const getHourTimer = () => ([
+    { id: '*/1', title: 'Every Hour' },
+    { id: '*/2', title: 'Every 2 Hours' },
+    { id: '*/3', title: 'Every 3 Hours' },
+    { id: '*/4', title: 'Every 4 Hours' },
+    { id: '*/6', title: 'Every 6 Hours' },
+    { id: '*/12', title: 'Every 12 Hours' }
+])
+
+const getWeekTimer = () => ([
+    { id: '*/1', title: 'Every Day' },
+    { id: 'MON-FRI', title: 'Every Weekday (Monday-Friday)' },
+    { id: 'SAT,SUN', title: 'Every Weekend (Saturday-Sunday)' },
+    { id: 'MON', title: 'Every Monday' },
+    { id: 'TUE', title: 'Every Tuesday' },
+    { id: 'WED', title: 'Every Wednesday' },
+    { id: 'THU', title: 'Every Thursday' },
+    { id: 'FRI', title: 'Every Friday' },
+    { id: 'SAT', title: 'Every Saturday' },
+    { id: 'SUN', title: 'Every Sunday' }
+])
+
+const getTime = () => ([
+    { id: '00', title: '12 AM' },
+    { id: '01', title: '01 AM' },
+    { id: '02', title: '02 AM' },
+    { id: '03', title: '03 AM' },
+    { id: '04', title: '04 AM' },
+    { id: '05', title: '05 AM' },
+    { id: '06', title: '06 AM' },
+    { id: '07', title: '07 AM' },
+    { id: '08', title: '08 AM' },
+    { id: '09', title: '09 AM' },
+    { id: '10', title: '10 AM' },
+    { id: '11', title: '11 AM' },
+    { id: '12', title: '12 PM' },
+    { id: '13', title: '01 PM' },
+    { id: '14', title: '02 PM' },
+    { id: '15', title: '03 PM' },
+    { id: '16', title: '04 PM' },
+    { id: '17', title: '05 PM' },
+    { id: '18', title: '06 PM' },
+    { id: '19', title: '07 PM' },
+    { id: '20', title: '08 PM' },
+    { id: '21', title: '09 PM' },
+    { id: '22', title: '10 PM' },
+    { id: '23', title: '11 PM' }
+])
+
 
 function FormRow(props) {
     return (
@@ -28,7 +84,7 @@ function FormRow(props) {
     );
 }
 
-function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult }) {
+function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, runSchedule }) {
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -44,76 +100,36 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult }) {
             return Object.values(temp).every(x => x === "")
     }
 
+    const initialFormValues = {
+        scheduleName: '',
+        runFrequency: '',
+        minuteTimer: '',
+        hourTimer: '',
+        weekTimer: '',
+        time: '',
+        isNotFollowingRedirect: true,
+        isSslValidationDisabled: true
+    }
+
     const {
         values,
-        setValues,
         errors,
         setErrors,
         handleInputChange,
         resetForm
-    } = useForm(initialFValues, true, validate);
+    } = useForm(initialFormValues, true, validate);
 
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
-            //employeeService.insertEmployee(values)
+            runSchedule({
+                scheduleName: values.scheduleName,
+                region: values.region,
+                healthCheck: scheduleHelper.requestedHealthCheck
+            })
             resetForm()
         }
     }
-
-    const getRunFrequency = () => ([
-        { id: '1', title: 'Minute Timer' },
-        { id: '2', title: 'Hour Timer' },
-        { id: '3', title: 'Week Timer' }
-    ])
-
-    const getHourTimer = () => ([
-        { id: '1', title: 'Every Hour' },
-        { id: '2', title: 'Every 2 Hours' },
-        { id: '3', title: 'Every 3 Hours' },
-        { id: '4', title: 'Every 4 Hours' },
-        { id: '5', title: 'Every 6 Hours' },
-        { id: '6', title: 'Every 12 Hours' }
-    ])
-
-    const getWeekTimer = () => ([
-        { id: '1', title: 'Every Day' },
-        { id: '2', title: 'Every Weekday (Monday-Friday)' },
-        { id: '3', title: 'Every Monday' },
-        { id: '4', title: 'Every Tuesday' },
-        { id: '5', title: 'Every Wednesday' },
-        { id: '6', title: 'Every Thursday' },
-        { id: '7', title: 'Every Friday' },
-        { id: '8', title: 'Every Saturday' },
-        { id: '9', title: 'Every Sunday' }
-    ])
-
-    const getTime = () => ([
-        { id: '1', title: '12 AM' },
-        { id: '2', title: '11 AM' },
-        { id: '3', title: '10 AM' },
-        { id: '4', title: '09 AM' },
-        { id: '5', title: '08 AM' },
-        { id: '6', title: '07 AM' },
-        { id: '7', title: '06 AM' },
-        { id: '8', title: '05 AM' },
-        { id: '9', title: '04 AM' },
-        { id: '10', title: '03 AM' },
-        { id: '11', title: '02 AM' },
-        { id: '12', title: '01 AM' },
-        { id: '13', title: '12 PM' },
-        { id: '14', title: '11 PM' },
-        { id: '15', title: '10 PM' },
-        { id: '16', title: '09 PM' },
-        { id: '17', title: '08 PM' },
-        { id: '18', title: '07 PM' },
-        { id: '19', title: '06 PM' },
-        { id: '20', title: '05 PM' },
-        { id: '21', title: '04 PM' },
-        { id: '22', title: '03 PM' },
-        { id: '23', title: '02 PM' },
-        { id: '24', title: '01 PM' }
-    ])
 
     return (
         <Form onSubmit={handleSubmit}>
@@ -139,9 +155,8 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult }) {
                             <Controls.Input
                                 name="healthCheckName"
                                 label="Health check name"
-                                value={values.healthCheckName}
+                                value={scheduleHelper.requestedHealthCheck.name}
                                 onChange={handleInputChange}
-                                error={errors.healthCheckName}
                                 InputProps={{
                                     readOnly: true
                                 }}
@@ -165,7 +180,18 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult }) {
                             </Grid>
 
                             <Grid item xs={4}>
-                                {values.runFrequency === "2" &&
+                                {values.runFrequency === "MINUTE_TIMER" &&
+                                    <Controls.Select
+                                        name="minuteTimer"
+                                        label="Minute Timer"
+                                        value={values.minuteTimer}
+                                        onChange={handleInputChange}
+                                        options={getMinuteTimer()}
+                                        error={errors.minuteTimer}
+                                    />
+                                }
+
+                                {values.runFrequency === "HOUR_TIMER" &&
                                     <Controls.Select
                                         name="hourTimer"
                                         label="Hour Timer"
@@ -175,7 +201,7 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult }) {
                                         error={errors.hourTimer}
                                     />
                                 }
-                                {values.runFrequency === "3" &&
+                                {values.runFrequency === "WEEK_TIMER" &&
                                     <Controls.Select
                                         name="weekTimer"
                                         label="Week Timer"
@@ -188,7 +214,7 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult }) {
                             </Grid>
 
                             <Grid item xs={4} >
-                                {values.runFrequency === "3" &&
+                                {values.runFrequency === "WEEK_TIMER" &&
                                     <Controls.Select
                                         name="time"
                                         label="Time"
@@ -274,4 +300,4 @@ const mapStateToProps = state => ({
     executionHelper: state.executionHelper,
     httpCallResult: state.httpCallResult
 });
-export default connect(mapStateToProps, {})(ScheduleForm);
+export default connect(mapStateToProps, { runSchedule })(ScheduleForm);
