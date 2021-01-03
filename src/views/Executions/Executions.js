@@ -50,7 +50,7 @@ function BodyRow(props) {
     return (
         <TableRow key={key}>
             <TableCell>
-                {row.executionId}
+                {row.id}
             </TableCell>
             <TableCell>
                 <OverflowTip originalValue={row.name} />
@@ -87,7 +87,7 @@ function Executions({ executionHelper, getExecutionResult }) {
     const history = useHistory();
 
     const requestExecutionViewing = (execution) => {
-        getExecutionResult(execution.executionId);
+        getExecutionResult(execution.id);
         history.push(componentsPaths.VIEW_EXECUTION);
     }
 
