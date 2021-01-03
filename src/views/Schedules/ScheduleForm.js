@@ -101,6 +101,7 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, runSche
     }
 
     const initialFormValues = {
+        region: executionHelper.defaultRegion,
         scheduleName: '',
         runFrequency: '',
         minuteTimer: '',
