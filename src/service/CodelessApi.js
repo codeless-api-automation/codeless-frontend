@@ -59,11 +59,12 @@ export const executionResource = {
 const SCHEDULE_RESOURCE = "schedules";
 export const scheduleResource = {
     createSchedule(schedule) {
-        let { scheduleName, region, healthCheck } = schedule;
+        let { scheduleName, region, healthCheck, timer } = schedule;
         let requestBody = {
             scheduleName,
             region,
-            tests: [healthCheck]
+            tests: [healthCheck],
+            timer: timer
         };
         return instance.post(SCHEDULE_RESOURCE, requestBody);
     },

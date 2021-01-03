@@ -18,62 +18,97 @@ const getRunFrequency = () => ([
     { id: 'WEEK_TIMER', title: 'Week Timer' }
 ])
 
-const getMinuteTimer = () => ([
-    { id: '*/5', title: 'Every 5 Minutes' },
-    { id: '*/10', title: 'Every 10 Minutes' },
-    { id: '*/15', title: 'Every 15 Minutes' },
-    { id: '*/30', title: 'Every 30 Minutes' },
-    { id: '*/45', title: 'Every 45 Minutes' }
-])
+const minuteTimer = [
+    'Every 5 Minutes',
+    'Every 10 Minutes',
+    'Every 15 Minutes',
+    'Every 30 Minutes',
+    'Every 45 Minutes'];
 
-const getHourTimer = () => ([
-    { id: '*/1', title: 'Every Hour' },
-    { id: '*/2', title: 'Every 2 Hours' },
-    { id: '*/3', title: 'Every 3 Hours' },
-    { id: '*/4', title: 'Every 4 Hours' },
-    { id: '*/6', title: 'Every 6 Hours' },
-    { id: '*/12', title: 'Every 12 Hours' }
-])
+const getMinuteTimer = () => (
+    minuteTimer.map(minute => {
+        return {
+            id: minute,
+            title: minute
+        }
+    })
+)
 
-const getWeekTimer = () => ([
-    { id: '*/1', title: 'Every Day' },
-    { id: 'MON-FRI', title: 'Every Weekday (Monday-Friday)' },
-    { id: 'SAT,SUN', title: 'Every Weekend (Saturday-Sunday)' },
-    { id: 'MON', title: 'Every Monday' },
-    { id: 'TUE', title: 'Every Tuesday' },
-    { id: 'WED', title: 'Every Wednesday' },
-    { id: 'THU', title: 'Every Thursday' },
-    { id: 'FRI', title: 'Every Friday' },
-    { id: 'SAT', title: 'Every Saturday' },
-    { id: 'SUN', title: 'Every Sunday' }
-])
+const hourTimer = [
+    'Every Hour',
+    'Every 2 Hours',
+    'Every 3 Hours',
+    'Every 4 Hours',
+    'Every 6 Hours',
+    'Every 12 Hours'
+];
 
-const getTime = () => ([
-    { id: '00', title: '12 AM' },
-    { id: '01', title: '01 AM' },
-    { id: '02', title: '02 AM' },
-    { id: '03', title: '03 AM' },
-    { id: '04', title: '04 AM' },
-    { id: '05', title: '05 AM' },
-    { id: '06', title: '06 AM' },
-    { id: '07', title: '07 AM' },
-    { id: '08', title: '08 AM' },
-    { id: '09', title: '09 AM' },
-    { id: '10', title: '10 AM' },
-    { id: '11', title: '11 AM' },
-    { id: '12', title: '12 PM' },
-    { id: '13', title: '01 PM' },
-    { id: '14', title: '02 PM' },
-    { id: '15', title: '03 PM' },
-    { id: '16', title: '04 PM' },
-    { id: '17', title: '05 PM' },
-    { id: '18', title: '06 PM' },
-    { id: '19', title: '07 PM' },
-    { id: '20', title: '08 PM' },
-    { id: '21', title: '09 PM' },
-    { id: '22', title: '10 PM' },
-    { id: '23', title: '11 PM' }
-])
+const getHourTimer = () => (
+    hourTimer.map(hour => {
+        return {
+            id: hour,
+            title: hour
+        }
+    })
+)
+
+const weekTimer = [
+    'Every Day',
+    'Every Weekday (Monday-Friday)',
+    'Every Weekend (Saturday-Sunday)',
+    'Every Monday',
+    'Every Tuesday',
+    'Every Wednesday',
+    'Every Thursday',
+    'Every Friday',
+    'Every Saturday',
+    'Every Sunday'
+];
+
+const getWeekTimer = () => (
+    weekTimer.map(week => {
+        return {
+            id: week,
+            title: week
+        }
+    })
+)
+
+const time = [
+    '12 AM',
+    '01 AM',
+    '02 AM',
+    '03 AM',
+    '04 AM',
+    '05 AM',
+    '06 AM',
+    '07 AM',
+    '08 AM',
+    '09 AM',
+    '10 AM',
+    '11 AM',
+    '12 PM',
+    '01 PM',
+    '02 PM',
+    '03 PM',
+    '04 PM',
+    '05 PM',
+    '06 PM',
+    '07 PM',
+    '08 PM',
+    '09 PM',
+    '10 PM',
+    '11 PM'
+]
+
+const getTime = () => (
+    time.map(time => {
+        return {
+            id: time,
+            title: time
+        }
+    })
+)
 
 
 function FormRow(props) {
@@ -104,10 +139,10 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, runSche
         region: executionHelper.defaultRegion,
         scheduleName: '',
         runFrequency: '',
-        minuteTimer: '',
-        hourTimer: '',
-        weekTimer: '',
-        time: '',
+        minuteTimer: minuteTimer[0],
+        hourTimer: hourTimer[0],
+        weekTimer: weekTimer[0],
+        time: time[0],
         isNotFollowingRedirect: true,
         isSslValidationDisabled: true
     }
@@ -126,7 +161,14 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, runSche
             runSchedule({
                 scheduleName: values.scheduleName,
                 region: values.region,
-                healthCheck: scheduleHelper.requestedHealthCheck
+                healthCheck: scheduleHelper.requestedHealthCheck,
+                timer: {
+                    type: values.runFrequency,
+                    minute: values.minuteTimer,
+                    hour: values.hourTimer,
+                    week: values.weekTimer,
+                    time: values.time
+                }
             })
             resetForm()
         }
