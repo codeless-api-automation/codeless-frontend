@@ -7,3 +7,14 @@ export const VIEW_EXECUTION = "/general/executions/view";
 
 export const VIEW_SCHEDULES = "/general/schedules";
 export const VIEW_SCHEDULE = "/general/schedules/schedule";
+
+export const headers = {
+    headers: [
+        {
+            name: "Accept"
+        },
+        {
+            name: "Content-Type"
+        }
+    ]
+}

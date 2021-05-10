@@ -8,7 +8,8 @@ import {
 } from './test-action'
 
 const initialTestState = {
-    httpMethod: 'GET'
+    httpMethod: 'GET',
+    headers: []
 }
 
 export const testReducer = (state = initialTestState, action) => {

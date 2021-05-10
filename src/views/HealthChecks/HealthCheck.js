@@ -114,7 +114,7 @@ function Test({ test, validators,
               tabs={[
                 {
                   tabName: "Headers",
-                  tabContent: <HeaderList />
+                  tabContent: <HeaderList headers={test.headers}/>
                 },
                 {
                   tabName: "Body",
