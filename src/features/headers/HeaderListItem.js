@@ -1,11 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
-import {
-    removeValidator,
-    updatePredicate,
-    updateInputField
-} from "../../store/validator-action"
-
 import * as common from "constants/Common.js";
 
 import {
@@ -17,8 +10,9 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 
 import Autocomplete from "@material-ui/lab/Autocomplete";
+function HeaderListItem(props) {
 
-function HeaderListItem({ validator, removeValidator, updatePredicate, updateInputField }) {
+    let { header, removeHeader, updateHeader } = props;
 
     return (
         <Grid container spacing={2} style={{ margin: "-4px -8px" }}>
@@ -27,7 +21,8 @@ function HeaderListItem({ validator, removeValidator, updatePredicate, updateInp
                     freeSolo
                     options={common.headers.names}
                     getOptionLabel={(option) => option.name}
-                    onChange={(event, newValue) => { console.log(newValue) }}
+                    defaultValue={header.name}
+                    onChange={(event, newValue) => { updateHeader(header, { name: newValue, value: header.value }) }}
                     renderInput={(params) => <TextField {...params} label="Header" variant="outlined" />}
                 />
             </Grid>
@@ -38,21 +33,19 @@ function HeaderListItem({ validator, removeValidator, updatePredicate, updateInp
                     variant="outlined"
                     fullWidth={true}
                     inputProps={{
-                        defaultValue: "saved value",
-                        onBlur: event => console.log(event.target.value)
+                        defaultValue: header.value,
+                        onBlur: event => updateHeader(header, { name: header.name, value: event.target.value })
                     }}
                 />
             </Grid>
 
             <Grid item style={{ display: "flex", alignItems: "center" }}>
-                <IconButton onClick={() => removeValidator(validator)}>
+                <IconButton onClick={() => removeHeader(header)}>
                     <DeleteIcon />
                 </IconButton>
             </Grid>
         </Grid>
     );
 }
-const mapStateToProps = () => ({
 
-});
-export default connect(mapStateToProps, { removeValidator, updatePredicate, updateInputField })(HeaderListItem);
+export default HeaderListItem;

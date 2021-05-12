@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+import { addHeader } from "../../store/test-action"
 
 import * as common from "constants/Common.js";
 
@@ -12,7 +14,10 @@ import AddIcon from "@material-ui/icons/Add";
 
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-function NewHeaderForm(props) {
+function NewHeaderForm({ addHeader }) {
+
+    const [headerName, setHeaderName] = React.useState(null);
+    const [headerValue, setHaederValue] = React.useState(null);
 
     return (
         <Grid container spacing={2} style={{ margin: "-4px -8px" }}>
@@ -21,8 +26,9 @@ function NewHeaderForm(props) {
                     id="new-header"
                     freeSolo
                     options={common.headers.names}
-                    getOptionLabel={(option) => option.name}
-                    onChange={(event, newValue) => { console.log(newValue) }}
+                    getOptionLabel={(option) => option}
+                    value={headerName}
+                    onChange={(event, newValue) => { setHeaderName(newValue) }}
                     renderInput={(params) => <TextField {...params} label="Header" variant="outlined" />}
                 />
             </Grid>
@@ -32,13 +38,18 @@ function NewHeaderForm(props) {
                     variant="outlined"
                     fullWidth={true}
                     inputProps={{
-                        onBlur: event => console.log(event.target.value)
+                        onBlur: event => setHaederValue(event.target.value)
                     }}
                 />
             </Grid>
 
             <Grid item style={{ display: "flex", alignItems: "center" }}>
-                <IconButton>
+                <IconButton
+                    onClick={() => {
+                        addHeader(headerName, headerValue)
+                        setHeaderName(null);
+                        setHaederValue(null);
+                    }}>
                     <AddIcon />
                 </IconButton>
             </Grid>
@@ -46,4 +57,6 @@ function NewHeaderForm(props) {
     )
 }
 
-export default NewHeaderForm;
+const mapStateToProps = state => ({
+});
+export default connect(mapStateToProps, { addHeader })(NewHeaderForm);

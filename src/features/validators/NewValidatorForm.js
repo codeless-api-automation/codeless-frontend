@@ -16,7 +16,7 @@ import AddIcon from "@material-ui/icons/Add";
 
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       width: 200
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-function NewValidatorForm({ validators, createValidator }) {
+function NewValidatorForm({ createValidator }) {
 
   const classes = useStyles();
 
@@ -104,7 +104,6 @@ function NewValidatorForm({ validators, createValidator }) {
   );
 }
 const mapStateToProps = state => ({
-  validators: state.verificationsTab
 });
 export default connect(mapStateToProps, { createValidator })(NewValidatorForm);
 

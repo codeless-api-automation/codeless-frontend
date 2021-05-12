@@ -9,14 +9,15 @@ function HeaderList(props) {
 
     return (
         <Grid container>
-            {/* {props.headers.map((header, index) => <HeaderListItem key={index} header={header} />)} */}
+            {props.headers.map((header, index) =>
+                <HeaderListItem
+                    key={index}
+                    header={header}
+                    updateHeader={(oldHeader, newHeader) => console.log({ oldHeader, newHeader })}
+                    removeHeader={(header) => console.log({ header })} />)}
 
-            <HeaderListItem/>
             <NewHeaderForm />
-
         </Grid>)
-
 }
-
 
 export default HeaderList;

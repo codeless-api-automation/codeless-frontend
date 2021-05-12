@@ -52,6 +52,12 @@ export const cleanTestAttributes = () => ({
     type: CLEAN_TEST_ATTRIBUTES
 })
 
+export const ADD_HEADER = 'ADD_HEADER';
+export const addHeader = (name, value) => ({
+    type: ADD_HEADER,
+    payload: { name, value }
+})
+
 const SUCCESS_MESSAGE_UPDATE = "The health check has been updated successfully.";
 const ERROR_MESSAGE_UPDATE = "The health check has not updated.";
 export const updateTest = (test) => {
