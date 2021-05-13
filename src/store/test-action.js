@@ -58,6 +58,19 @@ export const addHeader = (name, value) => ({
     payload: { name, value }
 })
 
+export const REMOVE_HEADER = 'REMOVE_HEADER';
+export const removeHeader = (headerIndex) => ({
+    type: REMOVE_HEADER,
+    payload: { headerIndex }
+})
+
+export const UPDATE_HEADER = 'UPDATE_HEADER';
+export const updateHeader = (headerIndex, oldHeader, newHeader) => ({
+    type: UPDATE_HEADER,
+    payload: { headerIndex, oldHeader, newHeader }
+})
+
+
 const SUCCESS_MESSAGE_UPDATE = "The health check has been updated successfully.";
 const ERROR_MESSAGE_UPDATE = "The health check has not updated.";
 export const updateTest = (test) => {

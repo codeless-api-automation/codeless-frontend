@@ -12,11 +12,13 @@ function HeaderList(props) {
             {props.headers.map((header, index) =>
                 <HeaderListItem
                     key={index}
+                    headerIndex={index}
                     header={header}
-                    updateHeader={(oldHeader, newHeader) => console.log({ oldHeader, newHeader })}
-                    removeHeader={(header) => console.log({ header })} />)}
-
-            <NewHeaderForm />
+                    updateHeader={(headerIndex, oldHeader, newHeader) => props.removeHeader(headerIndex, oldHeader, newHeader)}
+                    removeHeader={(headerIndex) => props.removeHeader(headerIndex)} />)}
+            <NewHeaderForm
+                addHeader={(headerName, headerValue) => props.addHeader(headerName, headerValue)}
+            />
         </Grid>)
 }
 

@@ -1,5 +1,3 @@
-import _ from 'lodash'
-
 import {
     UPDATE_NAME,
     UPDATE_HTTP_METHOD,
@@ -7,7 +5,9 @@ import {
     UPDATE_REQUEST_BODY,
     CLEAN_TEST_ATTRIBUTES,
     UPDATE_ID,
-    ADD_HEADER
+    ADD_HEADER,
+    REMOVE_HEADER,
+    UPDATE_HEADER
 } from './test-action'
 
 const initialTestState = {
@@ -60,12 +60,27 @@ export const testReducer = (state = initialTestState, action) => {
         }
         case ADD_HEADER: {
             const { name, value } = payload;
-            let headers = _.cloneDeep(state.headers).concat({ name, value });
+            let headers = state.headers.concat({ name, value });
             let test = {
                 ...state,
                 headers
             }
-            console.log(test)
+            return test;
+        }
+        case REMOVE_HEADER: {
+            const { headerIndex } = payload;
+            let headers = state.headers.filter((header, index) => index !== headerIndex);
+            let test = {
+                ...state,
+                headers
+            }
+            return test;
+        }
+        case UPDATE_HEADER: {
+            const { headerIndex, oldHeader, newHeader } = payload;
+            let test = {
+                ...state,
+            }
             return test;
         }
         case CLEAN_TEST_ATTRIBUTES: {

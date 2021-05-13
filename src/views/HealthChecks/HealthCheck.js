@@ -19,7 +19,10 @@ import {
   updateRequestUrl,
   updateRequestBody,
   saveTest,
-  cleanAllTestAttributes
+  cleanAllTestAttributes,
+  addHeader,
+  removeHeader,
+  updateHeader
 } from "../../store/test-action.js"
 
 import { CheckCircleOutline } from '@material-ui/icons';
@@ -51,7 +54,8 @@ function Test({ test, validators,
   updateName, updateHttpMethod,
   updateRequestUrl, updateRequestBody,
   saveTest, httpCallResult,
-  cleanAllTestAttributes }) {
+  cleanAllTestAttributes, addHeader,
+  removeHeader, updateHeader }) {
 
   useEffect(() => {
     return () => cleanAllTestAttributes()
@@ -114,7 +118,11 @@ function Test({ test, validators,
               tabs={[
                 {
                   tabName: "Headers",
-                  tabContent: <HeaderList headers={test.headers}/>
+                  tabContent: <HeaderList
+                    headers={test.headers}
+                    addHeader={addHeader}
+                    removeHeader={removeHeader}
+                    updateHeader={updateHeader} />
                 },
                 {
                   tabName: "Body",
@@ -151,5 +159,5 @@ const mapStateToProps = state => ({
   redirectTo: state.utilEvents.redirectTo
 });
 export default compose(
-  connect(mapStateToProps, { updateName, updateHttpMethod, updateRequestUrl, updateRequestBody, saveTest, cleanAllTestAttributes }),
+  connect(mapStateToProps, { updateName, updateHttpMethod, updateRequestUrl, updateRequestBody, saveTest, cleanAllTestAttributes, addHeader, removeHeader, updateHeader }),
   withRedirect)(Test);
