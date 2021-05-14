@@ -65,9 +65,9 @@ export const removeHeader = (headerIndex) => ({
 })
 
 export const UPDATE_HEADER = 'UPDATE_HEADER';
-export const updateHeader = (headerIndex, oldHeader, newHeader) => ({
+export const updateHeader = (headerIndex, newHeader) => ({
     type: UPDATE_HEADER,
-    payload: { headerIndex, oldHeader, newHeader }
+    payload: { headerIndex, newHeader }
 })
 
 

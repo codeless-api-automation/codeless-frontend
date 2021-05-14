@@ -70,6 +70,7 @@ export const testReducer = (state = initialTestState, action) => {
         case REMOVE_HEADER: {
             const { headerIndex } = payload;
             let headers = state.headers.filter((header, index) => index !== headerIndex);
+            
             let test = {
                 ...state,
                 headers
@@ -77,9 +78,14 @@ export const testReducer = (state = initialTestState, action) => {
             return test;
         }
         case UPDATE_HEADER: {
-            const { headerIndex, oldHeader, newHeader } = payload;
+            const { headerIndex, newHeader } = payload;
+
+            let headers = state.headers.slice();
+            headers[headerIndex] = { ...newHeader };
+
             let test = {
                 ...state,
+                headers
             }
             return test;
         }

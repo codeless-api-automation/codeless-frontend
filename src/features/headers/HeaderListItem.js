@@ -18,32 +18,38 @@ function HeaderListItem(props) {
         <Grid container spacing={2} style={{ margin: "-4px -8px" }}>
             <Grid item xs={5}>
                 <Autocomplete
-                    id="header-name"
                     freeSolo
+                    disableClearable
                     options={common.headers.names}
                     getOptionLabel={(option) => option}
                     value={header.name}
-                    onBlur={(event, newValue) => { updateHeader(headerIndex, header, { name: newValue, value: header.value }) }}
-                    onChange={(event, newValue) => { updateHeader(headerIndex, header, { name: newValue, value: header.value }) }}
+                    inputValue={header.name}
+                    onInputChange={(_, newValue) => {
+                        updateHeader(headerIndex, { name: newValue, value: header.value })
+                    }}
+                    onChange={(_, newValue) => {
+                        updateHeader(headerIndex, { name: newValue, value: header.value })
+                    }}
                     renderInput={(params) => <TextField {...params} label="Header" variant="outlined" />}
                 />
             </Grid>
 
             <Grid item xs={6}>
                 <TextField
-                    id="header-value"
                     label="Value"
                     variant="outlined"
                     fullWidth={true}
                     inputProps={{
-                        defaultValue: header.value,
-                        onBlur: event => updateHeader(headerIndex, header, { name: header.name, value: event.target.value })
+                        value: header.value ? header.value : '',
+                        onChange: event => updateHeader(headerIndex, { name: header.name, value: event.target.value })
                     }}
                 />
             </Grid>
 
             <Grid item style={{ display: "flex", alignItems: "center" }}>
-                <IconButton onClick={() => removeHeader(headerIndex)}>
+                <IconButton onClick={() => {
+                    removeHeader(headerIndex)
+                }}>
                     <DeleteIcon />
                 </IconButton>
             </Grid>

@@ -15,12 +15,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 function NewHeaderForm(props) {
 
     const [headerName, setHeaderName] = React.useState(null);
-    let headerValueInput = React.useRef(null);
-
-    const clearHeaderValue = () => {
-        headerValueInput.current.value = null;
-        headerValueInput.current.untouched=true;
-    }
+    const [headerValue, setHeaderValue] = React.useState(null);
 
     return (
         <Grid container spacing={2} style={{ margin: "-4px -8px" }}>
@@ -30,7 +25,7 @@ function NewHeaderForm(props) {
                     freeSolo
                     options={common.headers.names}
                     getOptionLabel={(option) => option}
-                    value={headerName}
+                    value={headerName ? headerName : ''}
                     onBlur={(event) => setHeaderName(event.target.value)}
                     onChange={(event, newValue) => setHeaderName(newValue)}
                     renderInput={(params) => <TextField {...params} label="Header" variant="outlined" />}
@@ -42,16 +37,19 @@ function NewHeaderForm(props) {
                     label="Value"
                     variant="outlined"
                     fullWidth={true}
-                    inputRef={headerValueInput}
+                    inputProps={{
+                        value: headerValue ? headerValue : '',
+                        onChange: event => setHeaderValue(event.target.value)
+                    }}
                 />
             </Grid>
 
             <Grid item style={{ display: "flex", alignItems: "center" }}>
                 <IconButton
                     onClick={() => {
-                        props.addHeader(headerName, headerValueInput.current.value)
+                        props.addHeader(headerName ? headerName : '', headerValue);
+                        setHeaderValue(null);
                         setHeaderName(null);
-                        clearHeaderValue();
                     }}>
                     <AddIcon />
                 </IconButton>

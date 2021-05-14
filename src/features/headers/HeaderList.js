@@ -14,7 +14,7 @@ function HeaderList(props) {
                     key={index}
                     headerIndex={index}
                     header={header}
-                    updateHeader={(headerIndex, oldHeader, newHeader) => props.removeHeader(headerIndex, oldHeader, newHeader)}
+                    updateHeader={(headerIndex, newHeader) => props.updateHeader(headerIndex, newHeader)}
                     removeHeader={(headerIndex) => props.removeHeader(headerIndex)} />)}
             <NewHeaderForm
                 addHeader={(headerName, headerValue) => props.addHeader(headerName, headerValue)}
