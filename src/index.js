@@ -6,14 +6,13 @@ import { Router, Route, Switch, Redirect } from "react-router-dom";
 import { Provider } from "react-redux";
 import { configureStore } from "./store/store";
 
+import SignUp from "layouts/SignUp.js"
+import SignIn from "layouts/SignIn.js"
 import Admin from "layouts/Admin.js";
 
 import "assets/css/material-dashboard-react.css?v=1.8.0";
 
 import ProtectedRoute from "route/ProtectedRoute"
-
-import SignUp from "views/SignUp/SignUp"
-import SignIn from "views/SignIn/SignIn"
 
 const hist = createBrowserHistory();
 
