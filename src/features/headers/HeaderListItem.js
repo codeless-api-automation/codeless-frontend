@@ -34,7 +34,7 @@ function HeaderListItem(props) {
                 />
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={5}>
                 <TextField
                     label="Value"
                     variant="outlined"

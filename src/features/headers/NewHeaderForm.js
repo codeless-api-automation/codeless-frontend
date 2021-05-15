@@ -31,7 +31,7 @@ function NewHeaderForm(props) {
                     renderInput={(params) => <TextField {...params} label="Header" variant="outlined" />}
                 />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={5}>
                 <TextField
                     id="new-header-value"
                     label="Value"
