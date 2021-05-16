@@ -1,17 +1,26 @@
 import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import { useHistory } from "react-router-dom";
+import { Link } from 'react-router-dom';
+
+import {
+  usersResource
+} from '../service/CodelessApi.js';
+
+import {
+  CssBaseline,
+  Avatar,
+  Button,
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  Container,
+  Box,
+  Typography
+} from '@material-ui/core';
+
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 
 import Copyright from 'components/Copyright/Copyright'
 
@@ -37,6 +46,40 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
+  const history = useHistory();
+
+  const [firstName, setFirstName] = React.useState(null);
+  const [lastName, setLastName] = React.useState(null);
+  const [email, setEmail] = React.useState(null);
+  const [password, setPassword] = React.useState(null);
+  const [marketingAgreered, setMarketingAgreered] = React.useState(null);
+
+  const signUp = event => {
+    event.preventDefault();
+
+    let userRegistration = {
+      firstName,
+      lastName,
+      email,
+      password,
+      marketingAgreered
+    }
+
+    usersResource.createUser(userRegistration)
+      .then(response => {
+        if (response.status === 200) {
+          let signInFormDetail = {
+            email: userRegistration.email,
+            password: userRegistration.password
+          };
+          history.push('sign-in', signInFormDetail);
+        } else {
+          console.log(response.data);
+        }
+      }).catch(error => {
+        console.log(error);
+      });;
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -48,7 +91,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form onSubmit={signUp} className={classes.form}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -60,6 +103,7 @@ export default function SignUp() {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                onChange={(event) => setFirstName(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -71,6 +115,7 @@ export default function SignUp() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                onChange={(event) => setLastName(event.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -82,6 +127,7 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={(event) => setEmail(event.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -94,11 +140,16 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={(event) => setPassword(event.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                control={<Checkbox
+                  value="allowExtraEmails"
+                  color="primary"
+                  onChange={(event) => setMarketingAgreered(event.target.checked)}
+                />}
                 label="I want to receive inspiration, marketing promotions and updates via email."
               />
             </Grid>
@@ -114,7 +165,7 @@ export default function SignUp() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="/sign-in" variant="body2">
+              <Link to="/sign-in" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>

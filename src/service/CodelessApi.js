@@ -79,3 +79,10 @@ export const regionsResource = {
         return instance.get(REGIONS_RESOURCE);
     }
 }
+
+const USERS_RESOURCE = "users";
+export const usersResource = {
+    createUser(userRegistration) {
+        return instance.post(USERS_RESOURCE, userRegistration);
+    }
+}
