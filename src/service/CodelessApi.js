@@ -86,3 +86,18 @@ export const usersResource = {
         return instance.post(USERS_RESOURCE, userRegistration);
     }
 }
+
+const AUTH_RESOURCE = "auth";
+export const authResource = {
+    logIn(user) {
+        return instance.post(AUTH_RESOURCE + `/sign-in`, null, {
+            auth: {
+                username: user.email,
+                password: user.password
+            }
+        });
+    },
+    logOut() {
+        return instance.delete(AUTH_RESOURCE + `/sign-out`);
+    }
+}

@@ -1,4 +1,6 @@
 import React from "react";
+import { useHistory } from 'react-router-dom';
+
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -17,10 +19,14 @@ import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
 
+import * as common from "constants/Common";
+
 const useStyles = makeStyles(styles);
 
 export default function AdminNavbarLinks() {
   const classes = useStyles();
+  const history = useHistory();
+
   const [openProfile, setOpenProfile] = React.useState(null);
   const handleClickProfile = event => {
     if (openProfile && openProfile.contains(event.target)) {
@@ -32,6 +38,13 @@ export default function AdminNavbarLinks() {
   const handleCloseProfile = () => {
     setOpenProfile(null);
   };
+
+  const handleLogOut = () => {
+    setOpenProfile(null);
+    localStorage.removeItem(common.ACCESS_TOKEN);
+    history.push('/');
+  }
+
   return (
     <div>
       <div className={classes.manager}>
@@ -86,7 +99,7 @@ export default function AdminNavbarLinks() {
                     </MenuItem>
                     <Divider light />
                     <MenuItem
-                      onClick={handleCloseProfile}
+                      onClick={handleLogOut}
                       className={classes.dropdownItem}
                     >
                       Logout

@@ -1,6 +1,5 @@
 import React from 'react';
-import { useHistory } from "react-router-dom";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from "react-router-dom";
 
 import {
   usersResource
@@ -74,9 +73,11 @@ export default function SignUp() {
           };
           history.push('sign-in', signInFormDetail);
         } else {
+          // TODO: Display error message on the form like email is aready in use
           console.log(response.data);
         }
       }).catch(error => {
+        // TODO: Display error message on the form
         console.log(error);
       });;
   };

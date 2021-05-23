@@ -26,13 +26,10 @@ ReactDOM.render(
         <Route path="/sign-in">
           <SignIn />
         </Route>
-
-        <ProtectedRoute path="/general">
-          <Admin />
+        <ProtectedRoute path="/">
+          <Route path="/general" component={Admin} />
+          <Redirect from="/" to="/general/dashboard" />
         </ProtectedRoute>
-
-        <Route path="/general" component={Admin} />
-        <Redirect from="/" to="/general/dashboard" />
       </Switch>
     </Router>
   </Provider>,

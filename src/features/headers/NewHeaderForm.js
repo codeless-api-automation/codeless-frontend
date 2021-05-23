@@ -19,7 +19,7 @@ function NewHeaderForm(props) {
 
     return (
         <Grid container spacing={2} style={{ margin: "-4px -8px" }}>
-            <Grid item xs={5}>
+            <Grid item xs={4}>
                 <Autocomplete
                     id="new-header-name"
                     freeSolo
@@ -31,7 +31,7 @@ function NewHeaderForm(props) {
                     renderInput={(params) => <TextField {...params} label="Header" variant="outlined" />}
                 />
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={7}>
                 <TextField
                     id="new-header-value"
                     label="Value"

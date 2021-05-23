@@ -16,7 +16,7 @@ function HeaderListItem(props) {
 
     return (
         <Grid container spacing={2} style={{ margin: "-4px -8px" }}>
-            <Grid item xs={5}>
+            <Grid item xs={4}>
                 <Autocomplete
                     freeSolo
                     disableClearable
@@ -34,7 +34,7 @@ function HeaderListItem(props) {
                 />
             </Grid>
 
-            <Grid item xs={5}>
+            <Grid item xs={7}>
                 <TextField
                     label="Value"
                     variant="outlined"
