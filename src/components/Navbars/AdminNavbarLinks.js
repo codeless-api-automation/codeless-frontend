@@ -1,6 +1,10 @@
 import React from "react";
 import { useHistory } from 'react-router-dom';
 
+import {
+  authResource
+} from 'service/CodelessApi';
+
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -41,8 +45,20 @@ export default function AdminNavbarLinks() {
 
   const handleLogOut = () => {
     setOpenProfile(null);
-    localStorage.removeItem(common.ACCESS_TOKEN);
-    history.push('/');
+
+    authResource.logOut()
+      .then(response => {
+        if (response.status === 200) {
+          localStorage.removeItem(common.ACCESS_TOKEN);
+          history.push('/');
+        } else {
+          // TODO: Display error message
+          console.log(response);
+        }
+      }).catch(error => {
+        // TODO: Display error message
+        console.log(error);
+      });;
   }
 
   return (

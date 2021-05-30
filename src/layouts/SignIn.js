@@ -66,7 +66,6 @@ export default function SignIn() {
     authResource.logIn(userLogIn)
       .then(response => {
         if (response.status === 200) {
-          console.log(response.headers)
           let xAuthToken = response.headers[common.ACCESS_TOKEN_HEADER];
           if (xAuthToken) {
             localStorage.setItem(common.ACCESS_TOKEN, xAuthToken);

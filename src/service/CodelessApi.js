@@ -1,9 +1,25 @@
 import * as axios from "axios";
+import * as common from "constants/Common";
 
 const instance = axios.create({
     baseURL: "http://localhost:8080/codeless/",
-    headers: { "Content-Type": "application/json" }
+    headers: {
+        "Content-Type": "application/json"
+    }
 });
+
+instance.interceptors.request.use(
+    config => {
+        let accessToken = localStorage.getItem(common.ACCESS_TOKEN);
+        if (accessToken) {
+            config.headers[common.ACCESS_TOKEN_HEADER] = accessToken;
+        }
+        return config;
+    },
+    error => {
+        Promise.reject(error);
+    }
+);
 
 const TEST_RESOURCE = "tests";
 export const testResource = {
