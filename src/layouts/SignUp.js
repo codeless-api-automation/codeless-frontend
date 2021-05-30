@@ -76,12 +76,11 @@ export default function SignUp() {
       }).catch(error => {
         console.log(error.response);
         if (error.response.status === 400 && error.response.data?.errors) {
-          setError(error.response.data?.errors[0].defaultMessage);
+          setError(error.response.data.errors[0].defaultMessage);
           return;
         }
-
         if (error.response.status === 400 && error.response.data?.message) {
-          setError(error.response.data?.message);
+          setError(error.response.data.message);
           return;
         }
         setError("Oops, Something went wrong. Please try again later.")
