@@ -19,7 +19,7 @@ import {
   Box,
   Typography
 } from '@material-ui/core';
-
+import Alert from '@material-ui/lab/Alert';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -54,6 +54,8 @@ export default function SignIn() {
   const [password, setPassword] = React.useState(null);
   const [rememberMe, setRememberMe] = React.useState(null);
 
+  const [error, setError] = React.useState(null);
+
   const signIn = event => {
     event.preventDefault();
 
@@ -65,19 +67,18 @@ export default function SignIn() {
 
     authResource.logIn(userLogIn)
       .then(response => {
-        if (response.status === 200) {
-          let xAuthToken = response.headers[common.ACCESS_TOKEN_HEADER];
-          if (xAuthToken) {
-            localStorage.setItem(common.ACCESS_TOKEN, xAuthToken);
-            history.push('/'); 
-          }
-        } else {
-          // TODO: Display error message on the form
-          console.log(response);
+        let xAuthToken = response.headers[common.ACCESS_TOKEN_HEADER];
+        if (xAuthToken) {
+          localStorage.setItem(common.ACCESS_TOKEN, xAuthToken);
+          history.push('/');
         }
       }).catch(error => {
-        // TODO: Display error message on the form
         console.log(error);
+        if (error.response.status === 401) {
+          setError("The email or password is incorrect.");
+          return;
+        }
+        setError("Oops, Something went wrong. Please try again later.")
       });;
   }
 
@@ -124,6 +125,17 @@ export default function SignIn() {
               onChange={(event) => setRememberMe(event.target.checked)} />}
             label="Remember me"
           />
+
+          <Grid container>
+            {error !== null &&
+              <Grid item xs={12}>
+                <Alert onClose={() => setError(null)} variant="filled" severity="error">
+                  {error}
+                </Alert>
+              </Grid>
+            }
+          </Grid>
+
           <Button
             type="submit"
             fullWidth
@@ -146,7 +158,9 @@ export default function SignIn() {
             </Grid>
           </Grid>
         </form>
+
       </div>
+
       <Box mt={8}>
         <Copyright />
       </Box>

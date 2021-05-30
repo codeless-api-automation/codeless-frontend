@@ -17,7 +17,7 @@ import {
   Box,
   Typography
 } from '@material-ui/core';
-
+import Alert from '@material-ui/lab/Alert';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -53,6 +53,8 @@ export default function SignUp() {
   const [password, setPassword] = React.useState(null);
   const [marketingAgreered, setMarketingAgreered] = React.useState(null);
 
+  const [error, setError] = React.useState(null);
+
   const signUp = event => {
     event.preventDefault();
 
@@ -65,20 +67,24 @@ export default function SignUp() {
     }
 
     usersResource.createUser(userRegistration)
-      .then(response => {
-        if (response.status === 200) {
-          let signInFormDetail = {
-            email: userRegistration.email,
-            password: userRegistration.password
-          };
-          history.push('sign-in', signInFormDetail);
-        } else {
-          // TODO: Display error message on the form like email is aready in use
-          console.log(response.data);
-        }
+      .then(() => {
+        let signInFormDetail = {
+          email: userRegistration.email,
+          password: userRegistration.password
+        };
+        history.push('sign-in', signInFormDetail);
       }).catch(error => {
-        // TODO: Display error message on the form
-        console.log(error);
+        console.log(error.response);
+        if (error.response.status === 400 && error.response.data?.errors) {
+          setError(error.response.data?.errors[0].defaultMessage);
+          return;
+        }
+
+        if (error.response.status === 400 && error.response.data?.message) {
+          setError(error.response.data?.message);
+          return;
+        }
+        setError("Oops, Something went wrong. Please try again later.")
       });;
   };
 
@@ -154,7 +160,16 @@ export default function SignUp() {
                 label="I want to receive inspiration, marketing promotions and updates via email."
               />
             </Grid>
+
+            {error !== null &&
+              <Grid item xs={12}>
+                <Alert onClose={() => setError(null)} variant="filled" severity="error">
+                  {error}
+                </Alert>
+              </Grid>
+            }
           </Grid>
+
           <Button
             type="submit"
             fullWidth
