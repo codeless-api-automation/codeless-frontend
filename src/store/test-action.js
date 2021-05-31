@@ -87,13 +87,14 @@ export const updateTest = (test) => {
         testResource.updateTest(test)
             .then(response => {
                 dispath(isCallRequested(false));
+                dispath(redirect(componentsPaths.VIEW_HEALTH_CHECKS))
                 dispath(setNotificationMessage({
                     message: SUCCESS_MESSAGE_UPDATE,
                     severity: common.NOTIFICATION_SEVERITY_SUCCESS
                 }));
-                dispath(redirect(componentsPaths.VIEW_HEALTH_CHECKS))
             })
             .catch(error => handleCatchGlobally(error, error => {
+                dispath(isCallRequested(false));
                 dispath(setNotificationMessage({
                     message: ERROR_MESSAGE_UPDATE,
                     severity: common.NOTIFICATION_SEVERITY_ERROR
@@ -124,6 +125,7 @@ export const createTest = (test) => {
                 }));
             })
             .catch(error => handleCatchGlobally(error, error => {
+                dispath(isCallRequested(false));
                 dispath(setNotificationMessage({
                     message: ERROR_MESSAGE_CREATE,
                     severity: common.NOTIFICATION_SEVERITY_ERROR
