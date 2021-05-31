@@ -70,6 +70,12 @@ export const updateHeader = (headerIndex, newHeader) => ({
     payload: { headerIndex, newHeader }
 })
 
+export const SET_HEADER = 'SET_HEADER';
+export const setHeader = (headers) => ({
+    type: SET_HEADER,
+    payload: { headers }
+})
+
 
 const SUCCESS_MESSAGE_UPDATE = "The health check has been updated successfully.";
 const ERROR_MESSAGE_UPDATE = "The health check has not updated.";
@@ -136,12 +142,13 @@ export const cleanAllTestAttributes = () => {
 export const updateAllTestAttributes = (test) => {
     console.log(test)
     return (dispath) => {
-        let { id, name, httpMethod, requestURL, requestBody, validators } = test;
+        let { id, name, httpMethod, requestURL, requestBody, validators, headers } = test;
         dispath(updateId(id))
         dispath(updateName(name))
         dispath(updateHttpMethod(httpMethod))
         dispath(updateRequestUrl(requestURL))
         dispath(updateRequestBody(requestBody))
         dispath(updateValidators(validators))
+        dispath(setHeader(headers))
     }
 }

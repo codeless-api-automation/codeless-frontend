@@ -74,7 +74,7 @@ export default function SignIn() {
         }
       }).catch(error => {
         console.log(error);
-        if (error.response.status === 401) {
+        if (error.response?.status === 401) {
           setError("The email or password is incorrect.");
           return;
         }

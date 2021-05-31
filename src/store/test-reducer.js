@@ -7,7 +7,8 @@ import {
     UPDATE_ID,
     ADD_HEADER,
     REMOVE_HEADER,
-    UPDATE_HEADER
+    UPDATE_HEADER,
+    SET_HEADER
 } from './test-action'
 
 const initialTestState = {
@@ -70,7 +71,7 @@ export const testReducer = (state = initialTestState, action) => {
         case REMOVE_HEADER: {
             const { headerIndex } = payload;
             let headers = state.headers.filter((header, index) => index !== headerIndex);
-            
+
             let test = {
                 ...state,
                 headers
@@ -83,6 +84,14 @@ export const testReducer = (state = initialTestState, action) => {
             let headers = state.headers.slice();
             headers[headerIndex] = { ...newHeader };
 
+            let test = {
+                ...state,
+                headers
+            }
+            return test;
+        }
+        case SET_HEADER: {
+            const { headers } = payload;
             let test = {
                 ...state,
                 headers

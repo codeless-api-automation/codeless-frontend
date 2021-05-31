@@ -75,11 +75,11 @@ export default function SignUp() {
         history.push('sign-in', signInFormDetail);
       }).catch(error => {
         console.log(error.response);
-        if (error.response.status === 400 && error.response.data?.errors) {
+        if (error.response?.status === 400 && error.response.data?.errors) {
           setError(error.response.data.errors[0].defaultMessage);
           return;
         }
-        if (error.response.status === 400 && error.response.data?.message) {
+        if (error.response?.status === 400 && error.response.data?.message) {
           setError(error.response.data.message);
           return;
         }
