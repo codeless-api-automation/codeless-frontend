@@ -1,12 +1,15 @@
 import {
-    scheduleResource
+    scheduleResource,
+    handleCatchGlobally
 } from '../service/CodelessApi.js';
-
 import {
-    isCallRequested,
-    isCallSuccessful,
-    isCallFailed
+    isCallRequested
 } from '../store/http-call-action';
+import {
+    setNotificationMessage
+} from './util-action.js';
+
+import * as common from "constants/Common";
 
 export const REQUEST_HEALTH_CHECK_SCHEDULE = 'REQUEST_HEALTH_CHECK_SCHEDULE';
 export const requestHealthCheckSchedule = (healthCheck) => ({
@@ -25,19 +28,12 @@ export const getSchedules = (page = 0, size = 20) => {
         dispath(isCallRequested(true));
         scheduleResource.getSchedules(page, size)
             .then(response => {
-                if (response.status === 200) {
-                    dispath(isCallSuccessful(true));
-                    dispath(setSchedules(response.data.items));
-                } else {
-                    dispath(isCallFailed(true));
-                }
+                dispath(setSchedules(response.data.items));
                 dispath(isCallRequested(false));
             })
-            .catch(error => {
-                console.log(error);
+            .catch(error => handleCatchGlobally(error, error => {
                 dispath(isCallRequested(false));
-                dispath(isCallFailed(true));
-            });
+            }));
     }
 }
 
@@ -49,16 +45,17 @@ export const runSchedule = (schedule) => {
         scheduleResource.createSchedule(schedule)
             .then(response => {
                 dispath(isCallRequested(false));
-                if (response.status === 200) {
-                    dispath(isCallSuccessful(true, SUCCESS_MESSAGE));
-                } else {
-                    dispath(isCallFailed(true, ERROR_MESSAGE));
-                }
+                dispath(setNotificationMessage({
+                    message: SUCCESS_MESSAGE,
+                    severity: common.NOTIFICATION_SEVERITY_SUCCESS
+                }));
             })
-            .catch(error => {
-                console.log(error);
+            .catch(error => handleCatchGlobally(error, error => {
                 dispath(isCallRequested(false));
-                dispath(isCallFailed(true, ERROR_MESSAGE));
-            });
+                dispath(setNotificationMessage({
+                    message: ERROR_MESSAGE,
+                    severity: common.NOTIFICATION_SEVERITY_ERROR
+                }));
+            }));
     }
 }

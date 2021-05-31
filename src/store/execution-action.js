@@ -1,13 +1,16 @@
 import {
     executionResource,
-    regionsResource
+    regionsResource,
+    handleCatchGlobally
 } from '../service/CodelessApi.js';
-
 import {
-    isCallRequested,
-    isCallSuccessful,
-    isCallFailed
+    isCallRequested
 } from '../store/http-call-action';
+import {
+    setNotificationMessage
+} from './util-action.js';
+
+import * as common from "constants/Common";
 
 export const REQUEST_HEALTH_CHECK_EXECUTION = 'REQUEST_HEALTH_CHECK_EXECUTION';
 export const requestHealthCheckExecution = (healthCheck) => ({
@@ -49,9 +52,7 @@ export const getRegions = () => {
             .then(response => {
                 dispath(setRegions(response.data));
             })
-            .catch(error => {
-                console.log(error);
-            });
+            .catch(error => handleCatchGlobally(error, error => { }));
     }
 }
 
@@ -60,19 +61,12 @@ export const getExecutions = (page = 0, size = 20) => {
         dispath(isCallRequested(true));
         executionResource.getExecutions(page, size)
             .then(response => {
-                if (response.status === 200) {
-                    dispath(isCallSuccessful(true));
-                    dispath(setExecutions(response.data.items));
-                } else {
-                    dispath(isCallFailed(true));
-                }
+                dispath(setExecutions(response.data.items));
                 dispath(isCallRequested(false));
             })
-            .catch(error => {
-                console.log(error);
+            .catch(error => handleCatchGlobally(error, error => {
                 dispath(isCallRequested(false));
-                dispath(isCallFailed(true));
-            });
+            }));
     }
 }
 
@@ -84,20 +78,20 @@ export const runExecution = (execution) => {
         executionResource.createExecution(execution)
             .then(response => {
                 dispath(isCallRequested(false));
-                if (response.status === 200) {
-                    dispath(isCallSuccessful(true, SUCCESS_MESSAGE));
-                    dispath(completeExecutionRequest());
-                } else {
-                    dispath(isCallFailed(true, ERROR_MESSAGE));
-                    dispath(canceleExecutionRequest());
-                }
+                dispath(completeExecutionRequest());
+                dispath(setNotificationMessage({
+                    message: SUCCESS_MESSAGE,
+                    severity: common.NOTIFICATION_SEVERITY_SUCCESS
+                }));
             })
-            .catch(error => {
-                console.log(error);
+            .catch(error => handleCatchGlobally(error, error => {
                 dispath(isCallRequested(false));
-                dispath(isCallFailed(true, ERROR_MESSAGE));
                 dispath(canceleExecutionRequest());
-            });
+                dispath(setNotificationMessage({
+                    message: ERROR_MESSAGE,
+                    severity: common.NOTIFICATION_SEVERITY_ERROR
+                }));
+            }));
     }
 }
 
@@ -106,18 +100,11 @@ export const getExecutionResult = (executionId) => {
         dispath(isCallRequested(true));
         executionResource.getExecutionResult(executionId)
             .then(response => {
-                if (response.status === 200) {
-                    dispath(isCallSuccessful(true));
-                    dispath(setExecutionResult(response.data))
-                } else {
-                    dispath(isCallFailed(true));
-                }
+                dispath(setExecutionResult(response.data))
                 dispath(isCallRequested(false));
             })
-            .catch(error => {
-                console.log(error);
+            .catch(error => handleCatchGlobally(error, error => {
                 dispath(isCallRequested(false));
-                dispath(isCallFailed(true));
-            });
+            }));
     }
 }

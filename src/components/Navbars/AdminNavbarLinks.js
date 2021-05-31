@@ -48,13 +48,8 @@ export default function AdminNavbarLinks() {
 
     authResource.logOut()
       .then(response => {
-        if (response.status === 200) {
-          localStorage.removeItem(common.ACCESS_TOKEN);
-          history.push('/');
-        } else {
-          // TODO: Display error message
-          console.log(response);
-        }
+        localStorage.removeItem(common.ACCESS_TOKEN);
+        history.push('/');
       }).catch(error => {
         // TODO: Display error message
         console.log(error);

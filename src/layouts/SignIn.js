@@ -78,7 +78,7 @@ export default function SignIn() {
           setError("The email or password is incorrect.");
           return;
         }
-        setError("Oops, Something went wrong. Please try again later.")
+        setError("Oops, something went wrong. Please try again later.")
       });;
   }
 

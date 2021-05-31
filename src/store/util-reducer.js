@@ -1,6 +1,6 @@
 import {
     REDIRECT,
-    ERROR
+    NOTIFICATION_MESSAGE
 } from './util-action.js'
 
 export const utilReducer = (state = {}, action) => {
@@ -9,9 +9,10 @@ export const utilReducer = (state = {}, action) => {
         case REDIRECT: {
             return { redirectTo: payload };
         }
-        case ERROR: {
-            const { errorMessage } = payload;
-            return { ...state, errorMessage };
+        case NOTIFICATION_MESSAGE: {
+            const { notificationMessage } = payload;
+            console.log(notificationMessage);
+            return { ...state, notificationMessage };
         }
         default:
             return state;

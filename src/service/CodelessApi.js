@@ -21,6 +21,17 @@ instance.interceptors.request.use(
     }
 );
 
+instance.interceptors.response.use(response => response,
+    error => {
+        if (error.response.status === 401 && localStorage.getItem(common.ACCESS_TOKEN)) {
+            localStorage.removeItem(common.ACCESS_TOKEN);
+            // send alert notificaton to sign-in one more time
+            return Promise.reject(error);
+        }
+        return Promise.reject(error);
+    }
+);
+
 const TEST_RESOURCE = "tests";
 export const testResource = {
     getTests(page, size) {
@@ -116,4 +127,12 @@ export const authResource = {
     logOut() {
         return instance.delete(AUTH_RESOURCE + `/sign-out`);
     }
+}
+
+export const handleCatchGlobally = (error, handleCatchLocally) => {
+    console.log(error?.response);
+    if (error?.response?.status === 401) {
+        return;
+    }
+    handleCatchLocally(error);
 }

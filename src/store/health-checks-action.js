@@ -1,9 +1,15 @@
-import { testResource } from '../service/CodelessApi.js';
 import {
-    isCallRequested,
-    isCallFailed,
-    isCallSuccessful
+    testResource,
+    handleCatchGlobally
+} from '../service/CodelessApi.js';
+import {
+    isCallRequested
 } from './http-call-action';
+import {
+    setNotificationMessage
+} from './util-action.js';
+
+import * as common from "constants/Common";
 
 export const REQUEST_HEALTH_CHECK_REMOVAL = 'REQUEST_HEALTH_CHECK_REMOVAL';
 export const requestHealthCheckRemoval = (healthCheck) => ({
@@ -46,21 +52,21 @@ export const removeHealthCheck = (healthCheck) => {
         testResource.deleteTests([healthCheck])
             .then(response => {
                 dispath(isCallRequested(false))
-                if (response.status === 200) {
-                    dispath(isCallSuccessful(true, SUCCESS_MESSAGE));
-                    dispath(cleanChosenHealthChecks([healthCheck]))
-                    dispath(completeHealthCheckRemovalRequest())
-                } else {
-                    dispath(isCallFailed(true, ERROR_MESSAGE))
-                    dispath(completeHealthCheckRemovalRequest())
-                }
-            })
-            .catch(error => {
-                console.log(error)
-                dispath(isCallRequested(false))
-                dispath(isCallFailed(true, ERROR_MESSAGE))
+                dispath(setNotificationMessage({
+                    message: SUCCESS_MESSAGE,
+                    severity: common.NOTIFICATION_SEVERITY_SUCCESS
+                }));
+                dispath(cleanChosenHealthChecks([healthCheck]))
                 dispath(completeHealthCheckRemovalRequest())
-            });
+            })
+            .catch(error => handleCatchGlobally(error, error => {
+                dispath(isCallRequested(false))
+                dispath(setNotificationMessage({
+                    message: ERROR_MESSAGE,
+                    severity: common.NOTIFICATION_SEVERITY_ERROR
+                }));
+                dispath(completeHealthCheckRemovalRequest())
+            }));
     }
 }
 
@@ -70,17 +76,15 @@ export const getHealthChecks = (page = 0, size = 20) => {
         testResource.getTests(page, size)
             .then(response => {
                 dispath(isCallRequested(false))
-                if (response.status === 200) {
-                    dispath(cleanHealthChecks())
-                    dispath(setHealthChecks(response.data.items))
-                } else {
-                    dispath(isCallFailed(true, ERROR_MESSAGE))
-                }
+                dispath(cleanHealthChecks())
+                dispath(setHealthChecks(response.data.items))
             })
-            .catch(error => {
-                console.log(error)
+            .catch(error => handleCatchGlobally(error, error => {
                 dispath(isCallRequested(false))
-                dispath(isCallFailed(true, ERROR_MESSAGE))
-            });
+                dispath(setNotificationMessage({
+                    message: ERROR_MESSAGE,
+                    severity: common.NOTIFICATION_SEVERITY_ERROR
+                }));
+            }));
     }
 }

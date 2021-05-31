@@ -1,10 +1,11 @@
 import _ from 'lodash'
 
-import { testResource } from '../service/CodelessApi.js';
 import {
-    isCallRequested,
-    isCallSuccessful,
-    isCallFailed
+    testResource,
+    handleCatchGlobally
+} from '../service/CodelessApi.js';
+import {
+    isCallRequested
 } from '../store/http-call-action';
 import {
     cleanValidators,
@@ -12,9 +13,10 @@ import {
 } from '../store/validator-action';
 import {
     redirect,
-    setErrorMessage
+    setNotificationMessage
 } from './util-action.js';
 
+import * as common from "constants/Common";
 import * as componentsPaths from './../constants/ComponentsPaths';
 
 export const UPDATE_ID = 'UPDATE_ID';
@@ -85,17 +87,18 @@ export const updateTest = (test) => {
         testResource.updateTest(test)
             .then(response => {
                 dispath(isCallRequested(false));
-                if (response.status === 200) {
-                    dispath(isCallSuccessful(true, SUCCESS_MESSAGE_UPDATE));
-                    dispath(redirect(componentsPaths.VIEW_HEALTH_CHECKS))
-                } else {
-                    dispath(isCallFailed(true, ERROR_MESSAGE_UPDATE));
-                }
+                dispath(setNotificationMessage({
+                    message: SUCCESS_MESSAGE_UPDATE,
+                    severity: common.NOTIFICATION_SEVERITY_SUCCESS
+                }));
+                dispath(redirect(componentsPaths.VIEW_HEALTH_CHECKS))
             })
-            .catch(error => {
-                console.log(error);
-                dispath(isCallFailed(true, ERROR_MESSAGE_UPDATE));
-            });
+            .catch(error => handleCatchGlobally(error, error => {
+                dispath(setNotificationMessage({
+                    message: ERROR_MESSAGE_UPDATE,
+                    severity: common.NOTIFICATION_SEVERITY_ERROR
+                }));
+            }));
     }
 }
 
@@ -104,24 +107,28 @@ const ERROR_MESSAGE_CREATE = "The health check has not been created.";
 export const createTest = (test) => {
     return (dispath) => {
         if (_.isEmpty(test.test['name']) || _.isEmpty(test.test['requestURL'])) {
-            dispath(setErrorMessage("Name, request URL and at least one verification are required!"));
+            dispath(setNotificationMessage({
+                message: "Name, request URL and at least one verification are required!",
+                severity: common.NOTIFICATION_SEVERITY_ERROR
+            }));
             return;
         }
         dispath(isCallRequested(true));
         testResource.createTest(test)
             .then(response => {
                 dispath(isCallRequested(false));
-                if (response.status === 201) {
-                    dispath(isCallSuccessful(true, SUCCESS_MESSAGE_CREATE));
-                    dispath(redirect(componentsPaths.VIEW_HEALTH_CHECKS))
-                } else {
-                    dispath(isCallFailed(true, ERROR_MESSAGE_CREATE));
-                }
+                dispath(redirect(componentsPaths.VIEW_HEALTH_CHECKS));
+                dispath(setNotificationMessage({
+                    message: SUCCESS_MESSAGE_CREATE,
+                    severity: common.NOTIFICATION_SEVERITY_SUCCESS
+                }));
             })
-            .catch(error => {
-                console.log(error);
-                dispath(isCallFailed(true, ERROR_MESSAGE_CREATE));
-            });
+            .catch(error => handleCatchGlobally(error, error => {
+                dispath(setNotificationMessage({
+                    message: ERROR_MESSAGE_CREATE,
+                    severity: common.NOTIFICATION_SEVERITY_ERROR
+                }));
+            }));
     }
 }
 

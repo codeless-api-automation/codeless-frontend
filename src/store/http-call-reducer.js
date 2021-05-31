@@ -1,7 +1,5 @@
 import {
-    CALL_REQUESTED,
-    CALL_SUCCESSFUL,
-    CALL_FAILED
+    CALL_REQUESTED
 } from './http-call-action'
 
 export const httpCallReducer = (state = {}, action) => {
@@ -12,24 +10,6 @@ export const httpCallReducer = (state = {}, action) => {
             let newHttpCallState = {
                 ...state,
                 isCallRequested
-            }
-            return newHttpCallState;
-        }
-        case CALL_SUCCESSFUL: {
-            const { isCallSuccessful, message } = payload;
-            let newHttpCallState = {
-                ...state,
-                isCallSuccessful,
-                message
-            }
-            return newHttpCallState;
-        }
-        case CALL_FAILED: {
-            const { isCallFailed, message } = payload;
-            let newHttpCallState = {
-                ...state,
-                isCallFailed,
-                message
             }
             return newHttpCallState;
         }

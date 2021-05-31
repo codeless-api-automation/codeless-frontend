@@ -4,8 +4,8 @@ export const redirect = link => ({
     payload: link
 })
 
-export const ERROR = 'ERROR';
-export const setErrorMessage = errorMessage => ({
-    type: ERROR,
-    payload: { errorMessage }
+export const NOTIFICATION_MESSAGE = 'NOTIFICATION_MESSAGE';
+export const setNotificationMessage = (notificationMessage) => ({
+    type: NOTIFICATION_MESSAGE,
+    payload: { notificationMessage }
 })
