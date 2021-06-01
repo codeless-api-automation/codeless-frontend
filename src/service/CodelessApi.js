@@ -1,6 +1,9 @@
 import * as axios from "axios";
 import * as common from "constants/Common";
 
+import { configureStore } from "store/store";
+import { setNotificationMessage } from "store/util-action";
+
 const instance = axios.create({
     baseURL: "http://localhost:8080/codeless/",
     headers: {
@@ -25,7 +28,11 @@ instance.interceptors.response.use(response => response,
     error => {
         if (error.response.status === 401 && localStorage.getItem(common.ACCESS_TOKEN)) {
             localStorage.removeItem(common.ACCESS_TOKEN);
-            // send alert notificaton to sign-in one more time
+            const store = configureStore();
+            store.dispatch(setNotificationMessage({
+                message: "Your session has expired. Would you like to be redirected to the login page?",
+                severity: common.NOTIFICATION_SEVERITY_WARNING
+            }));
             return Promise.reject(error);
         }
         return Promise.reject(error);
