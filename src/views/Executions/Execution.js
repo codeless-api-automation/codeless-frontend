@@ -85,8 +85,39 @@ const DecoratedAccordionSummary = withStyles({
 const DecoratedAccordionDetails = withStyles((theme) => ({
   root: {
     padding: theme.spacing(2),
+    display: 'block'
   },
 }))(AccordionDetails);
+
+
+function DetailsItem(props) {
+  return (
+    <Typography
+      style={{ overflowWrap: ' break-word' }}
+      variant="body2">
+      {props.details}
+    </Typography>);
+}
+
+
+function Details(props) {
+
+  let { details } = props;
+
+  if (Array.isArray(details)) {
+    return (
+      <div>
+        {details.map((detail, index) => (
+          <DetailsItem
+            key={index}
+            details={detail} />
+        ))}
+      </div>
+    );
+  } else {
+    return (<DetailsItem details={details} />)
+  }
+}
 
 function CustomizedAccordions(props) {
   const { rows } = props;
@@ -97,24 +128,44 @@ function CustomizedAccordions(props) {
     setExpanded(newExpanded ? panel : false);
   };
 
-  const RESPONSE_BODY_LOG_ENTRY = "Response Body:";
+  const RESPONSE_BODY_LOG_ENTRY = "Response Body: ";
+  const REQUEST_HEADERS_LOG_ENTRY = "Request Headers: ";
+  const RESPONSE_HEADERS_LOG_ENTRY = "Response Headers: ";
+
 
   const getSummary = (row) => {
     if (row.includes(RESPONSE_BODY_LOG_ENTRY)) {
       return "Response Body"
-    } else {
-      return row;
     }
+
+    if (row.includes(REQUEST_HEADERS_LOG_ENTRY)) {
+      return "Request Headers"
+    }
+
+    if (row.includes(RESPONSE_HEADERS_LOG_ENTRY)) {
+      return "Response Headers"
+    }
+
+    return row;
   }
+
 
   const getDetails = (row) => {
     if (row.includes(RESPONSE_BODY_LOG_ENTRY)) {
       return row.split(RESPONSE_BODY_LOG_ENTRY)[1];
     }
+
+    if (row.includes(REQUEST_HEADERS_LOG_ENTRY)) {
+      return row.split(REQUEST_HEADERS_LOG_ENTRY)[1].split("\r\n");
+    }
+
+    if (row.includes(RESPONSE_HEADERS_LOG_ENTRY)) {
+      return row.split(RESPONSE_HEADERS_LOG_ENTRY)[1].split("\r\n");
+    }
   }
 
   const isDetailsEnabled = (row) => {
-    return row.includes(RESPONSE_BODY_LOG_ENTRY);
+    return row.includes(RESPONSE_BODY_LOG_ENTRY) || row.includes(REQUEST_HEADERS_LOG_ENTRY) || row.includes(RESPONSE_HEADERS_LOG_ENTRY);
   }
 
   return (
@@ -131,11 +182,7 @@ function CustomizedAccordions(props) {
               </Typography>
             </DecoratedAccordionSummary>
             <DecoratedAccordionDetails>
-              <Typography
-                style={{ overflowY: 'auto' }}
-                variant="body2">
-                {getDetails(row)}
-              </Typography>
+              <Details details={getDetails(row)} />
             </DecoratedAccordionDetails>
           </DecoratedAccordion>
         ))}
