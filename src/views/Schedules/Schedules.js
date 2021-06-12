@@ -25,11 +25,28 @@ import CustomTable from 'components/Table/CustomTable.js';
 
 import TablePanel from 'components/Table/TablePanel';
 
+function buildRunFrequency(timer) {
+
+    let timerType = timer.type;
+    if (timerType === 'WEEK_TIMER') {
+        return timer.week;
+    }
+
+    if (timerType === 'HOUR_TIMER') {
+        return timer.hour;
+    }
+
+    if (timerType === 'MINUTE_TIMER') {
+        return timer.minute;
+    }
+}
+
 function HeaderRow() {
     return (
         <TableRow>
-            <TableCell style={{ width: '30%' }}>Schedule Name</TableCell>
-            <TableCell style={{ width: '40%' }}>Health Check Name</TableCell>
+            <TableCell style={{ width: '20%' }}>Schedule Name</TableCell>
+            <TableCell style={{ width: '20%' }}>Health Check Name</TableCell>
+            <TableCell style={{ width: '20%' }}>Run Frequency</TableCell>
             <TableCell style={{ width: '20%' }}>Geolocation</TableCell>
             <TableCell style={{ width: '10%' }} align="right"></TableCell>
         </TableRow>
@@ -45,6 +62,9 @@ function BodyRow(props) {
             </TableCell>
             <TableCell>
                 <OverflowTip originalValue={row.tests[0].name} />
+            </TableCell>
+            <TableCell>
+                {buildRunFrequency(row.timer)}
             </TableCell>
             <TableCell>
                 {buildRegion(row.region)}
@@ -75,7 +95,7 @@ export function Schedules({ scheduleHelper }) {
                     <TablePanel />
                     <CustomTable
                         rows={scheduleHelper.schedules}
-                        colSpan={4}
+                        colSpan={5}
                         headerRow={<HeaderRow />}
                         bodyRow={<BodyRow
                             onRowShowDetails={(row) => console.log("onRowShowDetails: " + row)}
