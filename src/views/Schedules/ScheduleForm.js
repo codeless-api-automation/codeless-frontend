@@ -289,6 +289,18 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, runSche
                     }
                 />
 
+                <FormRow
+                    row={
+                        <Grid item xs={6}>
+                            <Controls.Checkbox
+                                name="isReceiveEmailNotifications"
+                                label="Receive email notifications for run failures and errors"
+                                value={values.isReceiveEmailNotifications}
+                                onChange={handleInputChange}
+                            />
+                        </Grid>
+                    }
+                />
 
                 <FormRow
                     row={

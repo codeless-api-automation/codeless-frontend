@@ -18,7 +18,7 @@ import HealthCheck from "views/HealthChecks/HealthCheck.js"
 import ExecutionsContainer from "views/Executions/ExecutionsContainer.js";
 import Execution from "views/Executions/Execution.js";
 
-import Schedules from "views/Schedules/Schedules";
+import SchedulesContainer from "views/Schedules/SchedulesContainer";
 import Schedule from "views/Schedules/Schedule";
 
 function Heartbeat() {
@@ -51,7 +51,7 @@ export const dashboardRoutes = [
     path: "/schedules",
     name: "Schedules",
     icon: ScheduleOutlined,
-    component: Schedules,
+    component: SchedulesContainer,
     layout: "/general"
   }
 ];

@@ -26,7 +26,7 @@ import GridContainer from "components/Grid/GridContainer.js";
 import OverflowTip from 'components/OverflowTip/OverflowTip';
 import CustomTable from 'components/Table/CustomTable.js';
 
-import TablePanel from './TablePanel';
+import TablePanel from 'components/Table/TablePanel';
 
 import {
     getExecutionResult
