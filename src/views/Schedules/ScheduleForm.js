@@ -121,6 +121,39 @@ function FormRow(props) {
 
 function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, runSchedule }) {
 
+    const addEmail = (event) => {
+        const { value } = event.target
+
+        if (!value || value === '') {
+            return;
+        }
+
+        let newEmails = values.emails.concat(value);
+        setValues({
+            ...values,
+            currentEmail: '',
+            emails: newEmails
+        })
+
+    }
+
+    const handleEmailInputChange = (event, email, index) => {
+        const { value } = event.target
+
+        let newEmails;
+        if (!value) {
+            newEmails = values.emails.filter((el) => el !== email);
+        } else {
+            newEmails = values.emails;
+            newEmails[index] = value;
+        }
+
+        setValues({
+            ...values,
+            emails: newEmails
+        });
+    }
+
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
         if ('scheduleName' in fieldValues)
@@ -143,12 +176,16 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, runSche
         hourTimer: hourTimer[0],
         weekTimer: weekTimer[0],
         time: time[0],
+        isReceiveEmailNotifications: false,
+        currentEmail: '',
+        emails: [],
         isNotFollowingRedirect: true,
         isSslValidationDisabled: true
     }
 
     const {
         values,
+        setValues,
         errors,
         setErrors,
         handleInputChange,
@@ -302,6 +339,35 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, runSche
                     }
                 />
 
+                {values.isReceiveEmailNotifications && values.emails.map((email, index) =>
+                    <FormRow key={index}
+                        row={<Grid item xs={5}>
+                            <Controls.Input
+                                name="emails"
+                                label="Recipient email"
+                                placeholder="Add another recipient email"
+                                value={email}
+                                onChange={(event) => handleEmailInputChange(event, email, index)}
+                            />
+                        </Grid>}>
+                    </FormRow>
+                )}
+                {values.isReceiveEmailNotifications &&
+                    <FormRow
+                        row={<Grid item xs={5}>
+                            <Controls.Input
+                                name="currentEmail"
+                                label="Recipient email"
+                                placeholder="Add another recipient email"
+                                value={values.currentEmail}
+                                onChange={handleInputChange}
+                                onBlur={addEmail}
+                            />
+                        </Grid>}>
+                    </FormRow>
+                }
+
+
                 <FormRow
                     row={
                         <Grid item xs={3}>
@@ -335,6 +401,7 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, runSche
                 >
                     <Grid item xs={12}>
                         <Controls.Button
+                            disabled={httpCallResult.isCallRequested}
                             variant="outlined"
                             text="RESET"
                             onClick={resetForm} />
