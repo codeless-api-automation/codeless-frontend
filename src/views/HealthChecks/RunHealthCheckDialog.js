@@ -18,7 +18,7 @@ import GeolocationSelect from "../../components/GeolocationSelect/GeolocationSel
 
 function RunHealthCheckDialog({ httpCallResult, executionHelper, canceleExecutionRequest, runExecution }) {
 
-    const [region, setRegion] = useState(null);
+    const [region, setRegion] = useState(executionHelper.defaultRegion);
 
     const handleRun = () => {
         runExecution({

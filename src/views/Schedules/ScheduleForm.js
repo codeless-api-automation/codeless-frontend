@@ -199,6 +199,7 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, runSche
                 scheduleName: values.scheduleName,
                 region: values.region,
                 healthCheck: scheduleHelper.requestedHealthCheck,
+                emails: values.emails,
                 timer: {
                     type: values.runFrequency,
                     minute: values.minuteTimer,
