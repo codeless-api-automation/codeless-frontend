@@ -113,7 +113,7 @@ function HealthChecks({ httpCallResult, healthChecksPage, requestHealthCheckExec
 
   const onRowSchedule = (healthCheck) => {
     requestHealthCheckSchedule(healthCheck);
-    history.push(componentsPaths.VIEW_SCHEDULE);
+    history.push(componentsPaths.VIEW_HEALTH_CHECK_SCHEDULE);
   }
 
   const getHealthCheckName = (healthCheck) => {

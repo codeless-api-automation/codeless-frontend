@@ -137,6 +137,9 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, runSche
 
     }
 
+    const isEmailValid = (email) =>
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
     const handleEmailInputChange = (event, email, index) => {
         const { value } = event.target
 
@@ -160,10 +163,13 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, runSche
             temp.scheduleName = fieldValues.scheduleName ? "" : "Schedule name can not be empty."
         if ('runFrequency' in fieldValues)
             temp.runFrequency = fieldValues.runFrequency.length !== 0 ? "" : "Run frequency should be set."
+
         setErrors({
             ...temp
         })
 
+        console.log(errors)
+        
         if (fieldValues === values)
             return Object.values(temp).every(x => x === "")
     }
@@ -360,6 +366,7 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, runSche
                                 name="currentEmail"
                                 label="Recipient email"
                                 placeholder="Add another recipient email"
+                                autoComplete="none"
                                 value={values.currentEmail}
                                 onChange={handleInputChange}
                                 onBlur={addEmail}

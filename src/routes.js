@@ -72,11 +72,11 @@ export const otherRoutes = [
     previousRoute: componentsPaths.VIEW_EXECUTIONS
   },
   {
-    path: "/schedules/schedule",
+    path: "/health-checks/schedule",
     name: "Schedule",
     component: Schedule,
     layout: "/general",
-    previousRoute: componentsPaths.VIEW_SCHEDULES
+    previousRoute: componentsPaths.VIEW_HEALTH_CHECKS
   }
 ];
 
