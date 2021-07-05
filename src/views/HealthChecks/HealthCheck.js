@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { compose } from "redux";
+import { useHistory } from "react-router-dom";
 
-import { withRedirect } from "../../hoc/withRedirect";
 import { createStyles, withStyles } from "@material-ui/core/styles";
 import {
   Grid,
@@ -24,6 +23,8 @@ import {
   removeHeader,
   updateHeader
 } from "../../store/test-action.js"
+
+import * as componentsPaths from "constants/ComponentsPaths.js";
 
 import { CheckCircleOutline } from '@material-ui/icons';
 
@@ -56,6 +57,8 @@ function Test({ test, validators,
   saveTest, httpCallResult,
   cleanAllTestAttributes, addHeader,
   removeHeader, updateHeader }) {
+
+  const history = useHistory();
 
   useEffect(() => {
     return () => cleanAllTestAttributes()
@@ -103,7 +106,7 @@ function Test({ test, validators,
                 size="large"
                 variant="outlined"
                 disabled={httpCallResult.isCallRequested}
-                onClick={() => saveTest({ test, validators })}
+                onClick={() => saveTest({ test, validators }, () => history.push(componentsPaths.VIEW_HEALTH_CHECKS))}
                 startIcon={<CheckCircleOutline fontSize="inherit" />}
               >
                 save
@@ -156,8 +159,8 @@ const mapStateToProps = state => ({
   validators: state.verificationsTab,
   test: state.testPage,
   httpCallResult: state.httpCallResult,
-  redirectTo: state.utilEvents.redirectTo
 });
-export default compose(
-  connect(mapStateToProps, { updateName, updateHttpMethod, updateRequestUrl, updateRequestBody, saveTest, cleanAllTestAttributes, addHeader, removeHeader, updateHeader }),
-  withRedirect)(Test);
+export default connect(mapStateToProps, {
+  updateName, updateHttpMethod, updateRequestUrl, updateRequestBody,
+  saveTest, cleanAllTestAttributes, addHeader, removeHeader, updateHeader
+})(Test);

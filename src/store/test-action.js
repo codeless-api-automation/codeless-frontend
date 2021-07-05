@@ -12,12 +12,10 @@ import {
     updateValidators
 } from '../store/validator-action';
 import {
-    redirect,
     setNotificationMessage
 } from './util-action.js';
 
 import * as common from "constants/Common";
-import * as componentsPaths from './../constants/ComponentsPaths';
 
 export const UPDATE_ID = 'UPDATE_ID';
 export const updateId = (id) => ({
@@ -81,13 +79,13 @@ export const setHeader = (headers) => ({
 
 const SUCCESS_MESSAGE_UPDATE = "The health check has been updated successfully.";
 const ERROR_MESSAGE_UPDATE = "The health check has not updated.";
-export const updateTest = (test) => {
+export const updateTest = (test, redirect) => {
     return (dispath) => {
         dispath(isCallRequested(true));
         testResource.updateTest(test)
             .then(response => {
                 dispath(isCallRequested(false));
-                dispath(redirect(componentsPaths.VIEW_HEALTH_CHECKS))
+                redirect()
                 dispath(setNotificationMessage({
                     message: SUCCESS_MESSAGE_UPDATE,
                     severity: common.NOTIFICATION_SEVERITY_SUCCESS
@@ -105,7 +103,7 @@ export const updateTest = (test) => {
 
 const SUCCESS_MESSAGE_CREATE = "The health check has been created successfully.";
 const ERROR_MESSAGE_CREATE = "The health check has not been created.";
-export const createTest = (test) => {
+export const createTest = (test, redirect) => {
     return (dispath) => {
         if (_.isEmpty(test.test['name']) || _.isEmpty(test.test['requestURL'])) {
             dispath(setNotificationMessage({
@@ -118,7 +116,7 @@ export const createTest = (test) => {
         testResource.createTest(test)
             .then(response => {
                 dispath(isCallRequested(false));
-                dispath(redirect(componentsPaths.VIEW_HEALTH_CHECKS));
+                redirect()
                 dispath(setNotificationMessage({
                     message: SUCCESS_MESSAGE_CREATE,
                     severity: common.NOTIFICATION_SEVERITY_SUCCESS
@@ -134,10 +132,10 @@ export const createTest = (test) => {
     }
 }
 
-export const saveTest = (test) => {
+export const saveTest = (test, redirect) => {
     return (dispath) => {
         console.log(test)
-        test.test.id === undefined ? dispath(createTest(test)) : dispath(updateTest(test))
+        test.test.id === undefined ? dispath(createTest(test, redirect)) : dispath(updateTest(test, redirect))
     }
 }
 

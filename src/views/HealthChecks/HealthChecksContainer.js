@@ -9,20 +9,15 @@ import {
     getRegions
 } from "../../store/execution-action.js"
 
-import {
-    redirect
-} from "../../store/util-action.js"
-
 import HealthChecks from './HealthChecks.js';
 
 
-function HealthChecksContainer({ getHealthChecks, getRegions, redirect }) {
+function HealthChecksContainer({ getHealthChecks, getRegions }) {
 
     useEffect(() => {
-        redirect(null);
         getRegions();
         getHealthChecks();
-    }, [redirect, getRegions, getHealthChecks])
+    }, [getRegions, getHealthChecks])
 
     return <HealthChecks />;
 
@@ -30,4 +25,4 @@ function HealthChecksContainer({ getHealthChecks, getRegions, redirect }) {
 
 const mapStateToProps = state => ({
 });
-export default connect(mapStateToProps, { redirect, getHealthChecks, getRegions })(HealthChecksContainer);
+export default connect(mapStateToProps, { getHealthChecks, getRegions })(HealthChecksContainer);

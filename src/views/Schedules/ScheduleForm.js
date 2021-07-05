@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 import { Grid, } from '@material-ui/core';
 import Controls from "../../components/Controls/Controls";
@@ -8,9 +9,10 @@ import { useForm, Form } from '../../components/useForm';
 import GeolocationSelect from "../../components/GeolocationSelect/GeolocationSelect"
 
 import {
-    runSchedule
+    saveSchedule
 } from "../../store/schedule-action.js"
 
+import * as componentsPaths from "constants/ComponentsPaths";
 
 const getRunFrequency = () => ([
     { id: 'MINUTE_TIMER', title: 'Minute Timer' },
@@ -119,7 +121,9 @@ function FormRow(props) {
     );
 }
 
-function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, runSchedule }) {
+function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, saveSchedule }) {
+
+    const history = useHistory();
 
     const addEmail = (event) => {
         const { value } = event.target
@@ -169,7 +173,7 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, runSche
         })
 
         console.log(errors)
-        
+
         if (fieldValues === values)
             return Object.values(temp).every(x => x === "")
     }
@@ -201,7 +205,7 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, runSche
     const handleSubmit = e => {
         e.preventDefault()
         if (validate()) {
-            runSchedule({
+            saveSchedule({
                 scheduleName: values.scheduleName,
                 region: values.region,
                 healthCheck: scheduleHelper.requestedHealthCheck,
@@ -213,8 +217,7 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, runSche
                     week: values.weekTimer,
                     time: values.time
                 }
-            })
-            resetForm()
+            }, () => history.push(componentsPaths.VIEW_HEALTH_CHECKS))
         }
     }
 
@@ -430,4 +433,5 @@ const mapStateToProps = state => ({
     executionHelper: state.executionHelper,
     httpCallResult: state.httpCallResult
 });
-export default connect(mapStateToProps, { runSchedule })(ScheduleForm);
+
+export default connect(mapStateToProps, { saveSchedule })(ScheduleForm);

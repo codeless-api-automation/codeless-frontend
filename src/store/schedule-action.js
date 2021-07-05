@@ -37,25 +37,38 @@ export const getSchedules = (page = 0, size = 20) => {
     }
 }
 
-const SUCCESS_MESSAGE = "The health check has been scheduled successfully.";
-const ERROR_MESSAGE = "The health check has not been scheduled.";
-export const runSchedule = (schedule) => {
+const CREATE_SUCCESS_MESSAGE = "The health check has been scheduled successfully.";
+const CREATE_ERROR_MESSAGE = "The health check has not been scheduled.";
+export const createSchedule = (schedule, redirect) => {
     return (dispath) => {
         dispath(isCallRequested(true));
         scheduleResource.createSchedule(schedule)
             .then(response => {
                 dispath(isCallRequested(false));
+                redirect()
                 dispath(setNotificationMessage({
-                    message: SUCCESS_MESSAGE,
+                    message: CREATE_SUCCESS_MESSAGE,
                     severity: common.NOTIFICATION_SEVERITY_SUCCESS
                 }));
             })
             .catch(error => handleCatchGlobally(error, error => {
                 dispath(isCallRequested(false));
                 dispath(setNotificationMessage({
-                    message: ERROR_MESSAGE,
+                    message: CREATE_ERROR_MESSAGE,
                     severity: common.NOTIFICATION_SEVERITY_ERROR
                 }));
             }));
+    }
+}
+
+export const updateSchedule = (schedule) => {
+    return (dispath) => {
+    }
+}
+
+export const saveSchedule = (schedule, redirect) => {
+    return (dispath) => {
+        console.log(schedule)
+        schedule.id === undefined ? dispath(createSchedule(schedule, redirect)) : dispath(updateSchedule(schedule, redirect))
     }
 }
