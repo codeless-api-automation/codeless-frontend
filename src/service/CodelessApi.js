@@ -30,7 +30,7 @@ instance.interceptors.response.use(response => response,
             localStorage.removeItem(common.ACCESS_TOKEN);
             const store = configureStore();
             store.dispatch(setNotificationMessage({
-                message: "Your session has expired. Would you like to be redirected to the login page?",
+                message: "Your session expired. Click here to renew your session",
                 severity: common.NOTIFICATION_SEVERITY_WARNING
             }));
             return Promise.reject(error);

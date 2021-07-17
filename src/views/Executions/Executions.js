@@ -16,7 +16,6 @@ import {
 } from '@material-ui/core';
 
 import {
-    Delete,
     Info
 } from '@material-ui/icons';
 
@@ -45,7 +44,7 @@ function HeaderRow() {
 }
 
 function BodyRow(props) {
-    let { key, row, onRowDelete, onRowShowDetails } = props;
+    let { key, row, onRowShowDetails } = props;
     let disabledActionButton = row.executionStatus === 'PENDING'
     return (
         <TableRow key={key}>
@@ -63,12 +62,6 @@ function BodyRow(props) {
             </TableCell>
             <TableCell align="right" padding="none">
                 <Grid container direction="row-reverse">
-                    <IconButton
-                        disabled={disabledActionButton}
-                        onClick={() => onRowDelete(row)}
-                        color="primary">
-                        <Delete fontSize="small" />
-                    </IconButton>
                     <IconButton
                         disabled={disabledActionButton}
                         onClick={() => onRowShowDetails(row)}
@@ -102,7 +95,6 @@ function Executions({ executionHelper, getExecutionResult }) {
                         headerRow={<HeaderRow />}
                         bodyRow={<BodyRow
                             onRowShowDetails={(row) => requestExecutionViewing(row)}
-                            onRowDelete={(row) => console.log("onRowDelete: " + row)}
                         />} />
                 </div>
             </GridItem>
