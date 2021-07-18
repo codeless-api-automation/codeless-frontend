@@ -1,7 +1,6 @@
 import * as axios from "axios";
 import * as common from "constants/Common";
 
-import { configureStore } from "store/store";
 import { setNotificationMessage } from "store/util-action";
 
 const instance = axios.create({
@@ -21,21 +20,6 @@ instance.interceptors.request.use(
     },
     error => {
         Promise.reject(error);
-    }
-);
-
-instance.interceptors.response.use(response => response,
-    error => {
-        if (error.response.status === 401 && localStorage.getItem(common.ACCESS_TOKEN)) {
-            localStorage.removeItem(common.ACCESS_TOKEN);
-            const store = configureStore();
-            store.dispatch(setNotificationMessage({
-                message: "Your session expired. Click here to renew your session",
-                severity: common.NOTIFICATION_SEVERITY_WARNING
-            }));
-            return Promise.reject(error);
-        }
-        return Promise.reject(error);
     }
 );
 
@@ -137,9 +121,16 @@ export const authResource = {
     }
 }
 
-export const handleCatchGlobally = (error, handleCatchLocally) => {
+export const handleCatchGlobally = (dispatch, error, handleCatchLocally) => {
     console.log(error?.response);
     if (error?.response?.status === 401) {
+        if (localStorage.getItem(common.ACCESS_TOKEN)) {
+            localStorage.removeItem(common.ACCESS_TOKEN);
+            dispatch(setNotificationMessage({
+                message: "Your session expired. Click here to renew your session.",
+                severity: common.NOTIFICATION_SEVERITY_WARNING
+            }));
+        }
         return;
     }
     handleCatchLocally(error);

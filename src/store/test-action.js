@@ -91,7 +91,7 @@ export const updateTest = (test, redirect) => {
                     severity: common.NOTIFICATION_SEVERITY_SUCCESS
                 }));
             })
-            .catch(error => handleCatchGlobally(error, error => {
+            .catch(error => handleCatchGlobally(dispath, error, error => {
                 dispath(isCallRequested(false));
                 dispath(setNotificationMessage({
                     message: ERROR_MESSAGE_UPDATE,
@@ -122,7 +122,7 @@ export const createTest = (test, redirect) => {
                     severity: common.NOTIFICATION_SEVERITY_SUCCESS
                 }));
             })
-            .catch(error => handleCatchGlobally(error, error => {
+            .catch(error => handleCatchGlobally(dispath, error, error => {
                 dispath(isCallRequested(false));
                 dispath(setNotificationMessage({
                     message: ERROR_MESSAGE_CREATE,

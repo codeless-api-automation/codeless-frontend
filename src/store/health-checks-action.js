@@ -59,7 +59,7 @@ export const removeHealthCheck = (healthCheck) => {
                 dispath(cleanChosenHealthChecks([healthCheck]))
                 dispath(completeHealthCheckRemovalRequest())
             })
-            .catch(error => handleCatchGlobally(error, error => {
+            .catch(error => handleCatchGlobally(dispath, error, error => {
                 dispath(isCallRequested(false))
                 dispath(setNotificationMessage({
                     message: ERROR_MESSAGE,
@@ -79,7 +79,7 @@ export const getHealthChecks = (page = 0, size = 20) => {
                 dispath(cleanHealthChecks())
                 dispath(setHealthChecks(response.data.items))
             })
-            .catch(error => handleCatchGlobally(error, error => {
+            .catch(error => handleCatchGlobally(dispath, error, error => {
                 dispath(isCallRequested(false))
                 dispath(setNotificationMessage({
                     message: ERROR_MESSAGE,

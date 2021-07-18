@@ -31,7 +31,7 @@ export const getSchedules = (page = 0, size = 20) => {
                 dispath(setSchedules(response.data.items));
                 dispath(isCallRequested(false));
             })
-            .catch(error => handleCatchGlobally(error, error => {
+            .catch(error => handleCatchGlobally(dispath, error, error => {
                 dispath(isCallRequested(false));
             }));
     }
@@ -51,7 +51,7 @@ export const createSchedule = (schedule, redirect) => {
                     severity: common.NOTIFICATION_SEVERITY_SUCCESS
                 }));
             })
-            .catch(error => handleCatchGlobally(error, error => {
+            .catch(error => handleCatchGlobally(dispath, error, error => {
                 dispath(isCallRequested(false));
                 dispath(setNotificationMessage({
                     message: CREATE_ERROR_MESSAGE,

@@ -52,7 +52,7 @@ export const getRegions = () => {
             .then(response => {
                 dispath(setRegions(response.data));
             })
-            .catch(error => handleCatchGlobally(error, error => { }));
+            .catch(error => handleCatchGlobally(dispath, error, error => { }));
     }
 }
 
@@ -64,7 +64,7 @@ export const getExecutions = (page = 0, size = 20) => {
                 dispath(setExecutions(response.data.items));
                 dispath(isCallRequested(false));
             })
-            .catch(error => handleCatchGlobally(error, error => {
+            .catch(error => handleCatchGlobally(dispath, error, error => {
                 dispath(isCallRequested(false));
             }));
     }
@@ -84,7 +84,7 @@ export const runExecution = (execution) => {
                     severity: common.NOTIFICATION_SEVERITY_SUCCESS
                 }));
             })
-            .catch(error => handleCatchGlobally(error, error => {
+            .catch(error => handleCatchGlobally(dispath, error, error => {
                 dispath(isCallRequested(false));
                 dispath(canceleExecutionRequest());
                 dispath(setNotificationMessage({
@@ -103,7 +103,7 @@ export const getExecutionResult = (executionId) => {
                 dispath(setExecutionResult(response.data))
                 dispath(isCallRequested(false));
             })
-            .catch(error => handleCatchGlobally(error, error => {
+            .catch(error => handleCatchGlobally(dispath, error, error => {
                 dispath(isCallRequested(false));
             }));
     }
