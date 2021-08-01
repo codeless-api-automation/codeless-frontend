@@ -216,19 +216,20 @@ function Execution({ httpCallResult, executionResult }) {
       <GridItem xs={12}>
         <div>
           <AntTabs value={value} onChange={handleChange}>
-            <AntTab label="Summary" />
             <AntTab label="Logs" />
           </AntTabs>
         </div>
       </GridItem>
 
-      <GridItem xs={12}>
-        <div hidden={value !== 1}>
-          <CustomizedAccordions
-            rows={executionResult['result'].logs}
-          />
-        </div>
-      </GridItem>
+      {value === 0 &&
+        <GridItem xs={12}>
+          <div>
+            <CustomizedAccordions
+              rows={executionResult['result'].logs}
+            />
+          </div>
+        </GridItem>
+      }
 
     </GridContainer>
   );
