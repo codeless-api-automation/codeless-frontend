@@ -14,12 +14,14 @@ import DashboardPage from "views/Dashboard/Dashboard.js";
 
 import HealthChecksContainer from "views/HealthChecks/HealthChecksContainer.js"
 import HealthCheck from "views/HealthChecks/HealthCheck.js"
+import CreateSchedule from "views/HealthChecks/CreateSchedule";
 
 import ExecutionsContainer from "views/Executions/ExecutionsContainer.js";
 import Execution from "views/Executions/Execution.js";
 
 import SchedulesContainer from "views/Schedules/SchedulesContainer";
-import Schedule from "views/Schedules/Schedule";
+import DetailedSchedule from "views/Schedules/DetailedSchedule";
+
 
 function Heartbeat() {
   return <Icon className="fa fa-heartbeat" style={{ float: 'left', marginRight: '15px' }} />;
@@ -74,9 +76,16 @@ export const otherRoutes = [
   {
     path: "/health-checks/schedule",
     name: "Schedule",
-    component: Schedule,
+    component: CreateSchedule,
     layout: "/general",
     previousRoute: componentsPaths.VIEW_HEALTH_CHECKS
+  },
+  {
+    path: "/schedules/schedule",
+    name: "Schedule",
+    component: DetailedSchedule,
+    layout: "/general",
+    previousRoute: componentsPaths.VIEW_SCHEDULES
   }
 ];
 

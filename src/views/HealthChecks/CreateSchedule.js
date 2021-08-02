@@ -1,6 +1,6 @@
 import React from "react";
 
-import ScheduleForm from "./ScheduleForm";
+import ScheduleForm from "../Schedules/ScheduleForm";
 
 import {
     Paper,
@@ -14,10 +14,9 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default function Schedule() {
+export default function CreateSchedule() {
 
     const classes = useStyles();
-
     return (
         <Paper className={classes.pageContent}>
             <ScheduleForm />

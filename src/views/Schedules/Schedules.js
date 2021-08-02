@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 import {
     buildRegion
@@ -24,6 +25,8 @@ import OverflowTip from 'components/OverflowTip/OverflowTip';
 import CustomTable from 'components/Table/CustomTable.js';
 
 import TablePanel from 'components/Table/TablePanel';
+
+import * as componentsPaths from "constants/ComponentsPaths.js";
 
 function buildRunFrequency(timer) {
 
@@ -88,6 +91,14 @@ function BodyRow(props) {
 }
 
 export function Schedules({ scheduleHelper }) {
+
+    const history = useHistory();
+
+    const requestScheduleViewing = (schedule) => {
+        //getPerfomanceMetrics(schedule);
+        history.push(componentsPaths.VIEW_SCHEDULE);
+    }
+
     return (
         <GridContainer>
             <GridItem xs={12}>
@@ -98,7 +109,7 @@ export function Schedules({ scheduleHelper }) {
                         colSpan={5}
                         headerRow={<HeaderRow />}
                         bodyRow={<BodyRow
-                            onRowShowDetails={(row) => console.log("onRowShowDetails: " + row)}
+                            onRowShowDetails={(row) => requestScheduleViewing(row)}
                             onRowDelete={(row) => console.log("onRowDelete: " + row)}
                         />} />
                 </div>
