@@ -7,7 +7,7 @@ import { healthChecksReducer } from './health-checks-reducer';
 import { utilReducer } from './util-reducer';
 import { executionHelperReducer } from './execution-reducer';
 import { scheduleReducer } from './schedule-reducer';
-
+import { metricsReducer } from './metrics-reducer';
 
 
 const reducers = {
@@ -17,7 +17,9 @@ const reducers = {
     healthChecksPage: healthChecksReducer,
     utilEvents: utilReducer,
     executionHelper: executionHelperReducer,
-    scheduleHelper: scheduleReducer
+    scheduleHelper: scheduleReducer,
+    metrics: metricsReducer
+    
 };
 
 const rootReducer = combineReducers(reducers);

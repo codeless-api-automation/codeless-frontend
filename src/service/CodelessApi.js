@@ -77,7 +77,7 @@ export const executionResource = {
 const SCHEDULE_RESOURCE = "schedules";
 export const scheduleResource = {
     createSchedule(schedule) {
-        let { scheduleName, region, healthCheck, timer, emails} = schedule;
+        let { scheduleName, region, healthCheck, timer, emails } = schedule;
         let requestBody = {
             scheduleName,
             region,
@@ -90,6 +90,24 @@ export const scheduleResource = {
     getSchedules(page, size) {
         return instance.get(SCHEDULE_RESOURCE + `?page=${page}&size=${size}`);
     }
+}
+
+const METRICS_RESOURCE = "metrics";
+export const metricsResource = {
+
+    getMetrics(scheduleName, startDate = startDateDefault(), endDate = endDateDefault()) {
+        return instance.get(METRICS_RESOURCE + `?schedule_name=${scheduleName}&start_date=${startDate}&end_date=${endDate}`);
+    }
+}
+
+function startDateDefault() {
+    let currentDate = new Date();
+    currentDate.setMonth(currentDate.getMonth() - 2);
+    return currentDate.toISOString();
+}
+
+function endDateDefault() {
+    return new Date().toISOString();
 }
 
 const REGIONS_RESOURCE = "regions";

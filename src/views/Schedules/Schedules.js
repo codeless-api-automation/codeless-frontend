@@ -28,6 +28,10 @@ import TablePanel from 'components/Table/TablePanel';
 
 import * as componentsPaths from "constants/ComponentsPaths.js";
 
+import {
+    getPerfomanceMetrics
+} from "../../store/metrics-action"
+
 function buildRunFrequency(timer) {
 
     let timerType = timer.type;
@@ -90,12 +94,12 @@ function BodyRow(props) {
     );
 }
 
-export function Schedules({ scheduleHelper }) {
+export function Schedules({ scheduleHelper, getPerfomanceMetrics }) {
 
     const history = useHistory();
 
     const requestScheduleViewing = (schedule) => {
-        //getPerfomanceMetrics(schedule);
+        getPerfomanceMetrics(schedule.scheduleName);
         history.push(componentsPaths.VIEW_SCHEDULE);
     }
 
@@ -121,4 +125,4 @@ export function Schedules({ scheduleHelper }) {
 const mapStateToProps = state => ({
     scheduleHelper: state.scheduleHelper,
 });
-export default connect(mapStateToProps, {})(Schedules);
+export default connect(mapStateToProps, { getPerfomanceMetrics })(Schedules);

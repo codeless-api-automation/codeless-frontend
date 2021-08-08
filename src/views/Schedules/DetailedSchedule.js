@@ -17,7 +17,6 @@ import {
   BarChart,
   styler
 } from "react-timeseries-charts";
-import data from "../../data";
 
 import {
   Paper,
@@ -51,7 +50,7 @@ const AntTab = withStyles((theme) => ({
   selected: {},
 }))((props) => <Tab disableRipple {...props} />);
 
-function DetailedSchedule({ httpCallResult }) {
+function DetailedSchedule({ httpCallResult, metrics }) {
 
   const [highlight, setHighlight] = React.useState(null);
   const [value, setValue] = React.useState(0);
@@ -72,29 +71,38 @@ function DetailedSchedule({ httpCallResult }) {
       </div>)
   }
 
+
   const series = new TimeSeries({
-    name: "hilo_rainfall",
-    columns: ["index", "precip"],
-    points: data.values.map(([d, value]) => [
-      Index.getIndexString("1h", new Date(d)),
-      value
-    ])
+    name: "response time",
+    columns: ["index", "response time"],
+    points: metrics.metrics.map((point) =>
+      [
+        Index.getIndexString("10m", new Date(point.time * 1000)),
+        point.totalResponseTime
+      ]
+    )
   });
 
-  console.log("series is ", series);
+  const getMaxResponseTime = (metrics) => {
+    let maxRespontTime = 0;
+    metrics.forEach((point) => {
+      maxRespontTime = Math.max(maxRespontTime, point.totalResponseTime);
+    });
+    return maxRespontTime;
+  }
+
   const style = styler([
     {
-      key: "precip",
+      key: "response time",
       color: "#3f51b5",
       selected: "#2CB1CF",
     }
   ]);
 
-  const formatter = format(".2s");
   let infoValues = [];
   if (highlight) {
-    const trafficText = `${formatter(highlight.event.get(highlight.column))}`;
-    infoValues = [{ label: "Traffic", value: trafficText }];
+    const responseTime = highlight.event.get(highlight.column);
+    infoValues = [{ label: "time", value: responseTime }];
   }
 
   return (
@@ -117,23 +125,21 @@ function DetailedSchedule({ httpCallResult }) {
                   height="200"
                   title="">
                   <YAxis
-                    id="rain"
-                    label="Rainfall (inches/hr)"
+                    id="response time"
                     min={0}
-                    max={2}
-                    format=".2f"
+                    max={getMaxResponseTime(metrics.metrics)}
                     width="40"
                     type="linear"
                   />
                   <Charts>
                     <BarChart
-                      axis="rain"
+                      axis="response time"
                       style={style}
                       spacing={1}
-                      columns={["precip"]}
+                      columns={["response time"]}
                       series={series}
                       minBarHeight={3}
-                      // info={infoValues}
+                      info={infoValues}
                       highlighted={highlight}
                       onHighlightChange={highlight =>
                         setHighlight(highlight)
@@ -151,6 +157,7 @@ function DetailedSchedule({ httpCallResult }) {
   );
 }
 const mapStateToProps = state => ({
-  httpCallResult: state.httpCallResult
+  httpCallResult: state.httpCallResult,
+  metrics: state.metrics
 });
 export default connect(mapStateToProps, {})(DetailedSchedule);
