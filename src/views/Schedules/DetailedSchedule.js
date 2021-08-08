@@ -25,6 +25,8 @@ import {
   CircularProgress
 } from '@material-ui/core';
 
+import moment from "moment";
+
 const AntTabs = withStyles((theme) => ({
   root: {
     marginBottom: theme.spacing(2),
@@ -95,7 +97,7 @@ function DetailedSchedule({ httpCallResult, metrics }) {
     {
       key: "response time",
       color: "#3f51b5",
-      selected: "#2CB1CF",
+      selected: "#2CB1CF"
     }
   ]);
 
@@ -139,6 +141,7 @@ function DetailedSchedule({ httpCallResult, metrics }) {
                       columns={["response time"]}
                       series={series}
                       minBarHeight={3}
+                      infoTimeFormat={index => moment(index.begin()).format("Do MMM 'YY") }
                       info={infoValues}
                       highlighted={highlight}
                       onHighlightChange={highlight =>
