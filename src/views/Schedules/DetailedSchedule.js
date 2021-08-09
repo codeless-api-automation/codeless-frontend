@@ -5,7 +5,6 @@ import { withStyles } from '@material-ui/core/styles';
 
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import { format } from "d3-format";
 
 import { TimeSeries, Index } from "pondjs";
 import {
@@ -76,10 +75,11 @@ function DetailedSchedule({ httpCallResult, metrics }) {
 
   const series = new TimeSeries({
     name: "response time",
+    utc: false,
     columns: ["index", "response time"],
     points: metrics.metrics.map((point) =>
       [
-        Index.getIndexString("10m", new Date(point.time * 1000)),
+        Index.getIndexString("5m", new Date(point.time * 1000)),
         point.totalResponseTime
       ]
     )
@@ -104,7 +104,7 @@ function DetailedSchedule({ httpCallResult, metrics }) {
   let infoValues = [];
   if (highlight) {
     const responseTime = highlight.event.get(highlight.column);
-    infoValues = [{ label: "time", value: responseTime }];
+    infoValues = [{ label: "time", value: `${responseTime} ms` }];
   }
 
   return (
@@ -117,7 +117,7 @@ function DetailedSchedule({ httpCallResult, metrics }) {
         </div>
       </GridItem>
 
-      {value === 0 &&
+      {value === 0 && (metrics.metrics !== undefined && metrics.metrics.length !== 0) &&
         <GridItem xs={12}>
           <Paper elevation={3} >
             <Resizable>
@@ -128,9 +128,10 @@ function DetailedSchedule({ httpCallResult, metrics }) {
                   title="">
                   <YAxis
                     id="response time"
+                    label="Response Time (ms)"
                     min={0}
                     max={getMaxResponseTime(metrics.metrics)}
-                    width="40"
+                    width="60"
                     type="linear"
                   />
                   <Charts>
@@ -141,7 +142,7 @@ function DetailedSchedule({ httpCallResult, metrics }) {
                       columns={["response time"]}
                       series={series}
                       minBarHeight={3}
-                      infoTimeFormat={index => moment(index.begin()).format("Do MMM 'YY") }
+                      infoTimeFormat={index => moment(index.begin()).format("Do MMM 'YY")}
                       info={infoValues}
                       highlighted={highlight}
                       onHighlightChange={highlight =>
