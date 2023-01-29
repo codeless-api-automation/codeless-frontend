@@ -35,7 +35,7 @@ function HeaderRow() {
     return (
         <TableRow>
             <TableCell style={{ width: '10%' }}>Execution Id</TableCell>
-            <TableCell style={{ width: '30%' }}>Health Check Name</TableCell>
+            <TableCell style={{ width: '30%' }}>Canary Test Name</TableCell>
             <TableCell style={{ width: '20%' }}>Geolocation</TableCell>
             <TableCell style={{ width: '10%' }}>Status</TableCell>
             <TableCell style={{ width: '10%' }} align="right"></TableCell>
@@ -45,7 +45,7 @@ function HeaderRow() {
 
 function BodyRow(props) {
     let { key, row, onRowShowDetails } = props;
-    let disabledActionButton = row.executionStatus === 'PENDING'
+    let disabledActionButton = row.executionStatus === 'PENDING' || row.executionStatus === 'STARTED'
     return (
         <TableRow key={key}>
             <TableCell>

@@ -106,7 +106,7 @@ function Test({ test, validators,
                 size="large"
                 variant="outlined"
                 disabled={httpCallResult.isCallRequested}
-                onClick={() => saveTest({ test, validators }, () => history.push(componentsPaths.VIEW_HEALTH_CHECKS))}
+                onClick={() => saveTest({ test, validators }, () => history.push(componentsPaths.VIEW_CANARY_TESTS))}
                 startIcon={<CheckCircleOutline fontSize="inherit" />}
               >
                 save

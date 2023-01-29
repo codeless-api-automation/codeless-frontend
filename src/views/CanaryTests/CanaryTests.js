@@ -7,7 +7,7 @@ import * as componentsPaths from "constants/ComponentsPaths.js";
 import {
   requestHealthCheckRemoval,
   cancelHealthCheckRemovalRequest,
-  removeHealthCheck
+  removeCanaryTest
 } from "../../store/health-checks-action.js"
 
 import {
@@ -44,14 +44,12 @@ import OverflowTip from 'components/OverflowTip/OverflowTip';
 import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog.js';
 
 import TablePanel from './TablePanel';
-import RunHealthCheckDialog from './RunHealthCheckDialog';
+import RunCanaryTestDialog from './RunCanaryTestDialog';
 
 function HeaderRow() {
   return (
     <TableRow>
-      <TableCell style={{ width: '20%' }}>Name</TableCell>
-      <TableCell style={{ width: '10%' }}>Method</TableCell>
-      <TableCell style={{ width: '50%' }}>URL</TableCell>
+      <TableCell style={{ width: '80%' }}>Name</TableCell>
       <TableCell style={{ width: '20%' }} align="right"></TableCell>
     </TableRow>
   );
@@ -62,13 +60,7 @@ function BodyRow(props) {
   return (
     <TableRow key={key}>
       <TableCell>
-        <OverflowTip originalValue={row.json['name']} />
-      </TableCell>
-      <TableCell>
-        {row.json['httpMethod']}
-      </TableCell>
-      <TableCell>
-        <OverflowTip originalValue={row.json['requestURL']} />
+        <OverflowTip originalValue={row.name} />
       </TableCell>
       <TableCell align="right" padding="none">
         <Grid container direction="row-reverse">
@@ -100,20 +92,20 @@ function BodyRow(props) {
 
 
 function HealthChecks({ httpCallResult, healthChecksPage, requestHealthCheckExecution,
-  requestHealthCheckRemoval, cancelHealthCheckRemovalRequest, removeHealthCheck, updateAllTestAttributes,
+  requestHealthCheckRemoval, cancelHealthCheckRemovalRequest, removeCanaryTest, updateAllTestAttributes,
   requestHealthCheckSchedule }) {
 
   const history = useHistory();
 
-  const onRowEdit = (healthCheck) => {
-    let { json, id } = healthCheck;
-    updateAllTestAttributes({ ...json, id });
-    history.push(componentsPaths.VIEW_HEALTH_CHECK);
+  const onRowEdit = (canaryTest) => {
+    let { json, id } = canaryTest;
+    updateAllTestAttributes({ ...json[0], id });
+    history.push(componentsPaths.VIEW_CANARY_TEST);
   }
 
-  const onRowSchedule = (healthCheck) => {
-    requestHealthCheckSchedule(healthCheck);
-    history.push(componentsPaths.VIEW_HEALTH_CHECK_SCHEDULE);
+  const onRowSchedule = (canaryTest) => {
+    requestHealthCheckSchedule(canaryTest);
+    history.push(componentsPaths.VIEW_CANARY_TEST_SCHEDULE);
   }
 
   const getHealthCheckName = (healthCheck) => {
@@ -138,16 +130,16 @@ function HealthChecks({ httpCallResult, healthChecksPage, requestHealthCheckExec
         </div>
       </GridItem>
 
-      <RunHealthCheckDialog />
+      <RunCanaryTestDialog />
       <ConfirmationDialog
         open={healthChecksPage.isHealthCheckRemovalRequsted}
         acceptButtonDisabled={httpCallResult.isCallRequested}
-        title="Delete Health Check"
-        content={<>This action will delete the health check <strong>{getHealthCheckName(healthChecksPage.requestedHealthCheck)}</strong>. Are you sure?</>}
+        title="Delete Canary Test"
+        content={<>This action will delete this canary test <strong>{getHealthCheckName(healthChecksPage.requestedHealthCheck)}</strong>. Are you sure?</>}
         closeButtomContent="Cancel"
         acceptButtomContent="Confirm"
         handleClose={() => cancelHealthCheckRemovalRequest()}
-        handleAccept={() => removeHealthCheck(healthChecksPage.requestedHealthCheck)}
+        handleAccept={() => removeCanaryTest(healthChecksPage.requestedHealthCheck)}
       />
     </GridContainer>
   );
@@ -159,6 +151,6 @@ const mapStateToProps = state => ({
 });
 export default connect(mapStateToProps, {
   requestHealthCheckExecution, requestHealthCheckRemoval,
-  cancelHealthCheckRemovalRequest, removeHealthCheck,
+  cancelHealthCheckRemovalRequest, removeCanaryTest: removeCanaryTest,
   updateAllTestAttributes, requestHealthCheckSchedule
 })(HealthChecks);

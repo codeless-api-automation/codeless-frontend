@@ -16,13 +16,13 @@ import {
 
 import GeolocationSelect from "../../components/GeolocationSelect/GeolocationSelect"
 
-function RunHealthCheckDialog({ httpCallResult, executionHelper, canceleExecutionRequest, runExecution }) {
+function RunCanaryTestDialog({ httpCallResult, executionHelper, canceleExecutionRequest, runExecution }) {
 
     const [region, setRegion] = useState(executionHelper.defaultRegion);
 
     const handleRun = () => {
         runExecution({
-            healthChecks: [executionHelper.requestedHealthCheck],
+            healthCheck: executionHelper.requestedHealthCheck,
             region: region
         });
     };
@@ -36,7 +36,7 @@ function RunHealthCheckDialog({ httpCallResult, executionHelper, canceleExecutio
             open={executionHelper.isExecutionRequsted}
             onClose={handleClose}
         >
-            <DialogTitle>{"Run Health Check"}</DialogTitle>
+            <DialogTitle>{"Run Canary Test"}</DialogTitle>
             <DialogContent>
                 <GeolocationSelect
                     autocompleteParams={{ style: { width: 300 } }}
@@ -68,4 +68,4 @@ const mapStateToProps = state => ({
     executionHelper: state.executionHelper,
     httpCallResult: state.httpCallResult
 });
-export default connect(mapStateToProps, { canceleExecutionRequest, runExecution })(RunHealthCheckDialog);
+export default connect(mapStateToProps, { canceleExecutionRequest, runExecution })(RunCanaryTestDialog);

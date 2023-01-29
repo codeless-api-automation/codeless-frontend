@@ -51,8 +51,8 @@ function buildRunFrequency(timer) {
 function HeaderRow() {
     return (
         <TableRow>
-            <TableCell style={{ width: '20%' }}>Schedule Name</TableCell>
-            <TableCell style={{ width: '20%' }}>Health Check Name</TableCell>
+            <TableCell style={{ width: '30%' }}>Schedule Name</TableCell>
+            <TableCell style={{ width: '15%' }}>Canary Test ID</TableCell>
             <TableCell style={{ width: '20%' }}>Run Frequency</TableCell>
             <TableCell style={{ width: '20%' }}>Geolocation</TableCell>
             <TableCell style={{ width: '10%' }} align="right"></TableCell>
@@ -68,7 +68,7 @@ function BodyRow(props) {
                 <OverflowTip originalValue={row.scheduleName} />
             </TableCell>
             <TableCell>
-                <OverflowTip originalValue={row.tests[0].name} />
+                {row.testId}
             </TableCell>
             <TableCell>
                 {buildRunFrequency(row.timer)}

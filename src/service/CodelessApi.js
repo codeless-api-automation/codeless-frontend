@@ -32,7 +32,7 @@ export const testResource = {
         let { test, validators } = testToCreate;
         let requestBodyTest = {
             name: test.name,
-            json: { ...test, validators }
+            json: [{ ...test, validators }]
         };
         return instance.post(TEST_RESOURCE, requestBodyTest);
     },
@@ -41,15 +41,16 @@ export const testResource = {
         let requestBodyTest = {
             id: test.id,
             name: test.name,
-            json: { ...test, validators }
+            json: [{ ...test, validators }]
         };
         return instance.put(TEST_RESOURCE, requestBodyTest);
     },
     getTest(name) {
         return instance.get(TEST_RESOURCE + '/' + name);
     },
-    deleteTests(tests) {
-        return instance.patch(TEST_RESOURCE, tests);
+    deleteTest(test) {
+        console.log(test)
+        return instance.delete(TEST_RESOURCE + '/' + test.id);
     },
 }
 
@@ -57,11 +58,11 @@ const EXECUTION_RESOURCE = "executions";
 const EXECUTION_RESULT_RESOURCE = "/results";
 export const executionResource = {
     createExecution(execution) {
-        let { region, healthChecks } = execution;
+        let { region, healthCheck } = execution;
         let requestBodyExecution = {
-            name: healthChecks[0].name,
+            name: healthCheck.name,
+            testId: healthCheck.id,
             region: region,
-            tests: [...healthChecks],
             type: "MANUAL_EXECUTION"
         };
         return instance.post(EXECUTION_RESOURCE, requestBodyExecution);
@@ -81,7 +82,7 @@ export const scheduleResource = {
         let requestBody = {
             scheduleName,
             region,
-            tests: [healthCheck],
+            testId: healthCheck.id,
             timer: timer,
             emails
         };

@@ -12,15 +12,15 @@ import {
 
 import DashboardPage from "views/Dashboard/Dashboard.js";
 
-import HealthChecksContainer from "views/HealthChecks/HealthChecksContainer.js"
-import HealthCheck from "views/HealthChecks/HealthCheck.js"
-import CreateSchedule from "views/HealthChecks/CreateSchedule";
+import CreateSchedule from "views/CanaryTests/CreateSchedule";
 
 import ExecutionsContainer from "views/Executions/ExecutionsContainer.js";
 import Execution from "views/Executions/Execution.js";
 
 import SchedulesContainer from "views/Schedules/SchedulesContainer";
 import DetailedSchedule from "views/Schedules/DetailedSchedule";
+import CanaryTest from "views/CanaryTests/CanaryTest";
+import CanaryTestsContainer from "views/CanaryTests/CanaryTestsContainer";
 
 
 function Heartbeat() {
@@ -36,10 +36,10 @@ export const dashboardRoutes = [
     layout: "/general"
   },
   {
-    path: "/health-checks",
-    name: "Health checks",
+    path: "/canary-tests",
+    name: "Canary tests",
     icon: Heartbeat,
-    component: HealthChecksContainer,
+    component: CanaryTestsContainer,
     layout: "/general"
   },
   {
@@ -60,11 +60,11 @@ export const dashboardRoutes = [
 
 export const otherRoutes = [
   {
-    path: "/health-checks/save",
-    name: "Health check",
-    component: HealthCheck,
+    path: "/canary-tests/save",
+    name: "Canary test",
+    component: CanaryTest,
     layout: "/general",
-    previousRoute: componentsPaths.VIEW_HEALTH_CHECKS
+    previousRoute: componentsPaths.VIEW_CANARY_TESTS
   },
   {
     path: "/executions/view",
@@ -74,11 +74,11 @@ export const otherRoutes = [
     previousRoute: componentsPaths.VIEW_EXECUTIONS
   },
   {
-    path: "/health-checks/schedule",
+    path: "/canary-tests/schedule",
     name: "Schedule",
     component: CreateSchedule,
     layout: "/general",
-    previousRoute: componentsPaths.VIEW_HEALTH_CHECKS
+    previousRoute: componentsPaths.VIEW_CANARY_TESTS
   },
   {
     path: "/schedules/schedule",

@@ -45,18 +45,18 @@ export const cleanChosenHealthChecks = (healthChecks) => ({
 })
 
 const ERROR_MESSAGE = "The error occured."
-const SUCCESS_MESSAGE = "The health check has been removed successfully."
-export const removeHealthCheck = (healthCheck) => {
+const SUCCESS_MESSAGE = "The canary test has been removed successfully."
+export const removeCanaryTest = (canaryTest) => {
     return (dispath) => {
         dispath(isCallRequested(true))
-        testResource.deleteTests([healthCheck])
+        testResource.deleteTest(canaryTest)
             .then(response => {
                 dispath(isCallRequested(false))
                 dispath(setNotificationMessage({
                     message: SUCCESS_MESSAGE,
                     severity: common.NOTIFICATION_SEVERITY_SUCCESS
                 }));
-                dispath(cleanChosenHealthChecks([healthCheck]))
+                dispath(cleanChosenHealthChecks([canaryTest]))
                 dispath(completeHealthCheckRemovalRequest())
             })
             .catch(error => handleCatchGlobally(dispath, error, error => {

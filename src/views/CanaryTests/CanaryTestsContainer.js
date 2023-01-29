@@ -9,7 +9,7 @@ import {
     getRegions
 } from "../../store/execution-action.js"
 
-import HealthChecks from './HealthChecks.js';
+import HealthChecks from './CanaryTests.js';
 
 
 function HealthChecksContainer({ getHealthChecks, getRegions }) {

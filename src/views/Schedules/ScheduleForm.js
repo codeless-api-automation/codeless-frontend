@@ -217,7 +217,7 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, saveSch
                     week: values.weekTimer,
                     time: values.time
                 }
-            }, () => history.push(componentsPaths.VIEW_HEALTH_CHECKS))
+            }, () => history.push(componentsPaths.VIEW_CANARY_TESTS))
         }
     }
 

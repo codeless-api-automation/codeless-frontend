@@ -50,7 +50,7 @@ export default function TablePanel() {
         <Grid item>
           <Grid container justify="center" alignItems="center">
             <Link
-              to={componentsPaths.VIEW_HEALTH_CHECK}>
+              to={componentsPaths.VIEW_CANARY_TEST}>
               <IconButton color="primary">
                 <AddCircleOutline fontSize="large" />
               </IconButton>
