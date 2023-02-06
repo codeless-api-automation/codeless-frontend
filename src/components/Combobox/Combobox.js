@@ -8,7 +8,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 
 export default function Combobox(props) {
 
-  const { options, value } = props;
+  const { options, value, renderInput, style } = props;
 
   const onChange = newValue => {
     props.onChange(newValue);
@@ -19,10 +19,13 @@ export default function Combobox(props) {
       disableClearable
       options={options}
       getOptionLabel={(option) => option}
-      style={{ width: 120 }}
+      style={style}
       value={value}
       onChange={(event, newValue) => onChange(newValue)}
-      renderInput={(params) => <TextField {...params} variant="outlined" />}
+      renderInput={(params) => <TextField
+        {...params}
+        {...renderInput}
+      />}
     />
   );
 }
