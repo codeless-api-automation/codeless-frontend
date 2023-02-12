@@ -412,11 +412,13 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, saveSch
                 >
                     <Grid item xs={12}>
                         <Controls.Button
+                            size="medium"
                             disabled={httpCallResult.isCallRequested}
                             variant="outlined"
                             text="RESET"
                             onClick={resetForm} />
                         <Controls.Button
+                            size="medium"
                             disabled={httpCallResult.isCallRequested}
                             type="submit"
                             text="SAVE" />

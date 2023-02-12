@@ -1,5 +1,3 @@
-import _ from 'lodash'
-
 import {
     testResource,
     handleCatchGlobally
@@ -7,10 +5,6 @@ import {
 import {
     isCallRequested
 } from '../store/http-call-action';
-import {
-    cleanValidators,
-    updateValidators
-} from '../store/validator-action';
 import {
     setNotificationMessage
 } from './util-action.js';
@@ -76,9 +70,39 @@ export const setHeader = (headers) => ({
     payload: { headers }
 })
 
+export const CREATE_VALIDATOR = 'CREATE_VALIDATOR';
+export const createValidator = (validator, predicate) => ({
+    type: CREATE_VALIDATOR,
+    payload: { validator, predicate }
+});
 
-const SUCCESS_MESSAGE_UPDATE = "The health check has been updated successfully.";
-const ERROR_MESSAGE_UPDATE = "The health check has not updated.";
+export const REMOVE_VALIDATOR = 'REMOVE_VALIDATOR';
+export const removeValidator = validator => ({
+    type: REMOVE_VALIDATOR,
+    payload: { validator }
+})
+
+export const UPDATE_PREDICATE = 'UPDATE_PREDICATE';
+export const updatePredicate = (validator, newPredicateValue) => ({
+    type: UPDATE_PREDICATE,
+    payload: { validator, newPredicateValue }
+})
+
+export const UPDATE_INPUT_FIELD = 'UPDATE_INPUT_FIELD';
+export const updateInputField = (validator, inputField, newInputFieldValue) => ({
+    type: UPDATE_INPUT_FIELD,
+    payload: { validator, inputField, newInputFieldValue }
+})
+
+export const UPDATE_VALIDATORS = 'UPDATE_VALIDATORS';
+export const updateValidators = (validators) => ({
+    type: UPDATE_VALIDATORS,
+    payload: { validators }
+})
+
+
+const SUCCESS_MESSAGE_UPDATE = "The canary test has been updated successfully.";
+const ERROR_MESSAGE_UPDATE = "The canary test has not updated.";
 export const updateTest = (test, redirect) => {
     return (dispath) => {
         dispath(isCallRequested(true));
@@ -101,17 +125,10 @@ export const updateTest = (test, redirect) => {
     }
 }
 
-const SUCCESS_MESSAGE_CREATE = "The health check has been created successfully.";
-const ERROR_MESSAGE_CREATE = "The health check has not been created.";
+const SUCCESS_MESSAGE_CREATE = "The canary test has been created successfully.";
+const ERROR_MESSAGE_CREATE = "The canary test has not been created.";
 export const createTest = (test, redirect) => {
     return (dispath) => {
-        if (_.isEmpty(test.test['name']) || _.isEmpty(test.test['requestURL'])) {
-            dispath(setNotificationMessage({
-                message: "Name, request URL and at least one verification are required!",
-                severity: common.NOTIFICATION_SEVERITY_ERROR
-            }));
-            return;
-        }
         dispath(isCallRequested(true));
         testResource.createTest(test)
             .then(response => {
@@ -135,14 +152,13 @@ export const createTest = (test, redirect) => {
 export const saveTest = (test, redirect) => {
     return (dispath) => {
         console.log(test)
-        test.test.id === undefined ? dispath(createTest(test, redirect)) : dispath(updateTest(test, redirect))
+        test.id === undefined ? dispath(createTest(test, redirect)) : dispath(updateTest(test, redirect))
     }
 }
 
 export const cleanAllTestAttributes = () => {
     return (dispath) => {
         dispath(cleanTestAttributes())
-        dispath(cleanValidators())
     }
 }
 

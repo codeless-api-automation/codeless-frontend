@@ -4,7 +4,7 @@ import {
     removeValidator,
     updatePredicate,
     updateInputField
-} from "../../store/validator-action"
+} from "../../store/test-action"
 import {
     createStyles,
     makeStyles

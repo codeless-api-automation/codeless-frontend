@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 import {
     UPDATE_NAME,
     UPDATE_HTTP_METHOD,
@@ -8,12 +10,18 @@ import {
     ADD_HEADER,
     REMOVE_HEADER,
     UPDATE_HEADER,
-    SET_HEADER
+    SET_HEADER,
+    CREATE_VALIDATOR,
+    REMOVE_VALIDATOR,
+    UPDATE_PREDICATE,
+    UPDATE_INPUT_FIELD,
+    UPDATE_VALIDATORS
 } from './test-action'
 
 const initialTestState = {
     httpMethod: 'GET',
-    headers: []
+    headers: [],
+    validators: []
 }
 
 export const testReducer = (state = initialTestState, action) => {
@@ -66,6 +74,7 @@ export const testReducer = (state = initialTestState, action) => {
                 ...state,
                 headers
             }
+            console.log(test)
             return test;
         }
         case REMOVE_HEADER: {
@@ -98,10 +107,86 @@ export const testReducer = (state = initialTestState, action) => {
             }
             return test;
         }
+        case CREATE_VALIDATOR: {
+            const { validator, predicate } = payload;
+            let newValidator = {
+                ..._.cloneDeep(validator),
+                predicate
+            };
+
+            let test = {
+                ...state,
+                validators: state.validators.concat(newValidator)
+            }
+            return test;
+        }
+        case REMOVE_VALIDATOR: {
+            const { validator } = payload;
+            let test = {
+                ...state,
+                validators: state.validators.filter((validatorFromStore) => !_.isEqual(validatorFromStore, validator))
+            }
+            return test;
+        }
+        case UPDATE_PREDICATE: {
+            const { validator, newPredicateValue } = payload;
+
+            let copiedValidatorWithUpdatedPredicate = _.cloneDeep(validator);
+            copiedValidatorWithUpdatedPredicate.predicate = newPredicateValue;
+
+            let validatorIndexNeededUpdate = state.validators.findIndex(validatorFromStore => _.isEqual(validatorFromStore, validator));
+
+            let newValidators = state.validators.slice();
+            newValidators[validatorIndexNeededUpdate] = copiedValidatorWithUpdatedPredicate
+
+            let test = {
+                ...state,
+                validators: newValidators
+            }
+
+            return test;
+        }
+        case UPDATE_INPUT_FIELD: {
+            const { validator, inputField, newInputFieldValue } = payload;
+
+            let inputFields = _.cloneDeep(validator.inputFields);
+            inputFields.forEach(updateInputField(inputField, newInputFieldValue));
+
+            let copiedValidatorWithUpdatedInputFields = _.cloneDeep(validator);
+            copiedValidatorWithUpdatedInputFields.inputFields = inputFields;
+
+            let validatorIndexNeededUpdate = state.validators.findIndex(validatorFromStore => _.isEqual(validatorFromStore, validator));
+
+            let newValidators = state.validators.slice();
+            newValidators[validatorIndexNeededUpdate] = copiedValidatorWithUpdatedInputFields
+
+            let test = {
+                ...state,
+                validators: newValidators
+            }
+
+            return test;
+        }
+        case UPDATE_VALIDATORS: {
+            const { validators } = payload;
+            let test = {
+                ...state,
+                validators: validators
+            }
+            return test;
+        }
         case CLEAN_TEST_ATTRIBUTES: {
             return initialTestState;
         }
         default:
             return state;
     }
+}
+
+function updateInputField(inputFieldToUpdate, newInputFieldValue) {
+    return (inputField) => {
+        if (_.isEqual(inputField, inputFieldToUpdate)) {
+            inputField.value = newInputFieldValue;
+        }
+    };
 }

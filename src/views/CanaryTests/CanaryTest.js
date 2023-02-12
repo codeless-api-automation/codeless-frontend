@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -26,6 +26,7 @@ import {
   Draggable
 } from "react-beautiful-dnd"
 
+import OverflowTip from 'components/OverflowTip/OverflowTip';
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 
@@ -35,7 +36,6 @@ import { CheckCircleOutline } from '@material-ui/icons';
 
 import {
   saveTest,
-  updateName
 } from "../../store/test-action.js"
 
 import AddHttpRequestDialog from './AddHttpRequestDialog';
@@ -93,9 +93,7 @@ const reorder = (list, startIndex, endIndex) => {
   return result
 }
 
-function DndTable() {
-
-  const [items, setItems] = React.useState([]);
+function DndTable(props) {
 
   const onDragEnd = (result) => {
     // dropped outside the list
@@ -104,13 +102,17 @@ function DndTable() {
     }
 
     console.log(`dragEnd ${result.source.index} to  ${result.destination.index}`)
-    const items = reorder(
-      items,
+    const reorderedItems = reorder(
+      props.items,
       result.source.index,
       result.destination.index
     )
 
-    setItems(items)
+    props.updateItems(reorderedItems)
+  }
+
+  const handleAddHttpRequest = () => {
+    props.addHttpRequest()
   }
 
   return (
@@ -121,7 +123,10 @@ function DndTable() {
             <Typography variant="body1">HTTP requests</Typography>
           </RowItem>
           <RowItem item>
-            <Button size="small" variant="outlined">Add HTTP request</Button>
+            <Button
+              onClick={handleAddHttpRequest}
+              size="small"
+              variant="outlined">Add HTTP request</Button>
           </RowItem>
         </Row>
       </Grid>
@@ -130,27 +135,31 @@ function DndTable() {
         Add your HTTP requests as steps. Drag and drop to change order.
       </Typography>
       <TableContainer>
-        <Table style={{ borderTop: '1px solid rgb(224, 224, 224)' }}>
+        <Table style={{ borderTop: '1px solid rgb(224, 224, 224)', tableLayout: 'fixed' }}>
           <TableHead>
             <TableRow>
               <TableCell style={{ width: '10%' }}>Call Order</TableCell>
-              <TableCell style={{ width: '30%' }} >Step name</TableCell>
-              <TableCell style={{ width: '5%' }} >Method</TableCell>
+              <TableCell style={{ width: '30%' }}>Step name</TableCell>
+              <TableCell style={{ width: '5%' }}>Method</TableCell>
               <TableCell style={{ width: '40%' }}>Endpoint</TableCell>
             </TableRow>
           </TableHead>
           <TableBody component={DroppableComponent(onDragEnd)}>
-            {items.length === 0 ?
+            {props.items.length === 0 ?
               <TableRow style={{ height: 53 * 6 }}>
                 {/* TODO: add overlay when there are no tests */}
               </TableRow>
               :
-              items.map((item, index) => (
-                <TableRow component={DraggableComponent(item.id, index)} key={item.id} >
+              props.items.map((item, index) => (
+                <TableRow component={DraggableComponent(item.name + item.httpMethod + item.requestURL, index)} key={index} >
                   <TableCell scope="row">{index + 1}</TableCell>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.endpoint}</TableCell>
-                  <TableCell>{item.method}</TableCell>
+                  <TableCell>
+                    <OverflowTip originalValue={item.name} />
+                  </TableCell>
+                  <TableCell>{item.httpMethod}</TableCell>
+                  <TableCell>
+                    <OverflowTip originalValue={item.requestURL} />
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>
@@ -177,17 +186,33 @@ const RowItem = withStyles(() =>
   })
 )(Grid);
 
-function Test({ test, updateName, saveTest, httpCallResult }) {
+function Test({ saveTest, httpCallResult, location }) {
+
+  const [test, setTest] = React.useState(
+    location.state === undefined ?
+      {
+        name: "",
+        requests: []
+      }
+      :
+      {
+        id: location.state.id,
+        name: location.state.name,
+        requests: location.state.json
+      }
+  );
+
+  const [openAddHttpRequest, setOpenAddHttpRequest] = React.useState(false);
 
   const history = useHistory();
 
-  // useEffect(() => {
-  //   return () => cleanAllTestAttributes()
-  // }, [cleanAllTestAttributes])
+  const addNewHttpRequest = () => {
+    setOpenAddHttpRequest(true)
+  }
 
+  console.log(location.state);
   return (
     <GridContainer>
-
       <GridItem xs={12}>
         <Grid container>
           <Row container>
@@ -199,7 +224,10 @@ function Test({ test, updateName, saveTest, httpCallResult }) {
                   fullWidth={true}
                   inputProps={{
                     defaultValue: test.name,
-                    onBlur: event => updateName(event.target.value)
+                    onBlur: event => setTest({
+                      ...test,
+                      name: event.target.value
+                    })
                   }}
                 />
               </Paper>
@@ -208,7 +236,16 @@ function Test({ test, updateName, saveTest, httpCallResult }) {
 
           <Row container>
             <RowItem item xs>
-              <DndTable />
+              <DndTable
+                items={test.requests}
+                updateItems={(items) => {
+                  setTest({
+                    ...test,
+                    requests: items
+                  })
+                }}
+                addHttpRequest={addNewHttpRequest}
+              />
             </RowItem>
           </Row>
 
@@ -218,7 +255,7 @@ function Test({ test, updateName, saveTest, httpCallResult }) {
                 variant="contained"
                 color="primary"
                 disabled={httpCallResult.isCallRequested}
-                onClick={() => saveTest(null, () => history.push(componentsPaths.VIEW_CANARY_TESTS))}
+                onClick={() => saveTest(test, () => history.push(componentsPaths.VIEW_CANARY_TESTS))}
                 startIcon={<CheckCircleOutline fontSize="inherit" />}
               >
                 save
@@ -228,13 +265,22 @@ function Test({ test, updateName, saveTest, httpCallResult }) {
         </Grid>
 
       </GridItem>
-      <AddHttpRequestDialog/>
+      <AddHttpRequestDialog
+        open={openAddHttpRequest}
+        setOpen={(isOpened) => setOpenAddHttpRequest(isOpened)}
+        addHttpRequest={(httpRequest) => {
+          let newRequests = test.requests.concat(httpRequest);
+          setTest({
+            ...test,
+            requests: newRequests
+          })
+        }}
+      />
     </GridContainer>
   );
 }
 
 const mapStateToProps = state => ({
-  test: state.testPage,
   httpCallResult: state.httpCallResult,
 });
-export default connect(mapStateToProps, { updateName, saveTest })(Test);
+export default connect(mapStateToProps, { saveTest })(Test);

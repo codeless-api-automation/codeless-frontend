@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from "react-redux";
 
 import { createStyles, withStyles } from "@material-ui/core/styles";
@@ -55,15 +55,29 @@ const RowItem = withStyles(() =>
     })
 )(Grid);
 
-function AddHttpRequestDialog({ test, validators }) {
-
-    const [open, setOpen] = useState(true);
+function AddHttpRequestDialog({
+    addHttpRequest,
+    setOpen,
+    open,
+    test,
+    updateName,
+    updateHttpMethod,
+    updateRequestUrl,
+    updateRequestBody,
+    addHeader,
+    removeHeader,
+    updateHeader,
+    cleanAllTestAttributes }) {
 
     const handleAdd = () => {
+        addHttpRequest(test)
+        setOpen(false)
+        cleanAllTestAttributes()
     };
 
     const handleClose = () => {
         setOpen(false)
+        cleanAllTestAttributes()
     };
 
     return (
@@ -88,11 +102,7 @@ function AddHttpRequestDialog({ test, validators }) {
             <DialogContent>
                 <GridContainer>
                     <GridItem xs={12}>
-                        <Paper
-                            elevation='15'
-                            variant='outlined'
-
-                        >
+                        <Paper variant='outlined'>
                             <div style={{ padding: 15 }}>
                                 <Row container>
                                     <RowItem item xs>
@@ -140,7 +150,6 @@ function AddHttpRequestDialog({ test, validators }) {
                         </Paper>
                         <Grid container direction="row">
                             <CustomTabs
-                                elevation={0}
                                 title=""
                                 headerColor="primary"
                                 tabs={[
@@ -166,7 +175,7 @@ function AddHttpRequestDialog({ test, validators }) {
                                     },
                                     {
                                         tabName: "Verifications",
-                                        tabContent: <ValidatorList validators={validators} />
+                                        tabContent: <ValidatorList validators={test.validators} />
                                     }
                                 ]}
                             />
@@ -177,15 +186,14 @@ function AddHttpRequestDialog({ test, validators }) {
             </DialogContent>
             <DialogActions>
                 <Button
-                    onClick={handleClose}
-                >
+                    onClick={handleClose}>
                     Cancel
                 </Button>
                 <Button
                     variant="contained"
                     onClick={handleAdd}
                     color="primary">
-                    Add
+                    Save
                 </Button>
             </DialogActions>
         </Dialog>
@@ -193,7 +201,6 @@ function AddHttpRequestDialog({ test, validators }) {
 }
 
 const mapStateToProps = state => ({
-    validators: state.verificationsTab,
     test: state.testPage,
     httpCallResult: state.httpCallResult,
 });

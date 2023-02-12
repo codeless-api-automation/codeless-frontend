@@ -29,19 +29,17 @@ export const testResource = {
         return instance.get(TEST_RESOURCE + `?page=${page}&size=${size}`);
     },
     createTest(testToCreate) {
-        let { test, validators } = testToCreate;
         let requestBodyTest = {
-            name: test.name,
-            json: [{ ...test, validators }]
+            name: testToCreate.name,
+            json: testToCreate.requests
         };
         return instance.post(TEST_RESOURCE, requestBodyTest);
     },
     updateTest(testToUpdate) {
-        let { test, validators } = testToUpdate;
         let requestBodyTest = {
-            id: test.id,
-            name: test.name,
-            json: [{ ...test, validators }]
+            id: testToUpdate.id,
+            name: testToUpdate.name,
+            json: testToUpdate.requests
         };
         return instance.put(TEST_RESOURCE, requestBodyTest);
     },

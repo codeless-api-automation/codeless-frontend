@@ -92,15 +92,13 @@ function BodyRow(props) {
 
 
 function HealthChecks({ httpCallResult, healthChecksPage, requestHealthCheckExecution,
-  requestHealthCheckRemoval, cancelHealthCheckRemovalRequest, removeCanaryTest, updateAllTestAttributes,
+  requestHealthCheckRemoval, cancelHealthCheckRemovalRequest, removeCanaryTest,
   requestHealthCheckSchedule }) {
 
   const history = useHistory();
 
   const onRowEdit = (canaryTest) => {
-    let { json, id } = canaryTest;
-    updateAllTestAttributes({ ...json[0], id });
-    history.push(componentsPaths.VIEW_CANARY_TEST);
+    history.push(componentsPaths.VIEW_CANARY_TEST, canaryTest);
   }
 
   const onRowSchedule = (canaryTest) => {
@@ -152,5 +150,5 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   requestHealthCheckExecution, requestHealthCheckRemoval,
   cancelHealthCheckRemovalRequest, removeCanaryTest: removeCanaryTest,
-  updateAllTestAttributes, requestHealthCheckSchedule
+  requestHealthCheckSchedule
 })(HealthChecks);

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { createValidator } from "../../store/validator-action"
+import { createValidator } from "../../store/test-action"
 import {
   Grid,
   TextField,
