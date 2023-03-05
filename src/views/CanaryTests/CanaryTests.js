@@ -11,10 +11,6 @@ import {
 } from "../../store/health-checks-action.js"
 
 import {
-  updateAllTestAttributes
-} from "../../store/test-action.js"
-
-import {
   requestHealthCheckExecution
 } from "../../store/execution-action.js"
 

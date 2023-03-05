@@ -7,8 +7,14 @@ import {
   Grid,
   TextField,
   Button,
+  IconButton,
   Typography
 } from '@material-ui/core';
+
+import {
+  Edit,
+  Delete
+} from '@material-ui/icons';
 
 import {
   TableContainer,
@@ -26,6 +32,7 @@ import {
   Draggable
 } from "react-beautiful-dnd"
 
+import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog.js';
 import OverflowTip from 'components/OverflowTip/OverflowTip';
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -111,8 +118,8 @@ function DndTable(props) {
     props.updateItems(reorderedItems)
   }
 
-  const handleAddHttpRequest = () => {
-    props.addHttpRequest()
+  const handleAdd = () => {
+    props.onAdd()
   }
 
   return (
@@ -124,7 +131,7 @@ function DndTable(props) {
           </RowItem>
           <RowItem item>
             <Button
-              onClick={handleAddHttpRequest}
+              onClick={handleAdd}
               size="small"
               variant="outlined">Add HTTP request</Button>
           </RowItem>
@@ -142,6 +149,7 @@ function DndTable(props) {
               <TableCell style={{ width: '30%' }}>Step name</TableCell>
               <TableCell style={{ width: '5%' }}>Method</TableCell>
               <TableCell style={{ width: '40%' }}>Endpoint</TableCell>
+              <TableCell style={{ width: '10%' }}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody component={DroppableComponent(onDragEnd)}>
@@ -159,6 +167,21 @@ function DndTable(props) {
                   <TableCell>{item.httpMethod}</TableCell>
                   <TableCell>
                     <OverflowTip originalValue={item.requestURL} />
+                  </TableCell>
+
+                  <TableCell align="right" padding="none">
+                    <Grid container direction="row-reverse">
+                      <IconButton
+                        onClick={() => props.onRowDelete(index, item)}
+                        color="primary">
+                        <Delete fontSize="small" />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => props.onRowEdit(index, item)}
+                        color="primary">
+                        <Edit fontSize="small" />
+                      </IconButton>
+                    </Grid>
                   </TableCell>
                 </TableRow>
               ))}
@@ -203,14 +226,21 @@ function Test({ saveTest, httpCallResult, location }) {
   );
 
   const [openAddHttpRequest, setOpenAddHttpRequest] = React.useState(false);
+  const [deleteHttpRequest, setDeleteHttpRequest] = React.useState(null);
+
 
   const history = useHistory();
 
-  const addNewHttpRequest = () => {
+  const handleOnAddNewHttpRequest = () => {
     setOpenAddHttpRequest(true)
   }
 
-  console.log(location.state);
+  const removeHttpRequest = () => {
+    let newRequests = test.requests.filter((_, index) => index !== deleteHttpRequest.index)
+    setTest({ ...test, requests: newRequests })
+    setDeleteHttpRequest(null)
+  }
+
   return (
     <GridContainer>
       <GridItem xs={12}>
@@ -244,7 +274,9 @@ function Test({ saveTest, httpCallResult, location }) {
                     requests: items
                   })
                 }}
-                addHttpRequest={addNewHttpRequest}
+                onRowDelete={(index, request) => setDeleteHttpRequest({ index, request })}
+                onRowEdit={(index, request) => console.log(request)}
+                onAdd={handleOnAddNewHttpRequest}
               />
             </RowItem>
           </Row>
@@ -276,6 +308,17 @@ function Test({ saveTest, httpCallResult, location }) {
           })
         }}
       />
+
+      <ConfirmationDialog
+        open={deleteHttpRequest !== null}
+        title="Delete HTTP request"
+        content={<>This action will delete HTTP request <strong>{deleteHttpRequest !== null ? deleteHttpRequest.request.name : ""}</strong>. Are you sure?</>}
+        closeButtomContent="Cancel"
+        acceptButtomContent="Confirm"
+        handleClose={() => { setDeleteHttpRequest(null) }}
+        handleAccept={removeHttpRequest}
+      />
+
     </GridContainer>
   );
 }

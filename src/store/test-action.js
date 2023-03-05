@@ -70,6 +70,18 @@ export const setHeader = (headers) => ({
     payload: { headers }
 })
 
+export const CREATE_EXTRACTOR = 'CREATE_EXTRACTOR';
+export const createExtractor = (extractor) => ({
+    type: CREATE_EXTRACTOR,
+    payload: { extractor }
+});
+
+export const REMOVE_EXTRACTOR = 'REMOVE_EXTRACTOR';
+export const removeExtractor = extractor => ({
+    type: REMOVE_EXTRACTOR,
+    payload: { extractor }
+})
+
 export const CREATE_VALIDATOR = 'CREATE_VALIDATOR';
 export const createValidator = (validator, predicate) => ({
     type: CREATE_VALIDATOR,
@@ -82,15 +94,15 @@ export const removeValidator = validator => ({
     payload: { validator }
 })
 
-export const UPDATE_PREDICATE = 'UPDATE_PREDICATE';
-export const updatePredicate = (validator, newPredicateValue) => ({
-    type: UPDATE_PREDICATE,
+export const UPDATE_VALIDATOR_PREDICATE = 'UPDATE_VALIDATOR_PREDICATE';
+export const updateValidatorPredicate = (validator, newPredicateValue) => ({
+    type: UPDATE_VALIDATOR_PREDICATE,
     payload: { validator, newPredicateValue }
 })
 
-export const UPDATE_INPUT_FIELD = 'UPDATE_INPUT_FIELD';
-export const updateInputField = (validator, inputField, newInputFieldValue) => ({
-    type: UPDATE_INPUT_FIELD,
+export const UPDATE_VALIDATOR_INPUT_FIELD = 'UPDATE_VALIDATOR_INPUT_FIELD';
+export const updateValidatorInputField = (validator, inputField, newInputFieldValue) => ({
+    type: UPDATE_VALIDATOR_INPUT_FIELD,
     payload: { validator, inputField, newInputFieldValue }
 })
 

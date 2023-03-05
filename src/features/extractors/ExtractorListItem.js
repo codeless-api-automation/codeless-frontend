@@ -1,8 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import {
-    removeValidator,
-    updateValidatorPredicate,
+    removeExtractor,
     updateValidatorInputField
 } from "../../store/test-action"
 import {
@@ -27,36 +26,22 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-function ValidatorListItem({ validator, removeValidator, updateValidatorPredicate, updateValidatorInputField }) {
+function ExtractorListItem({ extractor, removeExtractor, updateInputField }) {
     const classes = useStyles();
-
     return (
         <Grid container spacing={2} style={{ margin: "-4px -8px" }}>
             <Grid item>
                 <Autocomplete
                     disabled
-                    options={[validator]}
+                    options={[extractor]}
                     getOptionLabel={(option) => option.displayName}
                     className={classes.root}
-                    value={validator}
-                    renderInput={(params) => <TextField {...params} label="Validator" variant="outlined" />}
+                    value={extractor}
+                    renderInput={(params) => <TextField {...params} label="Context extractor" variant="outlined" />}
                 />
             </Grid>
-            {validator !== null && validator.predicate !== null &&
-                <Grid item>
-                    <Autocomplete
-                        disableClearable
-                        options={validator.predicates}
-                        getOptionLabel={(option) => option}
-                        className={classes.root}
-                        value={validator.predicate}
-                        onChange={(event, newValue) => updateValidatorPredicate(validator, newValue)}
-                        renderInput={(params) => <TextField {...params} label="Predicate" variant="outlined" />}
-                    />
-                </Grid>
-            }
 
-            {validator !== null && validator['inputFields'] && validator.inputFields.map((inputField) => (
+            {extractor !== null && extractor['inputFields'] && extractor.inputFields.map((inputField) => (
                 <Grid item
                     key={inputField.displayName}>
                     <TextField
@@ -66,14 +51,14 @@ function ValidatorListItem({ validator, removeValidator, updateValidatorPredicat
                         fullWidth={true}
                         inputProps={{
                             defaultValue: inputField.value,
-                            onBlur: event => updateValidatorInputField(validator, inputField, event.target.value)
+                            onBlur: event => updateValidatorInputField(extractor, inputField, event.target.value)
                         }}
                     />
                 </Grid>
             ))}
 
             <Grid item style={{display: "flex", alignItems: "center"}}>
-                <IconButton onClick={() => removeValidator(validator)}>
+                <IconButton onClick={() => removeExtractor(extractor)}>
                     <DeleteIcon />
                 </IconButton>
             </Grid>
@@ -83,4 +68,4 @@ function ValidatorListItem({ validator, removeValidator, updateValidatorPredicat
 const mapStateToProps = () => ({
 
 });
-export default connect(mapStateToProps, { removeValidator, updateValidatorPredicate, updateValidatorInputField })(ValidatorListItem);  
+export default connect(mapStateToProps, { removeExtractor, updateValidatorInputField })(ExtractorListItem);  

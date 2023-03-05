@@ -35,6 +35,7 @@ import CustomTabs from "components/CustomTabs/CustomTabs.js";
 
 import HeaderList from "features/headers/HeaderList.js";
 import ValidatorList from "features/validators/ValidatorList.js";
+import ExtractorList from 'features/extractors/ExtractorList.js';
 
 
 
@@ -176,11 +177,14 @@ function AddHttpRequestDialog({
                                     {
                                         tabName: "Verifications",
                                         tabContent: <ValidatorList validators={test.validators} />
+                                    },
+                                    {
+                                        tabName: "Extractors",
+                                        tabContent: <ExtractorList extractors={test.extractors} />
                                     }
                                 ]}
                             />
                         </Grid>
-
                     </GridItem>
                 </GridContainer>
             </DialogContent>

@@ -13,15 +13,18 @@ import {
     SET_HEADER,
     CREATE_VALIDATOR,
     REMOVE_VALIDATOR,
-    UPDATE_PREDICATE,
-    UPDATE_INPUT_FIELD,
-    UPDATE_VALIDATORS
+    UPDATE_VALIDATOR_PREDICATE,
+    UPDATE_VALIDATOR_INPUT_FIELD,
+    UPDATE_VALIDATORS,
+    CREATE_EXTRACTOR,
+    REMOVE_EXTRACTOR
 } from './test-action'
 
 const initialTestState = {
     httpMethod: 'GET',
     headers: [],
-    validators: []
+    validators: [],
+    extractors: []
 }
 
 export const testReducer = (state = initialTestState, action) => {
@@ -107,6 +110,22 @@ export const testReducer = (state = initialTestState, action) => {
             }
             return test;
         }
+        case CREATE_EXTRACTOR: {
+            const { extractor } = payload;
+            let test = {
+                ...state,
+                extractors: state.extractors.concat(extractor)
+            }
+            return test;
+        }
+        case REMOVE_EXTRACTOR: {
+            const { extractor } = payload;
+            let test = {
+                ...state,
+                extractors: state.extractors.filter((extractorFromStore) => !_.isEqual(extractorFromStore, extractor))
+            }
+            return test;
+        }
         case CREATE_VALIDATOR: {
             const { validator, predicate } = payload;
             let newValidator = {
@@ -128,7 +147,7 @@ export const testReducer = (state = initialTestState, action) => {
             }
             return test;
         }
-        case UPDATE_PREDICATE: {
+        case UPDATE_VALIDATOR_PREDICATE: {
             const { validator, newPredicateValue } = payload;
 
             let copiedValidatorWithUpdatedPredicate = _.cloneDeep(validator);
@@ -146,7 +165,7 @@ export const testReducer = (state = initialTestState, action) => {
 
             return test;
         }
-        case UPDATE_INPUT_FIELD: {
+        case UPDATE_VALIDATOR_INPUT_FIELD: {
             const { validator, inputField, newInputFieldValue } = payload;
 
             let inputFields = _.cloneDeep(validator.inputFields);
