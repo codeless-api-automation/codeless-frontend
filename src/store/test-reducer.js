@@ -17,7 +17,9 @@ import {
     UPDATE_VALIDATOR_INPUT_FIELD,
     UPDATE_VALIDATORS,
     CREATE_EXTRACTOR,
-    REMOVE_EXTRACTOR
+    REMOVE_EXTRACTOR,
+    UPDATE_EXTRACTOR_INPUT_FIELD,
+    UPDATE_EXTRACTORS
 } from './test-action'
 
 const initialTestState = {
@@ -123,6 +125,34 @@ export const testReducer = (state = initialTestState, action) => {
             let test = {
                 ...state,
                 extractors: state.extractors.filter((extractorFromStore) => !_.isEqual(extractorFromStore, extractor))
+            }
+            return test;
+        }
+        case UPDATE_EXTRACTOR_INPUT_FIELD: {
+            const { extractor, inputField, newInputFieldValue } = payload;
+
+            let inputFields = _.cloneDeep(extractor.inputFields);
+            inputFields.forEach(updateInputField(inputField, newInputFieldValue));
+
+            let copiedExtractorWithUpdatedInputFields = _.cloneDeep(extractor);
+            copiedExtractorWithUpdatedInputFields.inputFields = inputFields;
+
+            let extractorIndexNeededUpdate = state.extractors.findIndex(extractorFromStore => _.isEqual(extractorFromStore, extractor));
+
+            let newExtractors = state.extractors.slice();
+            newExtractors[extractorIndexNeededUpdate] = copiedExtractorWithUpdatedInputFields
+
+            let test = {
+                ...state,
+                extractors: newExtractors
+            }
+            return test;
+        }
+        case UPDATE_EXTRACTORS: {
+            const { extractors } = payload;
+            let test = {
+                ...state,
+                validators: extractors
             }
             return test;
         }

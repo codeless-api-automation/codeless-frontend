@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import {
     removeExtractor,
-    updateValidatorInputField
+    updateExtractorInputField
 } from "../../store/test-action"
 import {
     createStyles,
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-function ExtractorListItem({ extractor, removeExtractor, updateInputField }) {
+function ExtractorListItem({ extractor, removeExtractor, updateExtractorInputField }) {
     const classes = useStyles();
     return (
         <Grid container spacing={2} style={{ margin: "-4px -8px" }}>
@@ -51,7 +51,7 @@ function ExtractorListItem({ extractor, removeExtractor, updateInputField }) {
                         fullWidth={true}
                         inputProps={{
                             defaultValue: inputField.value,
-                            onBlur: event => updateValidatorInputField(extractor, inputField, event.target.value)
+                            onBlur: event => updateExtractorInputField(extractor, inputField, event.target.value)
                         }}
                     />
                 </Grid>
@@ -68,4 +68,4 @@ function ExtractorListItem({ extractor, removeExtractor, updateInputField }) {
 const mapStateToProps = () => ({
 
 });
-export default connect(mapStateToProps, { removeExtractor, updateValidatorInputField })(ExtractorListItem);  
+export default connect(mapStateToProps, { removeExtractor, updateExtractorInputField })(ExtractorListItem);  

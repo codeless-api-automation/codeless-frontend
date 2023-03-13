@@ -82,6 +82,18 @@ export const removeExtractor = extractor => ({
     payload: { extractor }
 })
 
+export const UPDATE_EXTRACTORS = 'UPDATE_EXTRACTORS';
+export const updateExtractors = extractors => ({
+    type: UPDATE_EXTRACTORS,
+    payload: { extractors }
+})
+
+export const UPDATE_EXTRACTOR_INPUT_FIELD = 'UPDATE_EXTRACTOR_INPUT_FIELD';
+export const updateExtractorInputField = (extractor, inputField, newInputFieldValue) => ({
+    type: UPDATE_EXTRACTOR_INPUT_FIELD,
+    payload: { extractor, inputField, newInputFieldValue }
+})
+
 export const CREATE_VALIDATOR = 'CREATE_VALIDATOR';
 export const createValidator = (validator, predicate) => ({
     type: CREATE_VALIDATOR,
@@ -177,13 +189,14 @@ export const cleanAllTestAttributes = () => {
 export const updateAllTestAttributes = (test) => {
     console.log(test)
     return (dispath) => {
-        let { id, name, httpMethod, requestURL, requestBody, validators, headers } = test;
+        let { id, name, httpMethod, requestURL, requestBody, validators, headers, extractors } = test;
         dispath(updateId(id))
         dispath(updateName(name))
         dispath(updateHttpMethod(httpMethod))
         dispath(updateRequestUrl(requestURL))
         dispath(updateRequestBody(requestBody))
         dispath(updateValidators(validators))
+        dispath(updateExtractors(extractors))
         dispath(setHeader(headers))
     }
 }

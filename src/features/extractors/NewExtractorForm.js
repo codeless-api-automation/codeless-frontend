@@ -30,20 +30,6 @@ function NewExtractorForm({ createExtractor }) {
 
   const [extractor, setExtractor] = React.useState(null);
 
-  const isAddExtractorButtonEnable = (extractor) => {
-    return isExtractorSelected(extractor) && isExtractorFilled(extractor)
-  }
-
-  const isExtractorSelected = (extractor) => {
-    return extractor === null ? false : true;
-  }
-
-
-  const isExtractorFilled = (extractor) => {
-    // TODO: Add check that each item in inputFields has value
-    return true;
-  }
-
   return (
     <Grid container spacing={2} style={{ margin: "-4px -8px" }}>
       <Grid item>
@@ -67,7 +53,9 @@ function NewExtractorForm({ createExtractor }) {
             variant="outlined"
             fullWidth={true}
             inputProps={{
-              onChange: event => inputField.value = event.target.value
+              onChange: event => {
+                inputField.value = event.target.value
+              }
             }}
           />
         </Grid>
@@ -75,7 +63,7 @@ function NewExtractorForm({ createExtractor }) {
 
       <Grid item style={{ display: "flex", alignItems: "center" }}>
         <IconButton
-          disabled={!isAddExtractorButtonEnable(extractor)}
+          disabled={extractor === null}
           onClick={() => {
             createExtractor(extractor)
             setExtractor(null);
@@ -94,6 +82,7 @@ const test = {
   contextExtractorTypes: [
     {
       displayName: "Regex",
+      dslName: "regex",
       inputFields: [
         {
           dslName: "regex",
@@ -107,6 +96,7 @@ const test = {
     },
     {
       displayName: "XPath",
+      dslName: "xpath",
       inputFields: [
         {
           dslName: "xpath",
@@ -120,6 +110,7 @@ const test = {
     },
     {
       displayName: "JSONPath",
+      dslName: "jsonpath",
       inputFields: [
         {
           dslName: "jsonpath",

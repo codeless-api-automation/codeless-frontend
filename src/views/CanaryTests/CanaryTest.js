@@ -43,6 +43,7 @@ import { CheckCircleOutline } from '@material-ui/icons';
 
 import {
   saveTest,
+  updateAllTestAttributes
 } from "../../store/test-action.js"
 
 import AddHttpRequestDialog from './AddHttpRequestDialog';
@@ -209,7 +210,7 @@ const RowItem = withStyles(() =>
   })
 )(Grid);
 
-function Test({ saveTest, httpCallResult, location }) {
+function Test({ saveTest, updateAllTestAttributes, httpCallResult, location }) {
 
   const [test, setTest] = React.useState(
     location.state === undefined ?
@@ -230,6 +231,14 @@ function Test({ saveTest, httpCallResult, location }) {
 
 
   const history = useHistory();
+
+  const handleOnEditHttpRequest = (index,  httpRequest) => {
+    updateAllTestAttributes({
+      ...httpRequest,
+      id: index
+    })
+    setOpenAddHttpRequest(true)
+  }
 
   const handleOnAddNewHttpRequest = () => {
     setOpenAddHttpRequest(true)
@@ -275,7 +284,7 @@ function Test({ saveTest, httpCallResult, location }) {
                   })
                 }}
                 onRowDelete={(index, request) => setDeleteHttpRequest({ index, request })}
-                onRowEdit={(index, request) => console.log(request)}
+                onRowEdit={(index, request) => handleOnEditHttpRequest(index, request)}
                 onAdd={handleOnAddNewHttpRequest}
               />
             </RowItem>
@@ -301,7 +310,14 @@ function Test({ saveTest, httpCallResult, location }) {
         open={openAddHttpRequest}
         setOpen={(isOpened) => setOpenAddHttpRequest(isOpened)}
         addHttpRequest={(httpRequest) => {
-          let newRequests = test.requests.concat(httpRequest);
+          console.log(httpRequest.id)
+          let newRequests
+          if (httpRequest.id !== undefined) {
+            newRequests = test.requests.slice();
+            newRequests[httpRequest.id] = { ...httpRequest };
+          } else {
+            newRequests = test.requests.concat(httpRequest);
+          }
           setTest({
             ...test,
             requests: newRequests
@@ -326,4 +342,4 @@ function Test({ saveTest, httpCallResult, location }) {
 const mapStateToProps = state => ({
   httpCallResult: state.httpCallResult,
 });
-export default connect(mapStateToProps, { saveTest })(Test);
+export default connect(mapStateToProps, { saveTest, updateAllTestAttributes })(Test);
