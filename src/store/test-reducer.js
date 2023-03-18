@@ -23,6 +23,8 @@ import {
 } from './test-action'
 
 const initialTestState = {
+    name: '',
+    requestURL: '',
     httpMethod: 'GET',
     headers: [],
     validators: [],

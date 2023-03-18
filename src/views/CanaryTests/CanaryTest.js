@@ -232,7 +232,7 @@ function Test({ saveTest, updateAllTestAttributes, httpCallResult, location }) {
 
   const history = useHistory();
 
-  const handleOnEditHttpRequest = (index,  httpRequest) => {
+  const handleOnEditHttpRequest = (index, httpRequest) => {
     updateAllTestAttributes({
       ...httpRequest,
       id: index
@@ -250,6 +250,10 @@ function Test({ saveTest, updateAllTestAttributes, httpCallResult, location }) {
     setDeleteHttpRequest(null)
   }
 
+  const isSaveButtonDisabled = (test) => {
+    return test.requests.length === 0 || test.name.length === 0
+  }
+
   return (
     <GridContainer>
       <GridItem xs={12}>
@@ -258,12 +262,13 @@ function Test({ saveTest, updateAllTestAttributes, httpCallResult, location }) {
             <RowItem item xs>
               <Paper elevation={3}>
                 <TextField
+                  required
                   label="Name"
                   variant="outlined"
                   fullWidth={true}
                   inputProps={{
                     defaultValue: test.name,
-                    onBlur: event => setTest({
+                    onChange: event => setTest({
                       ...test,
                       name: event.target.value
                     })
@@ -295,7 +300,7 @@ function Test({ saveTest, updateAllTestAttributes, httpCallResult, location }) {
               <Button
                 variant="contained"
                 color="primary"
-                disabled={httpCallResult.isCallRequested}
+                disabled={httpCallResult.isCallRequested || isSaveButtonDisabled(test)}
                 onClick={() => saveTest(test, () => history.push(componentsPaths.VIEW_CANARY_TESTS))}
                 startIcon={<CheckCircleOutline fontSize="inherit" />}
               >

@@ -45,7 +45,7 @@ export default function TablePanel() {
           </Paper>
         </Grid>
         <Grid item>
-          <Grid container justify="center" alignItems="center">
+          <Grid container justifyContent="center" alignItems="center">
             <IconButton color="primary">
               <Update fontSize="large" />
             </IconButton>

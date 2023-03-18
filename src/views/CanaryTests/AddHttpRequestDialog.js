@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
+import { useForm } from "react-hook-form";
 
 import { createStyles, withStyles } from "@material-ui/core/styles";
 
@@ -70,17 +71,32 @@ function AddHttpRequestDialog({
     updateHeader,
     cleanAllTestAttributes }) {
 
+    const { resetField, register, formState: { errors } } = useForm(
+        {
+            mode: "all"
+        }
+    );
+
     const handleAdd = () => {
         addHttpRequest(test)
         setOpen(false)
         cleanAllTestAttributes()
+        resetField("stepName")
+        resetField("url")
     };
 
     const handleClose = () => {
         setOpen(false)
         cleanAllTestAttributes()
+        resetField("stepName")
+        resetField("url")
     };
 
+    const isSaveButtonDisabled = (test) => {
+        return test.requestURL.length === 0 || test.name.length === 0
+    }
+
+    console.log(errors)
     return (
         <Dialog
             open={open}
@@ -108,14 +124,20 @@ function AddHttpRequestDialog({
                                 <Row container>
                                     <RowItem item xs>
                                         <TextField
+                                            required
+                                            name="stepName"
                                             variant="outlined"
                                             placeholder="Name"
-                                            helperText="Enter the step name"
                                             fullWidth={true}
                                             inputProps={{
-                                                defaultValue: test.name,
-                                                onBlur: event => updateName(event.target.value)
+                                                onChange: event => updateName(event.target.value),
+                                                defaultValue: test.name
                                             }}
+                                            {...register("stepName", {
+                                                required: "Step name is required"
+                                            })}
+                                            error={!!errors.stepName}
+                                            helperText={errors.stepName ? errors.stepName.message : "Enter the step name"}
                                         />
                                     </RowItem>
                                 </Row>
@@ -136,14 +158,19 @@ function AddHttpRequestDialog({
                                     <RowItem item xs>
                                         <TextField
                                             required
+                                            name="url"
                                             variant="outlined"
                                             placeholder="https://myurlname.com"
-                                            helperText="Enter the endpoint, API or URL that you are testing"
                                             fullWidth={true}
                                             inputProps={{
                                                 defaultValue: test.requestURL,
-                                                onBlur: event => updateRequestUrl(event.target.value)
+                                                onChange: event => updateRequestUrl(event.target.value)
                                             }}
+                                            {...register("url", {
+                                                required: "API or URL is required",
+                                            })}
+                                            error={!!errors.url}
+                                            helperText={errors.url ? errors.url.message : "Enter the endpoint, API or URL that you are testing"}
                                         />
                                     </RowItem>
                                 </Row>
@@ -194,6 +221,7 @@ function AddHttpRequestDialog({
                     Cancel
                 </Button>
                 <Button
+                    disabled={Object.keys(errors).length > 0 || isSaveButtonDisabled(test)}
                     variant="contained"
                     onClick={handleAdd}
                     color="primary">
