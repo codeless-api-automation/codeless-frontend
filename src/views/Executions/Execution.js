@@ -90,10 +90,22 @@ const DecoratedAccordionDetails = withStyles((theme) => ({
 }))(AccordionDetails);
 
 
+function ResponseBody(props) {
+  return (
+    <div>
+      <pre style={{
+        whiteSpace: "pre-wrap"
+      }}>
+        <code>{props.response}</code>
+      </pre>
+    </div>
+  );
+}
+
 function DetailsItem(props) {
   return (
     <Typography
-      style={{ overflowWrap: ' break-word' }}
+      style={{ overflowWrap: "break-word" }}
       variant="body2">
       {props.details}
     </Typography>);
@@ -168,6 +180,25 @@ function CustomizedAccordions(props) {
     return row.includes(RESPONSE_BODY_LOG_ENTRY) || row.includes(REQUEST_HEADERS_LOG_ENTRY) || row.includes(RESPONSE_HEADERS_LOG_ENTRY);
   }
 
+  const getContentType = (row) => {
+    let headers = row.split(RESPONSE_HEADERS_LOG_ENTRY)[1].split("\r\n")
+
+    let contentType = headers
+      .map((header) =>
+        [
+          header.substring(0, header.indexOf("=")).toLowerCase(),
+          header.substring(header.indexOf("=") + 1).toLowerCase()
+        ]
+      )
+      .filter(entry => entry[0] === "content-type")
+
+    return contentType[1]
+  }
+
+  const isResponseBody = (row) => {
+    return row.includes(RESPONSE_BODY_LOG_ENTRY)
+  }
+
   return (
     <div>
       <Paper elevation={3} >
@@ -182,7 +213,15 @@ function CustomizedAccordions(props) {
               </Typography>
             </DecoratedAccordionSummary>
             <DecoratedAccordionDetails>
-              <Details details={getDetails(row)} />
+              {isResponseBody(row)
+                ? <ResponseBody
+                  contentType={getContentType(rows[index - 1])}
+                  response={getDetails(row)}
+                />
+                : <Details
+                  details={getDetails(row)}
+                />
+              }
             </DecoratedAccordionDetails>
           </DecoratedAccordion>
         ))}
