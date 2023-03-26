@@ -48,6 +48,7 @@ import {
 
 import AddHttpRequestDialog from './AddHttpRequestDialog';
 
+
 const getItemStyle = (isDragging, draggableStyle) => ({
   // styles we need to apply on draggables
   ...draggableStyle,
@@ -101,6 +102,7 @@ const reorder = (list, startIndex, endIndex) => {
   return result
 }
 
+
 function DndTable(props) {
 
   const onDragEnd = (result) => {
@@ -134,7 +136,8 @@ function DndTable(props) {
             <Button
               onClick={handleAdd}
               size="small"
-              variant="outlined">Add HTTP request</Button>
+              variant="outlined">Add HTTP request
+            </Button>
           </RowItem>
         </Row>
       </Grid>
@@ -143,7 +146,11 @@ function DndTable(props) {
         Add your HTTP requests as steps. Drag and drop to change order.
       </Typography>
       <TableContainer>
-        <Table style={{ borderTop: '1px solid rgb(224, 224, 224)', tableLayout: 'fixed' }}>
+        <Table style={{
+          borderTop: '1px solid rgb(224, 224, 224)',
+          tableLayout: 'fixed',
+          borderCollapse: 'separate'
+        }}>
           <TableHead>
             <TableRow>
               <TableCell style={{ width: '10%' }}>Call Order</TableCell>
@@ -155,9 +162,21 @@ function DndTable(props) {
           </TableHead>
           <TableBody component={DroppableComponent(onDragEnd)}>
             {props.items.length === 0 ?
-              <TableRow style={{ height: 53 * 6 }}>
-                {/* TODO: add overlay when there are no tests */}
-              </TableRow>
+              <>
+                <TableRow style={{ borderBottom: 'none' }}>
+                  <TableCell align="center" colSpan={5}>
+                    <p />You haven't added any HTTP requests to the canary.
+                    <p />You can add multiple requests to this canary.
+                    <p />
+                    <Button 
+                      style={{margin: '21px'}}
+                      onClick={handleAdd}
+                      size="small"
+                      variant="outlined">Add HTTP request
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              </>
               :
               props.items.map((item, index) => (
                 <TableRow component={DraggableComponent(item.name + item.httpMethod + item.requestURL, index)} key={index} >
@@ -262,8 +281,8 @@ function Test({ saveTest, updateAllTestAttributes, httpCallResult, location }) {
             <RowItem item xs>
               <Paper elevation={3}>
                 <TextField
-                  required
                   label="Name"
+                  placeholder="mycanaryname"
                   variant="outlined"
                   fullWidth={true}
                   inputProps={{

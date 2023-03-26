@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "dependencies": {
     "@material-ui/core": "^4.12.4",
-    "@material-ui/icons": "^4.9.1",
+    "@material-ui/icons": "^4.11.3",
     "@material-ui/lab": "^4.0.0-alpha.49",
     "axios": "^0.21.1",
     "chartist": "0.10.1",

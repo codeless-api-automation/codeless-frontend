@@ -19,6 +19,8 @@ import {
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
+import CopyToClipboardButton from 'components/CopyToClipboardButton/CopyToClipboardButton';
+
 const AntTabs = withStyles((theme) => ({
   root: {
     marginBottom: theme.spacing(2),
@@ -92,13 +94,21 @@ const DecoratedAccordionDetails = withStyles((theme) => ({
 
 function ResponseBody(props) {
   return (
-    <div>
-      <pre style={{
-        whiteSpace: "pre-wrap"
-      }}>
-        <code>{props.response}</code>
-      </pre>
-    </div>
+    <>
+
+      <div style={{ float: 'right' }}>
+        <CopyToClipboardButton content={props.response} />
+      </div>
+
+      <div>
+        <pre style={{
+          whiteSpace: "pre-wrap"
+        }}>
+          <code>{props.response}</code>
+        </pre>
+      </div>
+
+    </>
   );
 }
 
