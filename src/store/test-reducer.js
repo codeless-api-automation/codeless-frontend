@@ -154,7 +154,7 @@ export const testReducer = (state = initialTestState, action) => {
             const { extractors } = payload;
             let test = {
                 ...state,
-                validators: extractors
+                extractors: extractors
             }
             return test;
         }

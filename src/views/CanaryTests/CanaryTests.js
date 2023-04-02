@@ -22,7 +22,9 @@ import {
   Grid,
   IconButton,
   TableRow,
-  TableCell
+  TableCell,
+  Typography,
+  Button
 } from '@material-ui/core';
 
 import {
@@ -38,8 +40,8 @@ import GridContainer from "components/Grid/GridContainer.js";
 import CustomTable from 'components/Table/CustomTable.js';
 import OverflowTip from 'components/OverflowTip/OverflowTip';
 import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog.js';
+import TablePanel from 'components/Table/TablePanel.js';
 
-import TablePanel from './TablePanel';
 import RunCanaryTestDialog from './RunCanaryTestDialog';
 
 function HeaderRow() {
@@ -87,7 +89,7 @@ function BodyRow(props) {
 }
 
 
-function HealthChecks({ httpCallResult, healthChecksPage, requestHealthCheckExecution,
+function CanaryTests({ httpCallResult, healthChecksPage, requestHealthCheckExecution,
   requestHealthCheckRemoval, cancelHealthCheckRemovalRequest, removeCanaryTest,
   requestHealthCheckSchedule }) {
 
@@ -106,6 +108,10 @@ function HealthChecks({ httpCallResult, healthChecksPage, requestHealthCheckExec
     return healthCheck != null ? healthCheck.name : "";
   }
 
+  const handleAddNewCanaryTest = () => {
+    history.push(componentsPaths.VIEW_CANARY_TEST);
+  }
+
   return (
     <GridContainer>
       <GridItem xs={12}>
@@ -120,9 +126,50 @@ function HealthChecks({ httpCallResult, healthChecksPage, requestHealthCheckExec
               onRowSchedule={(row) => onRowSchedule(row)}
               onRowEdit={(row) => onRowEdit(row)}
               onRowDelete={(row) => requestHealthCheckRemoval(row)}
-            />} />
+            />}
+            emptyTablePlaceholder={<>
+              <TableRow style={{ borderBottom: 'none' }}>
+                <TableCell align="center" colSpan={4}>
+                  <Typography
+                    style={{ marginTop: '10px' }}
+                    variant="body2">
+                    You haven't added any canary test to monitor health of your application.
+                  </Typography>
+                  <Button
+                    style={{ marginTop: '25px', marginBottom: '10px' }}
+                    onClick={handleAddNewCanaryTest}
+                    size="small"
+                    variant="outlined">Add canary test
+                  </Button>
+                </TableCell>
+              </TableRow>
+            </>}
+            tableHeader={
+              <>
+                <Grid>
+                  <Grid container style={{ padding: 10 }}>
+                    <Grid item xs>
+                      <Typography variant="body1">Canary tests</Typography>
+                    </Grid>
+                    <Grid item>
+                      <Button
+                        onClick={handleAddNewCanaryTest}
+                        size="small"
+                        variant="outlined">Add canary test
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Typography style={{ padding: 10 }} variant="overline">
+                  Add canary test to monitor health of your application.
+                </Typography>
+              </>
+            }
+          />
         </div>
       </GridItem>
+
+
 
       <RunCanaryTestDialog />
       <ConfirmationDialog
@@ -147,4 +194,4 @@ export default connect(mapStateToProps, {
   requestHealthCheckExecution, requestHealthCheckRemoval,
   cancelHealthCheckRemovalRequest, removeCanaryTest: removeCanaryTest,
   requestHealthCheckSchedule
-})(HealthChecks);
+})(CanaryTests);

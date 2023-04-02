@@ -96,7 +96,7 @@ function AddHttpRequestDialog({
         return test.requestURL.length === 0 || test.name.length === 0
     }
 
-    console.log(errors)
+
     return (
         <Dialog
             open={open}
@@ -104,10 +104,10 @@ function AddHttpRequestDialog({
             PaperProps={{
                 style: {
                     backgroundColor: "#eeeeee",
-                    minHeight: '90%',
-                    maxHeight: '90%',
-                    minWidth: '90%',
-                    maxWidth: '90%'
+                    minHeight: '96%',
+                    maxHeight: '96%',
+                    minWidth: '96%',
+                    maxWidth: '96%'
                 }
             }}
         >

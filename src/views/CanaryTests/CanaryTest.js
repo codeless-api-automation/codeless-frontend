@@ -165,11 +165,17 @@ function DndTable(props) {
               <>
                 <TableRow style={{ borderBottom: 'none' }}>
                   <TableCell align="center" colSpan={5}>
-                    <p />You haven't added any HTTP requests to the canary.
-                    <p />You can add multiple requests to this canary.
-                    <p />
-                    <Button 
-                      style={{margin: '21px'}}
+
+                    <Typography
+                      style={{ marginTop: '10px' }}
+                      variant="body2">
+                      You haven't added any HTTP requests to the canary.
+                    </Typography>
+                    <Typography variant="body2">
+                      You can add multiple requests to this canary.
+                    </Typography>
+                    <Button
+                      style={{ marginTop: '25px', marginBottom: '10px' }}
                       onClick={handleAdd}
                       size="small"
                       variant="outlined">Add HTTP request
@@ -330,11 +336,11 @@ function Test({ saveTest, updateAllTestAttributes, httpCallResult, location }) {
         </Grid>
 
       </GridItem>
+
       <AddHttpRequestDialog
         open={openAddHttpRequest}
         setOpen={(isOpened) => setOpenAddHttpRequest(isOpened)}
         addHttpRequest={(httpRequest) => {
-          console.log(httpRequest.id)
           let newRequests
           if (httpRequest.id !== undefined) {
             newRequests = test.requests.slice();

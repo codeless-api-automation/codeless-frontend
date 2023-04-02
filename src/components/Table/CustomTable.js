@@ -94,7 +94,7 @@ const useStyles2 = makeStyles({
 });
 
 export default function CustomTable(props) {
-  const { rows, colSpan, headerRow, bodyRow } = props;
+  const { rows, colSpan, headerRow, bodyRow, emptyTablePlaceholder, tableHeader } = props;
 
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
@@ -112,18 +112,26 @@ export default function CustomTable(props) {
   };
   return (
     <Paper elevation={3}>
+      {tableHeader}
       <TableContainer>
-        <Table className={classes.table} style={{ tableLayout: 'fixed' }}>
+        <Table className={classes.table} style={{
+          borderTop: '1px solid rgb(224, 224, 224)',
+          borderCollapse: 'separate',
+          tableLayout: 'fixed'
+        }}>
           <TableHead>
             {headerRow}
           </TableHead>
           <TableBody>
-            {(rowsPerPage > 0
-              ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : rows
-            ).map((row, index) => (
-              React.cloneElement(bodyRow, { row: row, key: index }, null)
-            ))}
+            {rows.length === 0 ?
+              emptyTablePlaceholder
+              :
+              (rowsPerPage > 0
+                ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                : rows
+              ).map((row, index) => (
+                React.cloneElement(bodyRow, { row: row, key: index }, null)
+              ))}
             {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>
                 <TableCell colSpan={colSpan} />
