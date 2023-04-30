@@ -3,17 +3,17 @@ import {
 } from './metrics-action'
 
 const initState = {
-    metrics: []
+    timeSeriesElements: []
 }
 
 export const metricsReducer = (state = initState, action) => {
     const { type, payload } = action;
     switch (type) {
         case SET_METRICS: {
-            const { metrics } = payload;
+            const { timeSeriesElements } = payload;
             const newState = {
                 ...state,
-                metrics: metrics
+                timeSeriesElements: timeSeriesElements
             }
             return newState;
         }

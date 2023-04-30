@@ -7,17 +7,17 @@ import {
 } from '../store/http-call-action';
 
 export const SET_METRICS = 'SET_METRICS';
-export const setMerics = (metrics) => ({
+export const setMerics = (timeSeriesElements) => ({
     type: SET_METRICS,
-    payload: { metrics }
+    payload: { timeSeriesElements }
 })
 
-export const getPerfomanceMetrics = (scheduleName, startDate, endDate) => {
+export const getPerfomanceMetrics = (scheduleId, startDate, endDate) => {
     return (dispath) => {
         dispath(isCallRequested(true));
-        metricsResource.getMetrics(scheduleName, startDate, endDate)
+        metricsResource.getMetrics(scheduleId, startDate, endDate)
             .then(response => {
-                dispath(setMerics(response.data.responsePoints));
+                dispath(setMerics(response.data.timeSeriesElements));
                 dispath(isCallRequested(false));
             })
             .catch(error => handleCatchGlobally(dispath, error, error => {

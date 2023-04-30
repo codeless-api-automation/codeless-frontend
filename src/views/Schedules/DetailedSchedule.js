@@ -72,15 +72,14 @@ function DetailedSchedule({ httpCallResult, metrics }) {
       </div>)
   }
 
-
   const series = new TimeSeries({
     name: "response time",
     utc: false,
     columns: ["index", "response time"],
-    points: metrics.metrics.map((point) =>
+    points: metrics.timeSeriesElements.map((point) =>
       [
-        Index.getIndexString("5m", new Date(point.time * 1000)),
-        point.totalResponseTime
+        Index.getIndexString("5m", new Date(point.timestamp)),
+        point.value
       ]
     )
   });
@@ -88,7 +87,7 @@ function DetailedSchedule({ httpCallResult, metrics }) {
   const getMaxResponseTime = (metrics) => {
     let maxRespontTime = 0;
     metrics.forEach((point) => {
-      maxRespontTime = Math.max(maxRespontTime, point.totalResponseTime);
+      maxRespontTime = Math.max(maxRespontTime, point.value);
     });
     return maxRespontTime;
   }
@@ -117,7 +116,7 @@ function DetailedSchedule({ httpCallResult, metrics }) {
         </div>
       </GridItem>
 
-      {value === 0 && (metrics.metrics !== undefined && metrics.metrics.length !== 0) &&
+      {value === 0 && (metrics.timeSeriesElements !== undefined && metrics.timeSeriesElements.length !== 0) &&
         <GridItem xs={12}>
           <Paper elevation={3} >
             <Resizable>
@@ -130,7 +129,7 @@ function DetailedSchedule({ httpCallResult, metrics }) {
                     id="response time"
                     label="Response Time (ms)"
                     min={0}
-                    max={getMaxResponseTime(metrics.metrics)}
+                    max={getMaxResponseTime(metrics.timeSeriesElements)}
                     width="60"
                     type="linear"
                   />

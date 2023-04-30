@@ -99,7 +99,7 @@ export function Schedules({ scheduleHelper, getPerfomanceMetrics }) {
     const history = useHistory();
 
     const requestScheduleViewing = (schedule) => {
-        getPerfomanceMetrics(schedule.scheduleName);
+        getPerfomanceMetrics(schedule.id);
         history.push(componentsPaths.VIEW_SCHEDULE);
     }
 

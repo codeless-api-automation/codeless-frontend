@@ -94,8 +94,8 @@ export const scheduleResource = {
 const METRICS_RESOURCE = "metrics";
 export const metricsResource = {
 
-    getMetrics(scheduleName, startDate = startDateDefault(), endDate = endDateDefault()) {
-        return instance.get(METRICS_RESOURCE + `?schedule_name=${scheduleName}&start_date=${startDate}&end_date=${endDate}`);
+    getMetrics(scheduleId, startDate = startDateDefault(), endDate = endDateDefault()) {
+        return instance.get(METRICS_RESOURCE + `?schedule_id=${scheduleId}&start_date=${startDate}&end_date=${endDate}`);
     }
 }
 
