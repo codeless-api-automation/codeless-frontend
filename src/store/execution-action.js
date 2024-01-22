@@ -72,6 +72,7 @@ export const getExecutions = (page = 0, size = 20) => {
 
 const SUCCESS_MESSAGE = "The health check has been launched successfully.";
 const ERROR_MESSAGE = "The health check has not been launched.";
+const ERROR_MESSAGE_COMPUTE_IS_NOT_READY = "We are preparing compute for executing your health check. Try again later.";
 export const runExecution = (execution) => {
     return (dispath) => {
         dispath(isCallRequested(true));
@@ -87,10 +88,18 @@ export const runExecution = (execution) => {
             .catch(error => handleCatchGlobally(dispath, error, error => {
                 dispath(isCallRequested(false));
                 dispath(canceleExecutionRequest());
-                dispath(setNotificationMessage({
-                    message: ERROR_MESSAGE,
-                    severity: common.NOTIFICATION_SEVERITY_ERROR
-                }));
+                if (error?.response?.data?.status === 500
+                    && error?.response?.data?.message?.includes('The operation cannot be performed at this time.')) {
+                        dispath(setNotificationMessage({
+                            message: ERROR_MESSAGE_COMPUTE_IS_NOT_READY,
+                            severity: common.NOTIFICATION_SEVERITY_ERROR
+                        }));
+                } else {
+                    dispath(setNotificationMessage({
+                        message: ERROR_MESSAGE,
+                        severity: common.NOTIFICATION_SEVERITY_ERROR
+                    }));
+                }
             }));
     }
 }

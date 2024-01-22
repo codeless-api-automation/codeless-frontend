@@ -4,7 +4,7 @@ import * as common from "constants/Common";
 import { setNotificationMessage } from "store/util-action";
 
 const instance = axios.create({
-    baseURL: "https://ws.api-sentinel.com/api/",
+    baseURL: "http://localhost:8080/api/",
     headers: {
         "Content-Type": "application/json"
     }
