@@ -56,10 +56,10 @@ export const getRegions = () => {
     }
 }
 
-export const getExecutions = (page = 0, size = 20) => {
+export const getExecutions = (page = 0, maxResults = 20) => {
     return (dispath) => {
         dispath(isCallRequested(true));
-        executionResource.getExecutions(page, size)
+        executionResource.getExecutions(page, maxResults)
             .then(response => {
                 dispath(setExecutions(response.data.items));
                 dispath(isCallRequested(false));

@@ -70,10 +70,10 @@ export const removeCanaryTest = (canaryTest) => {
     }
 }
 
-export const getHealthChecks = (page = 0, size = 20) => {
+export const getHealthChecks = (page = 0, maxResults = 20) => {
     return (dispath) => {
         dispath(isCallRequested(true))
-        testResource.getTests(page, size)
+        testResource.getTests(page, maxResults)
             .then(response => {
                 dispath(isCallRequested(false))
                 dispath(cleanHealthChecks())

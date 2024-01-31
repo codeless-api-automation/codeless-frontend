@@ -25,8 +25,8 @@ instance.interceptors.request.use(
 
 const TEST_RESOURCE = "tests";
 export const testResource = {
-    getTests(page, size) {
-        return instance.get(TEST_RESOURCE + `?page=${page}&size=${size}`);
+    getTests(page, maxResults) {
+        return instance.get(TEST_RESOURCE + `?page=${page}&maxResults=${maxResults}`);
     },
     createTest(testToCreate) {
         let requestBodyTest = {
@@ -65,8 +65,8 @@ export const executionResource = {
         };
         return instance.post(EXECUTION_RESOURCE, requestBodyExecution);
     },
-    getExecutions(page, size) {
-        return instance.get(EXECUTION_RESOURCE + `?page=${page}&size=${size}`);
+    getExecutions(page, maxResults) {
+        return instance.get(EXECUTION_RESOURCE + `?page=${page}&maxResults=${maxResults}`);
     },
     getExecutionResult(executionId) {
         return instance.get(EXECUTION_RESOURCE + `/${executionId}` + EXECUTION_RESULT_RESOURCE);
@@ -86,8 +86,8 @@ export const scheduleResource = {
         };
         return instance.post(SCHEDULE_RESOURCE, requestBody);
     },
-    getSchedules(page, size) {
-        return instance.get(SCHEDULE_RESOURCE + `?page=${page}&size=${size}`);
+    getSchedules(page, maxResults) {
+        return instance.get(SCHEDULE_RESOURCE + `?page=${page}&maxResults=${maxResults}`);
     }
 }
 
