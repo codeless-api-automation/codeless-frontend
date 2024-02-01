@@ -52,7 +52,6 @@ function HeaderRow() {
     return (
         <TableRow>
             <TableCell style={{ width: '30%' }}>Schedule Name</TableCell>
-            <TableCell style={{ width: '15%' }}>Canary Test ID</TableCell>
             <TableCell style={{ width: '20%' }}>Run Frequency</TableCell>
             <TableCell style={{ width: '20%' }}>Geolocation</TableCell>
             <TableCell style={{ width: '10%' }} align="right"></TableCell>
@@ -66,9 +65,6 @@ function BodyRow(props) {
         <TableRow key={key}>
             <TableCell>
                 <OverflowTip originalValue={row.scheduleName} />
-            </TableCell>
-            <TableCell>
-                {row.testId}
             </TableCell>
             <TableCell>
                 {buildRunFrequency(row.timer)}

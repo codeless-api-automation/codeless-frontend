@@ -34,10 +34,10 @@ import {
 function HeaderRow() {
     return (
         <TableRow>
-            <TableCell style={{ width: '10%' }}>Execution Id</TableCell>
-            <TableCell style={{ width: '30%' }}>Canary Test Name</TableCell>
+            <TableCell style={{ width: '20%' }}>Canary Test Name</TableCell>
             <TableCell style={{ width: '20%' }}>Geolocation</TableCell>
-            <TableCell style={{ width: '10%' }}>Status</TableCell>
+            <TableCell style={{ width: '20%' }}>Submitted Time</TableCell>
+            <TableCell style={{ width: '10%' }}>Execution Status</TableCell>
             <TableCell style={{ width: '10%' }} align="right"></TableCell>
         </TableRow>
     );
@@ -49,13 +49,13 @@ function BodyRow(props) {
     return (
         <TableRow key={key}>
             <TableCell>
-                {row.id}
-            </TableCell>
-            <TableCell>
                 <OverflowTip originalValue={row.name} />
             </TableCell>
             <TableCell>
                 {buildRegion(row.region)}
+            </TableCell>
+            <TableCell>
+                {row.submitted}
             </TableCell>
             <TableCell>
                 {row.executionStatus}
