@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom";
 
 import * as componentsPaths from "constants/ComponentsPaths.js";
 
+import moment from "moment";
+
 import {
     buildRegion
 } from "utils/Formatter"
@@ -55,7 +57,7 @@ function BodyRow(props) {
                 {buildRegion(row.region)}
             </TableCell>
             <TableCell>
-                {row.submitted}
+                {moment(row.submitted * 1000).format()}
             </TableCell>
             <TableCell>
                 {row.executionStatus}
