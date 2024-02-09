@@ -54,6 +54,7 @@ function HeaderRow() {
             <TableCell style={{ width: '30%' }}>Schedule Name</TableCell>
             <TableCell style={{ width: '20%' }}>Run Frequency</TableCell>
             <TableCell style={{ width: '20%' }}>Geolocation</TableCell>
+            <TableCell style={{ width: '20%' }}>Status</TableCell>
             <TableCell style={{ width: '10%' }} align="right"></TableCell>
         </TableRow>
     );
@@ -71,6 +72,9 @@ function BodyRow(props) {
             </TableCell>
             <TableCell>
                 {buildRegion(row.region)}
+            </TableCell>
+            <TableCell>
+                {"Active"}
             </TableCell>
             <TableCell align="right" padding="none">
                 <Grid container direction="row-reverse">

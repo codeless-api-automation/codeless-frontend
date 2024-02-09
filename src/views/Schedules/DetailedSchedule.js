@@ -18,6 +18,7 @@ import {
 } from "react-timeseries-charts";
 
 import {
+  Grid,
   Paper,
   Tabs,
   Tab,
@@ -25,6 +26,84 @@ import {
 } from '@material-ui/core';
 
 import moment from "moment";
+
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
+
+const useStyles = makeStyles((theme) => ({
+  panel: {
+    padding: theme.spacing(2),
+    border: '1px solid #ddd',
+    borderRadius: '4px',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  header: {
+    marginBottom: theme.spacing(2),
+    borderBottom: '1px solid #ccc',
+    paddingBottom: theme.spacing(1),
+  },
+  valueContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%', // stretch to fill all available space horizontally
+  },
+  value: {
+    flex: 1, // make each value take up equal horizontal space
+    marginRight: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    borderRight: '1px solid #ccc',
+  }
+}));
+
+function Metadata() {
+  const classes = useStyles();
+
+  return (
+    <Paper elevation={3} className={classes.panel}>
+      <div className={classes.header}>
+        <Typography style={{ fontWeight: 'medium' }}>
+          Schedule detail
+        </Typography>
+      </div>
+      <div className={classes.valueContainer}>
+        <Grid container direction="column" className={classes.value}>
+          <Grid item>
+            <Typography variant="body2" color="textSecondary">Schedule Name</Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="body2" color="textPrimary">every 5 minute to test</Typography>
+          </Grid>
+        </Grid>
+        <Grid container direction="column" className={classes.value}>
+          <Grid item>
+            <Typography variant="body2" color="textSecondary">Run Frequency</Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="body2" color="textPrimary">Every 5 Minutes</Typography>
+          </Grid>
+        </Grid>
+        <Grid container direction="column" className={classes.value}>
+          <Grid item>
+            <Typography variant="body2" color="textSecondary">Geolocation</Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="body2" color="textPrimary">N. Virginia, US</Typography>
+          </Grid>
+        </Grid>
+        <Grid container direction="column" className={classes.value}>
+          <Grid item>
+            <Typography variant="body2" color="textSecondary">State</Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="body2" color="textPrimary">Enabled</Typography>
+          </Grid>
+        </Grid>
+      </div>
+    </Paper>
+  );
+}
 
 const AntTabs = withStyles((theme) => ({
   root: {
@@ -109,9 +188,14 @@ function DetailedSchedule({ httpCallResult, metrics }) {
   return (
     <GridContainer>
       <GridItem xs={12}>
+        <Metadata />
+      </GridItem>
+
+      <GridItem xs={12}>
         <div>
           <AntTabs value={value} onChange={handleChange}>
             <AntTab label="Metrics" />
+            <AntTab label="Executions History" />
           </AntTabs>
         </div>
       </GridItem>

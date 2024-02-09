@@ -11,6 +11,23 @@ import {
 
 import * as common from "constants/Common";
 
+
+export const REQUEST_SCHEDULE_REMOVAL = 'REQUEST_SCHEDULE_REMOVAL';
+export const requestScheduleRemoval = (schedule) => ({
+    type: REQUEST_SCHEDULE_REMOVAL,
+    payload: { schedule }
+})
+
+export const CANCEL_SCHEDULE_REMOVAL_REQUEST = 'CANCEL_SCHEDULE_REMOVAL_REQUEST';
+export const cancelScheduleRemovalRequest = () => ({
+    type: CANCEL_SCHEDULE_REMOVAL_REQUEST,
+})
+
+export const COMPLETE_SCHEDULE_REMOVAL_REQUEST = 'COMPLETE_CHEDULE_REMOVAL_REQUEST';
+export const completeScheduleRemovalRequest = () => ({
+    type: COMPLETE_SCHEDULE_REMOVAL_REQUEST,
+})
+
 export const REQUEST_HEALTH_CHECK_SCHEDULE = 'REQUEST_HEALTH_CHECK_SCHEDULE';
 export const requestHealthCheckSchedule = (healthCheck) => ({
     type: REQUEST_HEALTH_CHECK_SCHEDULE,
