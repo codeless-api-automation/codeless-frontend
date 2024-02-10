@@ -244,7 +244,7 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, saveSch
                         <Grid item xs={12}>
                             <Controls.Input
                                 name="healthCheckName"
-                                label="Health check name"
+                                label="Canary test name"
                                 value={scheduleHelper.requestedHealthCheck.name}
                                 onChange={handleInputChange}
                                 InputProps={{

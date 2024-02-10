@@ -3,8 +3,15 @@ import { connect } from "react-redux";
 
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
+import Metadata from "components/Metadata/Metadata.js";
+import CheckCircleText from "components/Icons/CheckCircleText.js";
+import ErrorCircleText from "components/Icons/ErrorCircleText.js";
 
 import { withStyles } from '@material-ui/core/styles';
+
+import {
+  buildRegion
+} from "utils/Formatter"
 
 import {
   Tabs,
@@ -246,6 +253,26 @@ function Execution({ httpCallResult, executionResult }) {
 
   return (
     <GridContainer>
+      <GridItem xs={12} style={{ marginBottom: 22 }}>
+        <Metadata
+          headerText="Execution detail"
+          itemPerRow={4}
+          items={[
+            {
+              name: "Test Name",
+              value: executionResult.execution.name
+            },
+            {
+              name: "Geolocation",
+              value: buildRegion(executionResult.execution.region)
+            },
+            {
+              name: "Test Status",
+              customValue: executionResult.result.testStatus === 'SUCCESS' ? <CheckCircleText text={"Success"} /> : <ErrorCircleText text={"Fail"} />
+            }
+          ]} />
+      </GridItem>
+
       <GridItem xs={12}>
         <div>
           <AntTabs value={value} onChange={handleChange}>

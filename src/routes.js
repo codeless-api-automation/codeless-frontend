@@ -18,7 +18,7 @@ import ExecutionsContainer from "views/Executions/ExecutionsContainer.js";
 import Execution from "views/Executions/Execution.js";
 
 import SchedulesContainer from "views/Schedules/SchedulesContainer";
-import DetailedSchedule from "views/Schedules/DetailedSchedule";
+import ScheduleDetail from "views/Schedules/ScheduleDetail";
 import CanaryTest from "views/CanaryTests/CanaryTest";
 import CanaryTestsContainer from "views/CanaryTests/CanaryTestsContainer";
 
@@ -83,7 +83,7 @@ export const otherRoutes = [
   {
     path: "/schedules/schedule",
     name: "Schedule",
-    component: DetailedSchedule,
+    component: ScheduleDetail,
     layout: "/general",
     previousRoute: componentsPaths.VIEW_SCHEDULES
   }

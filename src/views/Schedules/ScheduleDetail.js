@@ -5,6 +5,10 @@ import { withStyles } from '@material-ui/core/styles';
 
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
+import OverflowTip from 'components/OverflowTip/OverflowTip';
+import Metadata from "components/Metadata/Metadata.js";
+import CheckCircleText from "components/Icons/CheckCircleText.js";
+import RemoveCircleText from "components/Icons/RemoveCircleText.js";
 
 import { TimeSeries, Index } from "pondjs";
 import {
@@ -18,92 +22,18 @@ import {
 } from "react-timeseries-charts";
 
 import {
-  Grid,
   Paper,
   Tabs,
   Tab,
   CircularProgress
 } from '@material-ui/core';
 
+import {
+  buildRegion,
+  buildRunFrequency
+} from "utils/Formatter"
+
 import moment from "moment";
-
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-
-
-const useStyles = makeStyles((theme) => ({
-  panel: {
-    padding: theme.spacing(2),
-    border: '1px solid #ddd',
-    borderRadius: '4px',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  header: {
-    marginBottom: theme.spacing(2),
-    borderBottom: '1px solid #ccc',
-    paddingBottom: theme.spacing(1),
-  },
-  valueContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    width: '100%', // stretch to fill all available space horizontally
-  },
-  value: {
-    flex: 1, // make each value take up equal horizontal space
-    marginRight: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    borderRight: '1px solid #ccc',
-  }
-}));
-
-function Metadata() {
-  const classes = useStyles();
-
-  return (
-    <Paper elevation={3} className={classes.panel}>
-      <div className={classes.header}>
-        <Typography style={{ fontWeight: 'medium' }}>
-          Schedule detail
-        </Typography>
-      </div>
-      <div className={classes.valueContainer}>
-        <Grid container direction="column" className={classes.value}>
-          <Grid item>
-            <Typography variant="body2" color="textSecondary">Schedule Name</Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="body2" color="textPrimary">every 5 minute to test</Typography>
-          </Grid>
-        </Grid>
-        <Grid container direction="column" className={classes.value}>
-          <Grid item>
-            <Typography variant="body2" color="textSecondary">Run Frequency</Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="body2" color="textPrimary">Every 5 Minutes</Typography>
-          </Grid>
-        </Grid>
-        <Grid container direction="column" className={classes.value}>
-          <Grid item>
-            <Typography variant="body2" color="textSecondary">Geolocation</Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="body2" color="textPrimary">N. Virginia, US</Typography>
-          </Grid>
-        </Grid>
-        <Grid container direction="column" className={classes.value}>
-          <Grid item>
-            <Typography variant="body2" color="textSecondary">State</Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="body2" color="textPrimary">Enabled</Typography>
-          </Grid>
-        </Grid>
-      </div>
-    </Paper>
-  );
-}
 
 const AntTabs = withStyles((theme) => ({
   root: {
@@ -130,7 +60,7 @@ const AntTab = withStyles((theme) => ({
   selected: {},
 }))((props) => <Tab disableRipple {...props} />);
 
-function DetailedSchedule({ httpCallResult, metrics }) {
+function ScheduleDetail({ httpCallResult, metrics, location }) {
 
   const [highlight, setHighlight] = React.useState(null);
   const [value, setValue] = React.useState(0);
@@ -187,8 +117,36 @@ function DetailedSchedule({ httpCallResult, metrics }) {
 
   return (
     <GridContainer>
-      <GridItem xs={12}>
-        <Metadata />
+      <GridItem xs={12} style={{ marginBottom: 22 }}>
+        <Metadata
+          headerText="Schedule detail"
+          itemPerRow={3}
+          items={[
+            {
+              name: "Schedule Name",
+              value: location.state.scheduleName
+            },
+            {
+              name: "Status",
+              customValue: location.state.state === 'ENABLED' ? <CheckCircleText text={"Enabled"} /> : <RemoveCircleText text={"Disabled"} />
+            },
+            {
+              name: "Run Frequency",
+              value: buildRunFrequency(location.state.timer)
+            },
+            {
+              name: "Geolocation",
+              value: buildRegion(location.state.region)
+            },
+            {
+              name: "Notification emails",
+              value: location.state.emails ? <OverflowTip originalValue={location.state.emails} /> : "-"
+            },
+            {
+              name: "",
+              value: ""
+            }
+          ]} />
       </GridItem>
 
       <GridItem xs={12}>
@@ -247,4 +205,4 @@ const mapStateToProps = state => ({
   httpCallResult: state.httpCallResult,
   metrics: state.metrics
 });
-export default connect(mapStateToProps, {})(DetailedSchedule);
+export default connect(mapStateToProps, {})(ScheduleDetail);
