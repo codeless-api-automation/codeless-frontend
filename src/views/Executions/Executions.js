@@ -11,6 +11,10 @@ import {
 } from "utils/Formatter"
 
 import {
+    executionResource
+} from "../../service/CodelessApi.js"
+
+import {
     Grid,
     TableRow,
     TableCell,
@@ -79,7 +83,7 @@ function BodyRow(props) {
 }
 
 
-function Executions({ executionHelper, getExecutionResult }) {
+function Executions({ getExecutionResult }) {
 
     const history = useHistory();
 
@@ -94,7 +98,7 @@ function Executions({ executionHelper, getExecutionResult }) {
                 <div>
                     <TablePanel />
                     <CustomTable
-                        rows={executionHelper.executions}
+                        fetchDataCallback={executionResource.getExecutions}
                         colSpan={5}
                         headerRow={<HeaderRow />}
                         bodyRow={<BodyRow

@@ -19,6 +19,10 @@ import {
 } from "../../store/schedule-action.js"
 
 import {
+  testResource
+} from "../../service/CodelessApi.js"
+
+import {
   Grid,
   IconButton,
   TableRow,
@@ -114,13 +118,17 @@ function CanaryTests({ httpCallResult, healthChecksPage, requestHealthCheckExecu
     history.push(componentsPaths.VIEW_CANARY_TEST);
   }
 
+  const handleTableRefresh = () => {
+  };
+
   return (
     <GridContainer>
       <GridItem xs={12}>
         <div>
           <TablePanel />
           <CustomTable
-            rows={healthChecksPage.healthChecks}
+            fetchDataCallback={testResource.getTests}
+            onRefresh={handleTableRefresh}
             colSpan={4}
             headerRow={<HeaderRow />}
             bodyRow={<BodyRow
@@ -182,7 +190,7 @@ function CanaryTests({ httpCallResult, healthChecksPage, requestHealthCheckExecu
         closeButtomContent="Cancel"
         acceptButtomContent="Confirm"
         handleClose={() => cancelHealthCheckRemovalRequest()}
-        handleAccept={() => removeCanaryTest(healthChecksPage.requestedHealthCheck)}
+        handleAccept={() => removeCanaryTest(healthChecksPage.requestedHealthCheck, () => handleTableRefresh())}
       />
     </GridContainer>
   );

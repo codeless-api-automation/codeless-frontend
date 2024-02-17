@@ -28,12 +28,6 @@ export const completeExecutionRequest = () => ({
     type: COMPLETE_EXECUTION_REQUEST
 })
 
-export const SET_EXECUTIONS = 'SET_EXECUTIONS';
-export const setExecutions = (executions) => ({
-    type: SET_EXECUTIONS,
-    payload: { executions }
-})
-
 export const SET_EXECUTION_RESULT = 'SET_EXECUTION_RESULT';
 export const setExecutionResult = (executionResult) => ({
     type: SET_EXECUTION_RESULT,
@@ -53,20 +47,6 @@ export const getRegions = () => {
                 dispath(setRegions(response.data));
             })
             .catch(error => handleCatchGlobally(dispath, error, error => { }));
-    }
-}
-
-export const getExecutions = (page = 0, maxResults = 20) => {
-    return (dispath) => {
-        dispath(isCallRequested(true));
-        executionResource.getExecutions(page, maxResults)
-            .then(response => {
-                dispath(setExecutions(response.data.items));
-                dispath(isCallRequested(false));
-            })
-            .catch(error => handleCatchGlobally(dispath, error, error => {
-                dispath(isCallRequested(false));
-            }));
     }
 }
 
@@ -90,10 +70,10 @@ export const runExecution = (execution) => {
                 dispath(canceleExecutionRequest());
                 if (error?.response?.data?.status === 500
                     && error?.response?.data?.message?.includes('The operation cannot be performed at this time.')) {
-                        dispath(setNotificationMessage({
-                            message: ERROR_MESSAGE_COMPUTE_IS_NOT_READY,
-                            severity: common.NOTIFICATION_SEVERITY_ERROR
-                        }));
+                    dispath(setNotificationMessage({
+                        message: ERROR_MESSAGE_COMPUTE_IS_NOT_READY,
+                        severity: common.NOTIFICATION_SEVERITY_ERROR
+                    }));
                 } else {
                     dispath(setNotificationMessage({
                         message: ERROR_MESSAGE,

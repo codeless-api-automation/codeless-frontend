@@ -27,37 +27,11 @@ export const completeScheduleRemovalRequest = () => ({
     type: COMPLETE_SCHEDULE_REMOVAL_REQUEST,
 })
 
-export const CLEAN_CHOSEN_SCHEDULES = 'CLEAN_CHOSEN_SCHEDULES';
-export const cleanChosenSchedules = (schedules) => ({
-    type: CLEAN_CHOSEN_SCHEDULES,
-    payload: { schedules }
-})
-
 export const REQUEST_HEALTH_CHECK_SCHEDULE = 'REQUEST_HEALTH_CHECK_SCHEDULE';
 export const requestHealthCheckSchedule = (healthCheck) => ({
     type: REQUEST_HEALTH_CHECK_SCHEDULE,
     payload: { healthCheck }
 })
-
-export const SET_SCHEDULES = 'SET_SCHEDULES';
-export const setSchedules = (schedules) => ({
-    type: SET_SCHEDULES,
-    payload: { schedules }
-})
-
-export const getSchedules = (page = 0, size = 20) => {
-    return (dispath) => {
-        dispath(isCallRequested(true));
-        scheduleResource.getSchedules(page, size)
-            .then(response => {
-                dispath(setSchedules(response.data.items));
-                dispath(isCallRequested(false));
-            })
-            .catch(error => handleCatchGlobally(dispath, error, error => {
-                dispath(isCallRequested(false));
-            }));
-    }
-}
 
 const CREATE_SUCCESS_MESSAGE = "The health check has been scheduled successfully.";
 const CREATE_ERROR_MESSAGE = "The health check has not been scheduled.";
@@ -85,7 +59,7 @@ export const createSchedule = (schedule, redirect) => {
 
 const ERROR_MESSAGE = "The error occured."
 const SUCCESS_MESSAGE = "The schedule has been removed successfully."
-export const removeSchedule = (schedule) => {
+export const removeSchedule = (schedule, completeSuccessfully) => {
     return (dispath) => {
         dispath(isCallRequested(true))
         scheduleResource.deleteSchedule(schedule)
@@ -95,7 +69,7 @@ export const removeSchedule = (schedule) => {
                     message: SUCCESS_MESSAGE,
                     severity: common.NOTIFICATION_SEVERITY_SUCCESS
                 }));
-                dispath(cleanChosenSchedules([schedule]))
+                completeSuccessfully()
                 dispath(completeScheduleRemovalRequest())
             })
             .catch(error => handleCatchGlobally(dispath, error, error => {

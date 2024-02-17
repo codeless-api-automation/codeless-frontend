@@ -14,6 +14,10 @@ import {
 } from "utils/Formatter"
 
 import {
+    scheduleResource
+} from "../../service/CodelessApi.js"
+
+import {
     Grid,
     TableRow,
     TableCell,
@@ -106,13 +110,17 @@ export function Schedules({
         history.push(componentsPaths.VIEW_SCHEDULE, schedule);
     }
 
+    const handleTableRefresh = () => {
+    };
+
     return (
         <GridContainer>
             <GridItem xs={12}>
                 <div>
                     <TablePanel />
                     <CustomTable
-                        rows={scheduleHelper.schedules}
+                        onRefresh={handleTableRefresh}
+                        fetchDataCallback={scheduleResource.getSchedules}
                         colSpan={5}
                         headerRow={<HeaderRow />}
                         bodyRow={<BodyRow

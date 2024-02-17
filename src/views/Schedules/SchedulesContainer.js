@@ -1,22 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from "react-redux";
-
-import {
-    getSchedules
-} from "../../store/schedule-action"
 
 import Schedules from './Schedules';
 
-function SchedulesContainer({ getSchedules }) {
-
-    useEffect(() => {
-        getSchedules();
-    }, [getSchedules])
-
+function SchedulesContainer() {
     return <Schedules />;
 
 }
 
 const mapStateToProps = state => ({
 });
-export default connect(mapStateToProps, { getSchedules })(SchedulesContainer);
+export default connect(mapStateToProps)(SchedulesContainer);

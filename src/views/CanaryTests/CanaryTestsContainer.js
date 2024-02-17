@@ -2,22 +2,17 @@ import React, { useEffect } from 'react';
 import { connect } from "react-redux";
 
 import {
-    getHealthChecks
-} from "../../store/health-checks-action.js"
-
-import {
     getRegions
 } from "../../store/execution-action.js"
 
 import CanaryTests from './CanaryTests.js';
 
 
-function HealthChecksContainer({ getHealthChecks, getRegions }) {
+function HealthChecksContainer({ getRegions }) {
 
     useEffect(() => {
         getRegions();
-        getHealthChecks();
-    }, [getRegions, getHealthChecks])
+    }, [getRegions])
 
     return <CanaryTests />;
 
@@ -25,4 +20,4 @@ function HealthChecksContainer({ getHealthChecks, getRegions }) {
 
 const mapStateToProps = state => ({
 });
-export default connect(mapStateToProps, { getHealthChecks, getRegions })(HealthChecksContainer);
+export default connect(mapStateToProps, { getRegions })(HealthChecksContainer);

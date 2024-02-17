@@ -32,21 +32,9 @@ export const cleanHealthChecks = () => ({
     type: CLEAN_HEALTH_CHECKS
 })
 
-export const SET_HEALTH_CHECKS = 'SET_HEALTH_CHECKS';
-export const setHealthChecks = healthChecks => ({
-    type: SET_HEALTH_CHECKS,
-    payload: { healthChecks }
-})
-
-export const CLEAN_CHOSEN_HEALTH_CHECKS = 'CLEAN_CHOSEN_HEALTH_CHECKS';
-export const cleanChosenHealthChecks = (healthChecks) => ({
-    type: CLEAN_CHOSEN_HEALTH_CHECKS,
-    payload: { healthChecks }
-})
-
 const ERROR_MESSAGE = "The error occured."
 const SUCCESS_MESSAGE = "The canary test has been removed successfully."
-export const removeCanaryTest = (canaryTest) => {
+export const removeCanaryTest = (canaryTest, completeSuccessfully) => {
     return (dispath) => {
         dispath(isCallRequested(true))
         testResource.deleteTest(canaryTest)
@@ -56,7 +44,7 @@ export const removeCanaryTest = (canaryTest) => {
                     message: SUCCESS_MESSAGE,
                     severity: common.NOTIFICATION_SEVERITY_SUCCESS
                 }));
-                dispath(cleanChosenHealthChecks([canaryTest]))
+                completeSuccessfully()
                 dispath(completeHealthCheckRemovalRequest())
             })
             .catch(error => handleCatchGlobally(dispath, error, error => {
@@ -66,25 +54,6 @@ export const removeCanaryTest = (canaryTest) => {
                     severity: common.NOTIFICATION_SEVERITY_ERROR
                 }));
                 dispath(completeHealthCheckRemovalRequest())
-            }));
-    }
-}
-
-export const getHealthChecks = (page = 0, maxResults = 20) => {
-    return (dispath) => {
-        dispath(isCallRequested(true))
-        testResource.getTests(page, maxResults)
-            .then(response => {
-                dispath(isCallRequested(false))
-                dispath(cleanHealthChecks())
-                dispath(setHealthChecks(response.data.items))
-            })
-            .catch(error => handleCatchGlobally(dispath, error, error => {
-                dispath(isCallRequested(false))
-                dispath(setNotificationMessage({
-                    message: ERROR_MESSAGE,
-                    severity: common.NOTIFICATION_SEVERITY_ERROR
-                }));
             }));
     }
 }
