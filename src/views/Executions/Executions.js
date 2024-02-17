@@ -37,10 +37,12 @@ function HeaderRow() {
     return (
         <TableRow>
             <TableCell style={{ width: '20%' }}>Canary Test Name</TableCell>
-            <TableCell style={{ width: '20%' }}>Geolocation</TableCell>
-            <TableCell style={{ width: '20%' }}>Submitted Time</TableCell>
+            <TableCell style={{ width: '25%' }}>Geolocation</TableCell>
+            <TableCell style={{ width: '20%' }}>Start Time</TableCell>
             <TableCell style={{ width: '10%' }}>Execution Status</TableCell>
-            <TableCell style={{ width: '10%' }} align="right"></TableCell>
+            <TableCell style={{ width: '5%', textAlign: 'left' }} align="right">
+                <div>Actions</div>
+            </TableCell>
         </TableRow>
     );
 }
@@ -63,7 +65,7 @@ function BodyRow(props) {
                 {row.executionStatus}
             </TableCell>
             <TableCell align="right" padding="none">
-                <Grid container direction="row-reverse">
+                <Grid container>
                     <IconButton
                         disabled={disabledActionButton}
                         onClick={() => onRowShowDetails(row)}

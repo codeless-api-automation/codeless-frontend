@@ -3,6 +3,12 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import {
+    requestScheduleRemoval,
+    cancelScheduleRemovalRequest,
+    removeSchedule
+} from "../../store/schedule-action.js"
+
+import {
     buildRegion,
     buildRunFrequency
 } from "utils/Formatter"
@@ -19,6 +25,7 @@ import {
     Info
 } from '@material-ui/icons';
 
+import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog.js';
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import CheckCircleText from "components/Icons/CheckCircleText.js";
@@ -43,7 +50,9 @@ function HeaderRow() {
             <TableCell style={{ width: '20%' }}>Status</TableCell>
             <TableCell style={{ width: '20%' }}>Run Frequency</TableCell>
             <TableCell style={{ width: '20%' }}>Geolocation</TableCell>
-            <TableCell style={{ width: '10%' }} align="right"></TableCell>
+            <TableCell style={{ width: '10%', textAlign: 'left' }} align="right">
+                <div>Actions</div>
+            </TableCell>
         </TableRow>
     );
 }
@@ -64,17 +73,17 @@ function BodyRow(props) {
             <TableCell>
                 {buildRegion(row.region)}
             </TableCell>
-            <TableCell align="right" padding="none">
-                <Grid container direction="row-reverse">
-                    <IconButton
-                        onClick={() => onRowDelete(row)}
-                        color="primary">
-                        <Delete fontSize="small" />
-                    </IconButton>
+            <TableCell padding="none">
+                <Grid container>
                     <IconButton
                         onClick={() => onRowShowDetails(row)}
                         color="primary">
                         <Info fontSize="small" />
+                    </IconButton>
+                    <IconButton
+                        onClick={() => onRowDelete(row)}
+                        color="primary">
+                        <Delete fontSize="small" />
                     </IconButton>
                 </Grid>
             </TableCell>
@@ -82,7 +91,13 @@ function BodyRow(props) {
     );
 }
 
-export function Schedules({ scheduleHelper, getPerfomanceMetrics }) {
+export function Schedules({
+    httpCallResult,
+    scheduleHelper,
+    getPerfomanceMetrics,
+    requestScheduleRemoval,
+    cancelScheduleRemovalRequest,
+    removeSchedule }) {
 
     const history = useHistory();
 
@@ -102,15 +117,32 @@ export function Schedules({ scheduleHelper, getPerfomanceMetrics }) {
                         headerRow={<HeaderRow />}
                         bodyRow={<BodyRow
                             onRowShowDetails={(row) => requestScheduleViewing(row)}
-                            onRowDelete={(row) => console.log("onRowDelete: " + row)}
+                            onRowDelete={(row) => requestScheduleRemoval(row)}
                         />} />
                 </div>
             </GridItem>
+
+            <ConfirmationDialog
+                open={scheduleHelper.isScheduleRemovalRequsted}
+                acceptButtonDisabled={httpCallResult.isCallRequested}
+                title="Delete Schedule"
+                content={<>This action will delete this schedule <strong>{scheduleHelper.requestedSchedule?.scheduleName}</strong>. Are you sure?</>}
+                closeButtomContent="Cancel"
+                acceptButtomContent="Confirm"
+                handleClose={() => cancelScheduleRemovalRequest()}
+                handleAccept={() => removeSchedule(scheduleHelper.requestedSchedule)}
+            />
         </GridContainer>
     );
 }
 
 const mapStateToProps = state => ({
     scheduleHelper: state.scheduleHelper,
+    httpCallResult: state.httpCallResult,
 });
-export default connect(mapStateToProps, { getPerfomanceMetrics })(Schedules);
+export default connect(mapStateToProps, {
+    getPerfomanceMetrics,
+    requestScheduleRemoval,
+    cancelScheduleRemovalRequest,
+    removeSchedule: removeSchedule
+})(Schedules);

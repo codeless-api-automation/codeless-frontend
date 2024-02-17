@@ -11,7 +11,6 @@ import {
 
 import * as common from "constants/Common";
 
-
 export const REQUEST_SCHEDULE_REMOVAL = 'REQUEST_SCHEDULE_REMOVAL';
 export const requestScheduleRemoval = (schedule) => ({
     type: REQUEST_SCHEDULE_REMOVAL,
@@ -23,9 +22,15 @@ export const cancelScheduleRemovalRequest = () => ({
     type: CANCEL_SCHEDULE_REMOVAL_REQUEST,
 })
 
-export const COMPLETE_SCHEDULE_REMOVAL_REQUEST = 'COMPLETE_CHEDULE_REMOVAL_REQUEST';
+export const COMPLETE_SCHEDULE_REMOVAL_REQUEST = 'COMPLETE_SCHEDULE_REMOVAL_REQUEST';
 export const completeScheduleRemovalRequest = () => ({
     type: COMPLETE_SCHEDULE_REMOVAL_REQUEST,
+})
+
+export const CLEAN_CHOSEN_SCHEDULES = 'CLEAN_CHOSEN_SCHEDULES';
+export const cleanChosenSchedules = (schedules) => ({
+    type: CLEAN_CHOSEN_SCHEDULES,
+    payload: { schedules }
 })
 
 export const REQUEST_HEALTH_CHECK_SCHEDULE = 'REQUEST_HEALTH_CHECK_SCHEDULE';
@@ -74,6 +79,32 @@ export const createSchedule = (schedule, redirect) => {
                     message: CREATE_ERROR_MESSAGE,
                     severity: common.NOTIFICATION_SEVERITY_ERROR
                 }));
+            }));
+    }
+}
+
+const ERROR_MESSAGE = "The error occured."
+const SUCCESS_MESSAGE = "The schedule has been removed successfully."
+export const removeSchedule = (schedule) => {
+    return (dispath) => {
+        dispath(isCallRequested(true))
+        scheduleResource.deleteSchedule(schedule)
+            .then(response => {
+                dispath(isCallRequested(false))
+                dispath(setNotificationMessage({
+                    message: SUCCESS_MESSAGE,
+                    severity: common.NOTIFICATION_SEVERITY_SUCCESS
+                }));
+                dispath(cleanChosenSchedules([schedule]))
+                dispath(completeScheduleRemovalRequest())
+            })
+            .catch(error => handleCatchGlobally(dispath, error, error => {
+                dispath(isCallRequested(false))
+                dispath(setNotificationMessage({
+                    message: ERROR_MESSAGE,
+                    severity: common.NOTIFICATION_SEVERITY_ERROR
+                }));
+                dispath(completeScheduleRemovalRequest())
             }));
     }
 }

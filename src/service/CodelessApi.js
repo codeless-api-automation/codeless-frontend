@@ -88,6 +88,10 @@ export const scheduleResource = {
     },
     getSchedules(page, maxResults) {
         return instance.get(SCHEDULE_RESOURCE + `?page=${page}&maxResults=${maxResults}`);
+    },
+    deleteSchedule(schedule) {
+        console.log(schedule)
+        return instance.delete(SCHEDULE_RESOURCE + '/' + schedule.id);
     }
 }
 

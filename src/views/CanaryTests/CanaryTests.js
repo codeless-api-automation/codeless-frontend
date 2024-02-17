@@ -47,8 +47,10 @@ import RunCanaryTestDialog from './RunCanaryTestDialog';
 function HeaderRow() {
   return (
     <TableRow>
-      <TableCell style={{ width: '80%' }}>Name</TableCell>
-      <TableCell style={{ width: '20%' }} align="right"></TableCell>
+      <TableCell style={{ width: '84%' }}>Name</TableCell>
+      <TableCell style={{ width: '16%', textAlign: 'left' }} align="right">
+        <div>Actions</div>
+      </TableCell>
     </TableRow>
   );
 }
@@ -60,17 +62,12 @@ function BodyRow(props) {
       <TableCell>
         <OverflowTip originalValue={row.name} />
       </TableCell>
-      <TableCell align="right" padding="none">
-        <Grid container direction="row-reverse">
+      <TableCell padding="none">
+        <Grid container>
           <IconButton
-            onClick={() => onRowDelete(row)}
+            onClick={() => onRowExecute(row)}
             color="primary">
-            <Delete fontSize="small" />
-          </IconButton>
-          <IconButton
-            onClick={() => onRowEdit(row)}
-            color="primary">
-            <Edit fontSize="small" />
+            <PlayArrow fontSize="small" />
           </IconButton>
           <IconButton
             onClick={() => onRowSchedule(row)}
@@ -78,9 +75,14 @@ function BodyRow(props) {
             <ScheduleOutlined fontSize="small" />
           </IconButton>
           <IconButton
-            onClick={() => onRowExecute(row)}
+            onClick={() => onRowEdit(row)}
             color="primary">
-            <PlayArrow fontSize="small" />
+            <Edit fontSize="small" />
+          </IconButton>
+          <IconButton
+            onClick={() => onRowDelete(row)}
+            color="primary">
+            <Delete fontSize="small" />
           </IconButton>
         </Grid>
       </TableCell>
