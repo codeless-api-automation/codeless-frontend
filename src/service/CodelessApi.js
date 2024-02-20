@@ -26,8 +26,8 @@ instance.interceptors.request.use(
 const TEST_RESOURCE = "tests";
 export const testResource = {
     getTests(nextToken, maxResults) {
-        const maxResultQuery = `?maxResults=${maxResults}`;
-        const finalQuery = nextToken ? maxResultQuery + `&nextToken=${nextToken}` : maxResultQuery;
+        const maxResultQuery = `?max_results=${maxResults}`;
+        const finalQuery = nextToken ? maxResultQuery + `&next_token=${nextToken}` : maxResultQuery;
         return instance.get(TEST_RESOURCE + finalQuery);
     },
     createTest(testToCreate) {
@@ -68,8 +68,8 @@ export const executionResource = {
         return instance.post(EXECUTION_RESOURCE, requestBodyExecution);
     },
     getExecutions(nextToken, maxResults) {
-        const maxResultQuery = `?maxResults=${maxResults}`;
-        const finalQuery = nextToken ? maxResultQuery + `&nextToken=${nextToken}` : maxResultQuery;
+        const maxResultQuery = `?max_results=${maxResults}`;
+        const finalQuery = nextToken ? maxResultQuery + `&next_token=${nextToken}` : maxResultQuery;
         return instance.get(EXECUTION_RESOURCE + finalQuery);
     },
     getExecutionResult(executionId) {
@@ -91,8 +91,8 @@ export const scheduleResource = {
         return instance.post(SCHEDULE_RESOURCE, requestBody);
     },
     getSchedules(nextToken, maxResults) {
-        const maxResultQuery = `?maxResults=${maxResults}`;
-        const finalQuery = nextToken ? maxResultQuery + `&nextToken=${nextToken}` : maxResultQuery;
+        const maxResultQuery = `?max_results=${maxResults}`;
+        const finalQuery = nextToken ? maxResultQuery + `&next_token=${nextToken}` : maxResultQuery;
         return instance.get(SCHEDULE_RESOURCE + finalQuery);
     },
     deleteSchedule(schedule) {
