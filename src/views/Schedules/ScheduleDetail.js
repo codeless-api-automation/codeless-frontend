@@ -1,7 +1,10 @@
 import React from 'react';
+import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { withStyles } from '@material-ui/core/styles';
+
+import * as componentsPaths from "constants/ComponentsPaths.js";
 
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -22,6 +25,10 @@ import {
 } from "react-timeseries-charts";
 
 import {
+  Grid,
+  TableRow,
+  TableCell,
+  IconButton,
   Paper,
   Tabs,
   Tab,
@@ -29,9 +36,23 @@ import {
 } from '@material-ui/core';
 
 import {
+  Info
+} from '@material-ui/icons';
+
+import {
   buildRegion,
   buildRunFrequency
 } from "utils/Formatter"
+
+import {
+  executionResource
+} from "../../service/CodelessApi.js"
+
+import {
+  getExecutionResult
+} from "../../store/execution-action.js"
+
+import CustomTable from 'components/Table/CustomTable.js';
 
 import moment from "moment";
 
@@ -60,7 +81,55 @@ const AntTab = withStyles((theme) => ({
   selected: {},
 }))((props) => <Tab disableRipple {...props} />);
 
-function ScheduleDetail({ httpCallResult, metrics, location }) {
+
+function HeaderRow() {
+  return (
+    <TableRow>
+      <TableCell style={{ width: '20%' }}>Canary Test Name</TableCell>
+      <TableCell style={{ width: '25%' }}>Geolocation</TableCell>
+      <TableCell style={{ width: '20%' }}>Start Time</TableCell>
+      <TableCell style={{ width: '10%' }}>Execution Status</TableCell>
+      <TableCell style={{ width: '5%', textAlign: 'left' }} align="right">
+        <div>Actions</div>
+      </TableCell>
+    </TableRow>
+  );
+}
+
+function BodyRow(props) {
+  let { key, row, onRowShowDetails } = props;
+  let disabledActionButton = row.executionStatus === 'PENDING' || row.executionStatus === 'STARTED'
+  return (
+    <TableRow key={key}>
+      <TableCell>
+        <OverflowTip originalValue={row.name} />
+      </TableCell>
+      <TableCell>
+        {buildRegion(row.region)}
+      </TableCell>
+      <TableCell>
+        {moment(row.submitted * 1000).format()}
+      </TableCell>
+      <TableCell>
+        {row.executionStatus}
+      </TableCell>
+      <TableCell align="right" padding="none">
+        <Grid container>
+          <IconButton
+            disabled={disabledActionButton}
+            onClick={() => onRowShowDetails(row)}
+            color="primary">
+            <Info fontSize="small" />
+          </IconButton>
+        </Grid>
+      </TableCell>
+    </TableRow>
+  );
+}
+
+function ScheduleDetail({ httpCallResult, metrics, location, getExecutionResult }) {
+
+  const history = useHistory();
 
   const [highlight, setHighlight] = React.useState(null);
   const [value, setValue] = React.useState(0);
@@ -113,6 +182,11 @@ function ScheduleDetail({ httpCallResult, metrics, location }) {
   if (highlight) {
     const responseTime = highlight.event.get(highlight.column);
     infoValues = [{ label: "time", value: `${responseTime} ms` }];
+  }
+
+  const requestExecutionViewing = (execution) => {
+    getExecutionResult(execution.id);
+    history.push(componentsPaths.VIEW_EXECUTION);
   }
 
   return (
@@ -197,6 +271,21 @@ function ScheduleDetail({ httpCallResult, metrics, location }) {
           </Paper>
         </GridItem>
       }
+      {value === 1 &&
+        <GridItem xs={12}>
+          <div>
+            <CustomTable
+              fetchDataCallback={(nextToken, rowsPerPage) => {
+                return executionResource.getExecutionsByScheduleId(location.state.id, nextToken, rowsPerPage)
+              }}
+              colSpan={5}
+              headerRow={<HeaderRow />}
+              bodyRow={<BodyRow
+                onRowShowDetails={(row) => requestExecutionViewing(row)}
+              />} />
+          </div>
+        </GridItem>
+      }
 
     </GridContainer>
   );
@@ -205,4 +294,4 @@ const mapStateToProps = state => ({
   httpCallResult: state.httpCallResult,
   metrics: state.metrics
 });
-export default connect(mapStateToProps, {})(ScheduleDetail);
+export default connect(mapStateToProps, { getExecutionResult })(ScheduleDetail);

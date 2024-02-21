@@ -26,9 +26,9 @@ instance.interceptors.request.use(
 const TEST_RESOURCE = "tests";
 export const testResource = {
     getTests(nextToken, maxResults) {
-        const maxResultQuery = `?max_results=${maxResults}`;
-        const finalQuery = nextToken ? maxResultQuery + `&next_token=${nextToken}` : maxResultQuery;
-        return instance.get(TEST_RESOURCE + finalQuery);
+        return instance.get(TEST_RESOURCE, {
+            params: commonUrlParam(nextToken, maxResults)
+        });
     },
     createTest(testToCreate) {
         let requestBodyTest = {
@@ -68,9 +68,16 @@ export const executionResource = {
         return instance.post(EXECUTION_RESOURCE, requestBodyExecution);
     },
     getExecutions(nextToken, maxResults) {
-        const maxResultQuery = `?max_results=${maxResults}`;
-        const finalQuery = nextToken ? maxResultQuery + `&next_token=${nextToken}` : maxResultQuery;
-        return instance.get(EXECUTION_RESOURCE + finalQuery);
+        return instance.get(EXECUTION_RESOURCE, {
+            params: commonUrlParam(nextToken, maxResults)
+        });
+    },
+    getExecutionsByScheduleId(scheduleId, nextToken, maxResults) {
+        const urlParam = commonUrlParam(nextToken, maxResults)
+        urlParam['schedule_id'] = scheduleId
+        return instance.get(EXECUTION_RESOURCE, {
+            params: urlParam
+        });
     },
     getExecutionResult(executionId) {
         return instance.get(EXECUTION_RESOURCE + `/${executionId}` + EXECUTION_RESULT_RESOURCE);
@@ -91,9 +98,9 @@ export const scheduleResource = {
         return instance.post(SCHEDULE_RESOURCE, requestBody);
     },
     getSchedules(nextToken, maxResults) {
-        const maxResultQuery = `?max_results=${maxResults}`;
-        const finalQuery = nextToken ? maxResultQuery + `&next_token=${nextToken}` : maxResultQuery;
-        return instance.get(SCHEDULE_RESOURCE + finalQuery);
+        return instance.get(SCHEDULE_RESOURCE, {
+            params: commonUrlParam(nextToken, maxResults)
+        });
     },
     deleteSchedule(schedule) {
         console.log(schedule)
@@ -117,6 +124,17 @@ function startDateDefault() {
 
 function endDateDefault() {
     return new Date().toISOString();
+}
+
+function commonUrlParam(nextToken, maxResults) {
+    const queryParams = {};
+    if (nextToken !== null && nextToken !== undefined) {
+        queryParams["next_token"] = nextToken;
+    }
+    if (maxResults !== null && maxResults !== undefined) {
+        queryParams["max_results"] = maxResults;
+    }
+    return queryParams;
 }
 
 const REGIONS_RESOURCE = "regions";
