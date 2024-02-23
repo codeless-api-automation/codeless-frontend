@@ -141,9 +141,6 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, saveSch
 
     }
 
-    const isEmailValid = (email) =>
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
     const handleEmailInputChange = (event, email, index) => {
         const { value } = event.target
 
@@ -188,9 +185,7 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, saveSch
         time: time[0],
         isReceiveEmailNotifications: false,
         currentEmail: '',
-        emails: [],
-        isNotFollowingRedirect: true,
-        isSslValidationDisabled: true
+        emails: []
     }
 
     const {
@@ -224,7 +219,6 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, saveSch
     return (
         <Form onSubmit={handleSubmit}>
             <Grid container spacing={1}>
-
                 <FormRow
                     row={
                         <Grid item xs={12}>
@@ -234,6 +228,7 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, saveSch
                                 value={values.scheduleName}
                                 onChange={handleInputChange}
                                 error={errors.scheduleName}
+                                helperText={"4 - 128 characters. Only letters, numbers, periods, underscores and dashes are allowed."}
                             />
                         </Grid>
                     }
@@ -377,33 +372,6 @@ function ScheduleForm({ scheduleHelper, executionHelper, httpCallResult, saveSch
                         </Grid>}>
                     </FormRow>
                 }
-
-
-                <FormRow
-                    row={
-                        <Grid item xs={3}>
-                            <Controls.Checkbox
-                                name="isNotFollowingRedirect"
-                                label="Don't follow redirect"
-                                value={values.isNotFollowingRedirect}
-                                onChange={handleInputChange}
-                            />
-                        </Grid>
-                    }
-                />
-
-                <FormRow
-                    row={
-                        <Grid item xs={3}>
-                            <Controls.Checkbox
-                                name="isSslValidationDisabled"
-                                label="Disable SSL validation"
-                                value={values.isSslValidationDisabled}
-                                onChange={handleInputChange}
-                            />
-                        </Grid>
-                    }
-                />
 
                 <Grid
                     container

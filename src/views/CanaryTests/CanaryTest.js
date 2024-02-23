@@ -285,20 +285,30 @@ function Test({ saveTest, updateAllTestAttributes, httpCallResult, location }) {
         <Grid container>
           <Row container>
             <RowItem item xs>
-              <Paper elevation={3}>
-                <TextField
-                  label="Name"
-                  placeholder="mycanaryname"
-                  variant="outlined"
-                  fullWidth={true}
-                  inputProps={{
-                    defaultValue: test.name,
-                    onChange: event => setTest({
-                      ...test,
-                      name: event.target.value
-                    })
-                  }}
-                />
+              <Paper variant='outlined'>
+
+
+                <div style={{ padding: 15 }}>
+                  <Row container>
+                    <RowItem item xs>
+                      <TextField
+                        label="Name"
+                        placeholder="mycanaryname"
+                        variant="outlined"
+                        fullWidth={true}
+                        inputProps={{
+                          defaultValue: test.name,
+                          onChange: event => setTest({
+                            ...test,
+                            name: event.target.value
+                          })
+                        }}
+                        helperText={"4 - 128 characters. Only letters, numbers, periods, underscores and dashes are allowed."}
+                      />
+                    </RowItem>
+                  </Row>
+                </div>
+
               </Paper>
             </RowItem>
           </Row>
