@@ -29,6 +29,9 @@ import {
     Info
 } from '@material-ui/icons';
 
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+
 import ConfirmationDialog from 'components/ConfirmationDialog/ConfirmationDialog.js';
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -51,10 +54,10 @@ function HeaderRow() {
     return (
         <TableRow>
             <TableCell style={{ width: '30%' }}>Schedule Name</TableCell>
-            <TableCell style={{ width: '20%' }}>Status</TableCell>
-            <TableCell style={{ width: '20%' }}>Run Frequency</TableCell>
+            <TableCell style={{ width: '15%' }}>Status</TableCell>
+            <TableCell style={{ width: '25%' }}>Run Frequency</TableCell>
             <TableCell style={{ width: '20%' }}>Geolocation</TableCell>
-            <TableCell style={{ width: '10%', textAlign: 'left' }} align="right">
+            <TableCell style={{ width: '15%', textAlign: 'left' }} align="right">
                 <div>Actions</div>
             </TableCell>
         </TableRow>
@@ -62,7 +65,7 @@ function HeaderRow() {
 }
 
 function BodyRow(props) {
-    let { key, row, onRowDelete, onRowShowDetails } = props;
+    let { key, row, onRowDelete, onRowShowDetails, onRowStateUpdate } = props;
     return (
         <TableRow key={key}>
             <TableCell>
@@ -83,6 +86,11 @@ function BodyRow(props) {
                         onClick={() => onRowShowDetails(row)}
                         color="primary">
                         <Info fontSize="small" />
+                    </IconButton>
+                    <IconButton
+                        onClick={() => onRowStateUpdate(row)}
+                        color="primary">
+                        {row.state === 'ENABLED' ? <RemoveCircleOutlineIcon fontSize="small" /> : <CheckCircleOutlineIcon fontSize="small" />}
                     </IconButton>
                     <IconButton
                         onClick={() => onRowDelete(row)}
@@ -113,6 +121,10 @@ export function Schedules({
     const handleTableRefresh = () => {
     };
 
+    const isScheduleEnabled = (schedule) => {
+        return schedule?.state === "ENABLED"
+    }
+
     return (
         <GridContainer>
             <GridItem xs={12}>
@@ -126,6 +138,7 @@ export function Schedules({
                         bodyRow={<BodyRow
                             onRowShowDetails={(row) => requestScheduleViewing(row)}
                             onRowDelete={(row) => requestScheduleRemoval(row)}
+                            onRowStateUpdate={(row) => console.log("Update state: ")}
                         />} />
                 </div>
             </GridItem>
@@ -138,8 +151,19 @@ export function Schedules({
                 closeButtomContent="Cancel"
                 acceptButtomContent="Confirm"
                 handleClose={() => cancelScheduleRemovalRequest()}
-                handleAccept={() => removeSchedule(scheduleHelper.requestedSchedule)}
+                handleAccept={() => removeSchedule(scheduleHelper.requestedSchedule, () => handleTableRefresh())}
             />
+            <ConfirmationDialog
+                open={scheduleHelper.isScheduleStateUpdateRequsted}
+                acceptButtonDisabled={httpCallResult.isCallRequested}
+                title={isScheduleEnabled(scheduleHelper.requestedSchedule) ? "Disable Schedule" : "Enable Schedule"}
+                content={<>This action will {isScheduleEnabled(scheduleHelper.requestedSchedule) === "ENABLED" ? "disable" : "enable"} this schedule <strong>{scheduleHelper.requestedSchedule?.scheduleName}</strong>. Are you sure?</>}
+                closeButtomContent="Cancel"
+                acceptButtomContent={isScheduleEnabled(scheduleHelper.requestedSchedule) ? "Disable" : "Enable"}
+                handleClose={() => console.log("cancel")}
+                handleAccept={() => console.log("disableSchedule(scheduleHelper.requestedSchedule) enableSchedule(scheduleHelper.requestedSchedule)")}
+            />
+
         </GridContainer>
     );
 }

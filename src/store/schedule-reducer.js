@@ -6,7 +6,8 @@ import {
 } from './schedule-action'
 
 const initState = {
-    isScheduleRemovalRequsted: false
+    isScheduleRemovalRequsted: false,
+    isScheduleStateUpdateRequsted: false
 }
 
 export const scheduleReducer = (state = initState, action) => {
