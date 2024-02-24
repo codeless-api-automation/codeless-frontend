@@ -63,7 +63,7 @@ function BodyRow(props) {
                 {buildRegion(row.region)}
             </TableCell>
             <TableCell>
-                {moment(row.submitted * 1000).format()}
+                {moment(row.startDateTime * 1000).format()}
             </TableCell>
             <TableCell>
                 {row.executionStatus}
