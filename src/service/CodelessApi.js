@@ -72,13 +72,6 @@ export const executionResource = {
             params: commonUrlParam(nextToken, maxResults)
         });
     },
-    getExecutionsByScheduleId(scheduleId, nextToken, maxResults) {
-        const urlParam = commonUrlParam(nextToken, maxResults)
-        urlParam['schedule_id'] = scheduleId
-        return instance.get(EXECUTION_RESOURCE, {
-            params: urlParam
-        });
-    },
     getExecutionResult(executionId) {
         return instance.get(EXECUTION_RESOURCE + `/${executionId}` + EXECUTION_RESULT_RESOURCE);
     },
@@ -102,6 +95,12 @@ export const scheduleResource = {
             params: commonUrlParam(nextToken, maxResults)
         });
     },
+    getExecutionsByScheduleId(scheduleId, nextToken, maxResults) {
+        const urlParam = commonUrlParam(nextToken, maxResults)
+        return instance.get(SCHEDULE_RESOURCE + '/' + scheduleId, {
+            params: urlParam
+        });
+    },
     deleteSchedule(schedule) {
         console.log(schedule)
         return instance.delete(SCHEDULE_RESOURCE + '/' + schedule.id);
@@ -113,6 +112,14 @@ export const metricsResource = {
 
     getMetrics(scheduleId, startDate = startDateDefault(), endDate = endDateDefault()) {
         return instance.get(METRICS_RESOURCE + `?schedule_id=${scheduleId}&start_date=${startDate}&end_date=${endDate}`);
+    }
+}
+
+const PROFILE_RESOURCE = "profiles";
+export const profileResource = {
+
+    getProfile() {
+        return instance.get(PROFILE_RESOURCE);
     }
 }
 

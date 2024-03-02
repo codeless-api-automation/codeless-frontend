@@ -45,7 +45,7 @@ import {
 } from "utils/Formatter"
 
 import {
-  executionResource
+  scheduleResource
 } from "../../service/CodelessApi.js"
 
 import {
@@ -276,7 +276,7 @@ function ScheduleDetail({ httpCallResult, metrics, location, getExecutionResult 
           <div>
             <CustomTable
               fetchDataCallback={(nextToken, rowsPerPage) => {
-                return executionResource.getExecutionsByScheduleId(location.state.id, nextToken, rowsPerPage)
+                return scheduleResource.getExecutionsByScheduleId(location.state.id, nextToken, rowsPerPage)
               }}
               colSpan={5}
               headerRow={<HeaderRow />}

@@ -9,9 +9,9 @@ export default function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Monitor Bot
-        </Link>{' '}
+      <Link color="inherit" href="https://api-sentinel.com/">
+        API Sentinel Inc.
+      </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
