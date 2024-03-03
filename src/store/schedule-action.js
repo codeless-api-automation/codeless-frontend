@@ -99,6 +99,8 @@ export const removeSchedule = (schedule, completeSuccessfully) => {
     }
 }
 
+const UPDATE_ERROR_MESSAGE = "The error occured.";
+const UPDATE_SUCCESS_MESSAGE = "The schedule has been updated successfully.";
 export const updateSchedule = (schedule, completeSuccessfully) => {
     return (dispath) => {
         dispath(isCallRequested(true))
@@ -106,7 +108,7 @@ export const updateSchedule = (schedule, completeSuccessfully) => {
             .then(response => {
                 dispath(isCallRequested(false))
                 dispath(setNotificationMessage({
-                    message: SUCCESS_MESSAGE,
+                    message: UPDATE_SUCCESS_MESSAGE,
                     severity: common.NOTIFICATION_SEVERITY_SUCCESS
                 }));
                 completeSuccessfully()
@@ -115,7 +117,7 @@ export const updateSchedule = (schedule, completeSuccessfully) => {
             .catch(error => handleCatchGlobally(dispath, error, error => {
                 dispath(isCallRequested(false))
                 dispath(setNotificationMessage({
-                    message: ERROR_MESSAGE,
+                    message: UPDATE_ERROR_MESSAGE,
                     severity: common.NOTIFICATION_SEVERITY_ERROR
                 }));
                 dispath(completeScheduleStateUpdateRequest())
