@@ -5,7 +5,10 @@ import { useHistory } from "react-router-dom";
 import {
     requestScheduleRemoval,
     cancelScheduleRemovalRequest,
-    removeSchedule
+    requestScheduleStateUpdate,
+    cancelScheduleStateUpdateRequest,
+    removeSchedule,
+    updateSchedule
 } from "../../store/schedule-action.js"
 
 import {
@@ -109,7 +112,10 @@ export function Schedules({
     getPerfomanceMetrics,
     requestScheduleRemoval,
     cancelScheduleRemovalRequest,
-    removeSchedule }) {
+    requestScheduleStateUpdate,
+    cancelScheduleStateUpdateRequest,
+    removeSchedule,
+    updateSchedule }) {
 
     const history = useHistory();
 
@@ -138,7 +144,7 @@ export function Schedules({
                         bodyRow={<BodyRow
                             onRowShowDetails={(row) => requestScheduleViewing(row)}
                             onRowDelete={(row) => requestScheduleRemoval(row)}
-                            onRowStateUpdate={(row) => console.log("Update state: ")}
+                            onRowStateUpdate={(row) => requestScheduleStateUpdate(row)}
                         />} />
                 </div>
             </GridItem>
@@ -157,11 +163,17 @@ export function Schedules({
                 open={scheduleHelper.isScheduleStateUpdateRequsted}
                 acceptButtonDisabled={httpCallResult.isCallRequested}
                 title={isScheduleEnabled(scheduleHelper.requestedSchedule) ? "Disable Schedule" : "Enable Schedule"}
-                content={<>This action will {isScheduleEnabled(scheduleHelper.requestedSchedule) === "ENABLED" ? "disable" : "enable"} this schedule <strong>{scheduleHelper.requestedSchedule?.scheduleName}</strong>. Are you sure?</>}
+                content={<>This action will {isScheduleEnabled(scheduleHelper.requestedSchedule) ? "disable" : "enable"} this schedule <strong>{scheduleHelper.requestedSchedule?.scheduleName}</strong>. Are you sure?</>}
                 closeButtomContent="Cancel"
                 acceptButtomContent={isScheduleEnabled(scheduleHelper.requestedSchedule) ? "Disable" : "Enable"}
-                handleClose={() => console.log("cancel")}
-                handleAccept={() => console.log("disableSchedule(scheduleHelper.requestedSchedule) enableSchedule(scheduleHelper.requestedSchedule)")}
+                handleClose={() => cancelScheduleStateUpdateRequest()}
+                handleAccept={() => updateSchedule(
+                    {
+                        id: scheduleHelper.requestedSchedule.id,
+                        state: isScheduleEnabled(scheduleHelper.requestedSchedule) ? "DISABLED" : "ENABLED"
+                    },
+                    () => handleTableRefresh()
+                )}
             />
 
         </GridContainer>
@@ -176,5 +188,8 @@ export default connect(mapStateToProps, {
     getPerfomanceMetrics,
     requestScheduleRemoval,
     cancelScheduleRemovalRequest,
-    removeSchedule: removeSchedule
+    requestScheduleStateUpdate,
+    cancelScheduleStateUpdateRequest,
+    removeSchedule: removeSchedule,
+    updateSchedule: updateSchedule
 })(Schedules);

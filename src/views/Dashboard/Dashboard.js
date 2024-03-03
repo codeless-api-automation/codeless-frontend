@@ -58,7 +58,7 @@ export default function Dashboard() {
               </CardIcon>
               <p className={classes.cardCategory}>Used Tests</p>
               <h3 className={classes.cardTitle}>
-                {data?.usedTestsCount}/{data?.allowedTestsCount}
+                {data ? data.usedTestsCount : '-'}/{data ? data.allowedTestsCount : '-'}
               </h3>
             </CardHeader>
             {data?.allowedTestsCount - 1 === data?.usedTestsCount ?
@@ -90,7 +90,7 @@ export default function Dashboard() {
               </CardIcon>
               <p className={classes.cardCategory}>Used Schedules</p>
               <h3 className={classes.cardTitle}>
-                {data?.usedSchedulesCount}/{data?.allowedSchedulesCount}
+                {data ? data.usedSchedulesCount : '-'}/{data ? data.allowedSchedulesCount : '-'}
               </h3>
             </CardHeader>
             {data?.allowedSchedulesCount - 1 === data?.usedSchedulesCount ?

@@ -97,19 +97,28 @@ export const scheduleResource = {
     },
     getExecutionsByScheduleId(scheduleId, nextToken, maxResults) {
         const urlParam = commonUrlParam(nextToken, maxResults)
-        return instance.get(SCHEDULE_RESOURCE + '/' + scheduleId, {
+        return instance.get(SCHEDULE_RESOURCE + '/' + scheduleId + '/' + EXECUTION_RESOURCE, {
             params: urlParam
         });
     },
     deleteSchedule(schedule) {
-        console.log(schedule)
         return instance.delete(SCHEDULE_RESOURCE + '/' + schedule.id);
+    },
+    updateSchedule(scheduleToUpdate) {
+        const requestBodySchedule = {};
+        requestBodySchedule['id'] = scheduleToUpdate.id;
+        if (scheduleToUpdate.state !== null && scheduleToUpdate.state !== undefined) {
+            requestBodySchedule['state'] = scheduleToUpdate.state;
+        }
+        if (scheduleToUpdate.emails !== null && scheduleToUpdate.emails !== undefined) {
+            requestBodySchedule['emails'] = scheduleToUpdate.emails;
+        }
+        return instance.put(SCHEDULE_RESOURCE, requestBodySchedule);
     }
 }
 
 const METRICS_RESOURCE = "metrics";
 export const metricsResource = {
-
     getMetrics(scheduleId, startDate = startDateDefault(), endDate = endDateDefault()) {
         return instance.get(METRICS_RESOURCE + `?schedule_id=${scheduleId}&start_date=${startDate}&end_date=${endDate}`);
     }
