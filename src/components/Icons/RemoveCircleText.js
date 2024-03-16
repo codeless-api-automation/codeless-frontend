@@ -20,7 +20,7 @@ const RemoveCircleText = ({ text, variant }) => {
 
   return (
     <div className={classes.root}>
-      <RemoveCircleOutlineIcon fontSize='inherit' className={classes.icon} />
+      <RemoveCircleOutlineIcon fontSize='small' className={classes.icon} />
       <Typography variant={variant ? variant : "body2"}>{text}</Typography>
     </div>
   );

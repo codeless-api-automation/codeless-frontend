@@ -21,7 +21,7 @@ const ErrorCircleText = ({ text, variant }) => {
 
   return (
     <div className={classes.root}>
-      <ErrorOutlineIcon fontSize='inherit' className={classes.icon} />
+      <ErrorOutlineIcon fontSize='small' className={classes.icon} />
       <Typography variant={variant ? variant : "body2"}>{text}</Typography>
     </div>
   );

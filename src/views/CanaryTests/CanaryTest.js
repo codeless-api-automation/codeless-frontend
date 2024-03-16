@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
+
+import {
+  testResource
+} from '../../service/CodelessApi.js';
+
+import {
+  setErrorNotification
+} from '../../store/util-action.js';
 
 import { createStyles, withStyles } from "@material-ui/core/styles";
 import {
@@ -8,7 +16,8 @@ import {
   TextField,
   Button,
   IconButton,
-  Typography
+  Typography,
+  CircularProgress
 } from '@material-ui/core';
 
 import {
@@ -235,21 +244,18 @@ const RowItem = withStyles(() =>
   })
 )(Grid);
 
-function Test({ saveTest, updateAllTestAttributes, httpCallResult, location }) {
+function Test({
+  setErrorNotification,
+  saveTest,
+  updateAllTestAttributes,
+  httpCallResult,
+  location }) {
 
-  const [test, setTest] = React.useState(
-    location.state === undefined ?
-      {
-        name: "",
-        requests: []
-      }
-      :
-      {
-        id: location.state.id,
-        name: location.state.name,
-        requests: location.state.json
-      }
-  );
+  const [isLoading, setIsLoading] = useState(location.state !== undefined ? true : false);
+  const [test, setTest] = React.useState({
+    name: "",
+    requests: []
+  });
 
   const [openAddHttpRequest, setOpenAddHttpRequest] = React.useState(false);
   const [deleteHttpRequest, setDeleteHttpRequest] = React.useState(null);
@@ -279,6 +285,56 @@ function Test({ saveTest, updateAllTestAttributes, httpCallResult, location }) {
     return test.requests.length === 0 || test.name.length === 0
   }
 
+  useEffect(() => {
+    const getTest = async (testId) => {
+      try {
+        const getTestResponse = await testResource.getTest(testId);
+        const test = await getTestResponse.json();
+        setTest({
+          id: test.id,
+          name: test.name,
+          requests: test.json
+        });
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching canary test:', error);
+        setIsLoading(false);
+        setErrorNotification("Error occured while loading a canary test. Please try again.")
+        history.push(componentsPaths.VIEW_CANARY_TESTS);
+      }
+    };
+
+    if (location.state !== undefined) {
+      getTest(location.state.id);
+    }
+
+    // Cleanup function, will run when the component unmounts or before next effect runs
+    return () => {
+      // Optionally you can cancel requests or do any cleanup here
+      setTest(null)
+      setIsLoading(false)
+    };
+  },
+    [
+      history,
+      location.state,
+      setErrorNotification
+    ]
+  ); // Empty dependency array means this effect runs only once after initial render
+
+
+  if (isLoading) {
+    return (
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh'
+      }}>
+        <CircularProgress />
+      </div>)
+  }
+
   return (
     <GridContainer>
       <GridItem xs={12}>
@@ -292,8 +348,7 @@ function Test({ saveTest, updateAllTestAttributes, httpCallResult, location }) {
                   <Row container>
                     <RowItem item xs>
                       <TextField
-                        label="Name"
-                        placeholder="mycanaryname"
+                        label="Canary Test Name"
                         variant="outlined"
                         fullWidth={true}
                         inputProps={{
@@ -381,5 +436,10 @@ function Test({ saveTest, updateAllTestAttributes, httpCallResult, location }) {
 
 const mapStateToProps = state => ({
   httpCallResult: state.httpCallResult,
+  setErrorNotification: setErrorNotification
 });
-export default connect(mapStateToProps, { saveTest, updateAllTestAttributes })(Test);
+export default connect(mapStateToProps, {
+  setErrorNotification,
+  saveTest,
+  updateAllTestAttributes
+})(Test);

@@ -95,8 +95,13 @@ function BodyRow(props) {
 }
 
 
-function CanaryTests({ httpCallResult, healthChecksPage, requestHealthCheckExecution,
-  requestHealthCheckRemoval, cancelHealthCheckRemovalRequest, removeCanaryTest,
+function CanaryTests({ 
+  httpCallResult, 
+  healthChecksPage, 
+  requestHealthCheckExecution,
+  requestHealthCheckRemoval, 
+  cancelHealthCheckRemovalRequest, 
+  removeCanaryTest,
   requestHealthCheckSchedule }) {
 
   const history = useHistory();
@@ -202,6 +207,7 @@ const mapStateToProps = state => ({
 });
 export default connect(mapStateToProps, {
   requestHealthCheckExecution, requestHealthCheckRemoval,
-  cancelHealthCheckRemovalRequest, removeCanaryTest: removeCanaryTest,
+  cancelHealthCheckRemovalRequest, 
+  removeCanaryTest: removeCanaryTest,
   requestHealthCheckSchedule
 })(CanaryTests);

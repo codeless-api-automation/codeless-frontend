@@ -45,8 +45,8 @@ export const testResource = {
         };
         return instance.put(TEST_RESOURCE, requestBodyTest);
     },
-    getTest(name) {
-        return instance.get(TEST_RESOURCE + '/' + name);
+    getTest(testId) {
+        return instance.get(TEST_RESOURCE + '/' + testId);
     },
     deleteTest(test) {
         console.log(test)

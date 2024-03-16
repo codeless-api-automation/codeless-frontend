@@ -22,7 +22,7 @@ const CheckCircleText = ({ text, variant }) => {
 
   return (
     <div className={classes.root}>
-      <CheckCircleOutlineIcon fontSize='inherit' className={classes.icon} />
+      <CheckCircleOutlineIcon fontSize='small' className={classes.icon} />
       <Typography variant={variant ? variant : "body2"}>{text}</Typography>
     </div>
   );
