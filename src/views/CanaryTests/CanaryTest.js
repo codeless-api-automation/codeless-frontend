@@ -289,7 +289,7 @@ function Test({
     const getTest = async (testId) => {
       try {
         const getTestResponse = await testResource.getTest(testId);
-        const test = await getTestResponse.json();
+        const test = getTestResponse.data;
         setTest({
           id: test.id,
           name: test.name,
