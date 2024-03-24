@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import {
   usersResource
@@ -18,6 +18,7 @@ import {
   Typography
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -45,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
-  const history = useHistory();
 
   const [firstName, setFirstName] = React.useState(null);
   const [lastName, setLastName] = React.useState(null);
@@ -54,6 +54,7 @@ export default function SignUp() {
   const [marketingAgreered, setMarketingAgreered] = React.useState(null);
 
   const [error, setError] = React.useState(null);
+  const [success, setSuccess] = React.useState(null);
 
   const signUp = event => {
     event.preventDefault();
@@ -68,11 +69,16 @@ export default function SignUp() {
 
     usersResource.createUser(userRegistration)
       .then(() => {
-        let signInFormDetail = {
-          email: userRegistration.email,
-          password: userRegistration.password
-        };
-        history.push('sign-in', signInFormDetail);
+        setSuccess(
+          {
+            alertTitle: "Please verify your email",
+            alertBody: "Head to your inbox. You should see an email verifying your email address."
+          }
+        );
+        setFirstName(null)
+        setLastName(null)
+        setEmail(null)
+        setPassword(null)
       }).catch(error => {
         console.log(error.response);
         if (error.response?.status === 400 && error.response.data?.errors) {
@@ -164,6 +170,14 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <Alert onClose={() => setError(null)} variant="filled" severity="error">
                   {error}
+                </Alert>
+              </Grid>
+            }
+            {success !== null &&
+              <Grid item xs={12}>
+                <Alert onClose={() => setSuccess(null)} variant="filled" severity="success">
+                  <AlertTitle>{success.alertTitle}</AlertTitle>
+                  {success.alertBody}
                 </Alert>
               </Grid>
             }
