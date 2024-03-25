@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from "react-router-dom";
 
 import {
@@ -47,6 +47,8 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
   const classes = useStyles();
 
+  const formRef = useRef(null);
+
   const [firstName, setFirstName] = React.useState(null);
   const [lastName, setLastName] = React.useState(null);
   const [email, setEmail] = React.useState(null);
@@ -75,10 +77,13 @@ export default function SignUp() {
             alertBody: "Head to your inbox. You should see an email verifying your email address."
           }
         );
-        setFirstName(null)
-        setLastName(null)
-        setEmail(null)
-        setPassword(null)
+        setFirstName(null);
+        setLastName(null);
+        setEmail(null);
+        setPassword(null);
+        setMarketingAgreered(null);
+
+        formRef.current.reset();
       }).catch(error => {
         console.log(error.response);
         if (error.response?.status === 400 && error.response.data?.errors) {
@@ -103,7 +108,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form onSubmit={signUp} className={classes.form}>
+        <form ref={formRef} onSubmit={signUp} className={classes.form}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -158,7 +163,6 @@ export default function SignUp() {
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox
-                  value="allowExtraEmails"
                   color="primary"
                   onChange={(event) => setMarketingAgreered(event.target.checked)}
                 />}
