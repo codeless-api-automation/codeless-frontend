@@ -46,7 +46,7 @@ export default function Admin({ ...rest }) {
   // styles
   const classes = useStyles();
   // ref to help us initialize PerfectScrollbar on windows devices
-  const mainPanel = React.createRef();
+  const mainPanel = React.createRef(null);
   // states and functions
   const [image] = React.useState(bgImage);
   const [color] = React.useState("purple");
@@ -61,7 +61,7 @@ export default function Admin({ ...rest }) {
   };
   // initialize and destroy the PerfectScrollbar plugin
   React.useEffect(() => {
-    if (navigator.platform.indexOf("Win") > -1) {
+    if (navigator.platform.indexOf("Win") > -1 && mainPanel.current) {
       ps = new PerfectScrollbar(mainPanel.current, {
         suppressScrollX: true,
         suppressScrollY: false
@@ -71,7 +71,7 @@ export default function Admin({ ...rest }) {
     window.addEventListener("resize", resizeFunction);
     // Specify how to clean up after this effect:
     return function cleanup() {
-      if (navigator.platform.indexOf("Win") > -1) {
+      if (navigator.platform.indexOf("Win") > -1 && mainPanel.current) {
         ps.destroy();
       }
       window.removeEventListener("resize", resizeFunction);
