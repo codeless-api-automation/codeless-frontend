@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 import * as common from "constants/Common";
 
@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn() {
   const classes = useStyles();
   const history = useHistory();
+  const location = useLocation();
 
   const [email, setEmail] = React.useState(null);
   const [password, setPassword] = React.useState(null);
@@ -81,6 +82,15 @@ export default function SignIn() {
         setError("Oops, something went wrong. Please try again later.")
       });;
   }
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get(common.ACCESS_TOKEN);
+    if (token) {
+      localStorage.setItem(common.ACCESS_TOKEN, token);
+      history.push('/');
+    }
+  }, [history, location.search]);
 
   return (
     <Container component="main" maxWidth="xs">
