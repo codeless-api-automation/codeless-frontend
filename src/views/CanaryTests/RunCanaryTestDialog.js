@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from "react-redux";
 
 import {
@@ -20,6 +20,10 @@ function RunCanaryTestDialog({ httpCallResult, executionHelper, canceleExecution
 
     const [region, setRegion] = useState(executionHelper.defaultRegion);
 
+    useEffect(() => {
+        setRegion(executionHelper.defaultRegion)
+    }, [executionHelper.defaultRegion])
+
     const handleRun = () => {
         runExecution({
             healthCheck: executionHelper.requestedHealthCheck,
@@ -30,6 +34,10 @@ function RunCanaryTestDialog({ httpCallResult, executionHelper, canceleExecution
     const handleClose = () => {
         canceleExecutionRequest();
     };
+
+    const handleChange = (event) => {
+        setRegion(event.target.value)
+    }
 
     return (
         <Dialog
@@ -43,7 +51,7 @@ function RunCanaryTestDialog({ httpCallResult, executionHelper, canceleExecution
                     textFieldParams={{ margin: "dense" }}
                     regions={executionHelper.regions}
                     regionShownByDefault={executionHelper.defaultRegion}
-                    onChange={(event) => setRegion(event.target.value)}
+                    onChange={handleChange}
                 />
             </DialogContent>
             <DialogActions>
